@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{{ mix('css/tailwind.css') }}">
     </head>
     <body>
-        <div class="bg-red-900">Wow Tailwind</div>
+        <div class="bg-red-700">Wow Tailwind</div>
         <ul>
             <li><a href="./main">Main Page</a></li>
             <li><a href="./hello">Hello Page</a></li>

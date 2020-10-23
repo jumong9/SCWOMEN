@@ -24,3 +24,4 @@ Route::get('/test/hello', 'App\Http\Controllers\test\MainController@hello');
 Route::get('/test/bye', 'App\Http\Controllers\test\MainController@bye');
 
 Route::get('/test/project', 'App\Http\Controllers\test\MainController@project');
+

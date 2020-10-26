@@ -16,7 +16,7 @@ class MainController extends Controller
 
         $id = $request->input('id');
         $password = $request->input('password');
-        Log::info('Showing user profile for user: '.$id);
+        Log::debug('Showing user profile for user: '.$id);
         Log::info('Showing user profile for user: '.$password);
         return view('test.hello')->with(['id'=> $id, 'password'=>$password]);;
     }

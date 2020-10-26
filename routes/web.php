@@ -13,11 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//로그인폼
+Route::get('/login/loginform', function () {
+    return view('/login/loginform');
 });
 
-Route::get('/test/main', 'App\Http\Controllers\test\MainController@main');
+Route::post('/login/login/','App\Http\Controllers\test\MainController@login');
+
+Route::get('/', function () {return view('welcome');});
+
+Route::match(['get','post'],'/test/main', 'App\Http\Controllers\test\MainController@main');
 
 Route::get('/test/hello', 'App\Http\Controllers\test\MainController@hello');
 

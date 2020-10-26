@@ -4,11 +4,21 @@ namespace App\Http\Controllers\test;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MainController extends Controller
 {
     public function hello(){
         return view('test.hello');
+    }
+
+    public function login(Request $request){
+
+        $id = $request->input('id');
+        $password = $request->input('password');
+        Log::info('Showing user profile for user: '.$id);
+        Log::info('Showing user profile for user: '.$password);
+        return view('test.hello')->with(['id'=> $id, 'password'=>$password]);;
     }
 
     public function main(){
@@ -28,4 +38,4 @@ class MainController extends Controller
     }
 }
 
-    
+

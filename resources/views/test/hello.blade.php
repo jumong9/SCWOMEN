@@ -6,5 +6,5 @@
 
 
 @section('content')
-    Hello there
+    Hello there {{ $id}} {{$password }}
 @endsection

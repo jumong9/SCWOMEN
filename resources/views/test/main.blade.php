@@ -1,4 +1,4 @@
-@extends ('test.layout')
+@extends ('test.page')
 
 @section('title')
     MainPage

@@ -18,7 +18,19 @@ Route::get('/login/loginform', function () {
     return view('/login/loginform');
 });
 
-Route::post('/login/login/','App\Http\Controllers\test\MainController@login');
+//로그인 처리
+Route::post('/login/login/','App\Http\Controllers\login\LoginController@login');
+
+//회원가입 폼
+Route::get('/login/joinform', function () {
+    return view('/login/joinform');
+});
+
+
+//회원가입 처리
+Route::post('/login/join','App\Http\Controllers\login\LoginController@join');
+
+
 
 Route::get('/', function () {return view('welcome');});
 

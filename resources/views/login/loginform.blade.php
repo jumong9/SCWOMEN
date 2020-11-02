@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>@yield('title','welcome to kium system')</title>
-        <link rel="stylesheet" href="{{ mix('css/tailwind.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
     </head>
     <body>
 

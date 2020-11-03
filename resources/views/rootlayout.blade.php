@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@yield('title','사용자 페이지')</title>
+        <title>@yield('title','Laravel')</title>
 
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+
     </head>
     <body>
         <div class="container-fluid">
@@ -14,13 +14,6 @@
 
                 <!--사이드바 내용-->
                 <div class="span2">
-                    <div>
-                        <ul>
-                            <li><a href="/">Welcome</a></li>
-                            <li><a href="/hello">Hello</a></li>
-                            <li><a href="/contact">Contact</a></li>
-                        </ul>
-                    </div>
                 </div>
 
                 <!--본문 내용-->
@@ -29,6 +22,5 @@
                 </div>
             </div>
         </div>
-
     </body>
 </html>

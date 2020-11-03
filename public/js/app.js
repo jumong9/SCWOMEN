@@ -37333,15 +37333,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /***/ }),
 
 /***/ 0:
-/*!*********************************************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/css/tailwindcss.css ***!
-  \*********************************************************************************************/
+/*!*************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\PlayGround\scwomen\resources\js\app.js */"./resources/js/app.js");
-__webpack_require__(/*! C:\PlayGround\scwomen\resources\sass\app.scss */"./resources/sass/app.scss");
-!(function webpackMissingModule() { var e = new Error("Cannot find module 'C:\\PlayGround\\scwomen\\resources\\css\\tailwindcss.css'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+__webpack_require__(/*! C:\playground\SCWOMEN\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\playground\SCWOMEN\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

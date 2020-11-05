@@ -7,7 +7,7 @@
         <title>@yield('title','welcome to laravel')</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
         <link ref="javascript" href="{{ asset('js/app.js')}}" />
-               <script type="text/javascript">
+        <script type="text/javascript">
             (function($) {
                 $(document).ready(function(){
                    alert('hello')

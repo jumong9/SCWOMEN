@@ -2,6 +2,8 @@
 $isEdit = Route::currentRouteName() == 'memo.edit';
 @endphp
 
+<script src="{{ asset('js/memo/memo.js') }}" defer></script>
+
 <div class="row">
     <div class="col p-4" id="form">
         {!! Form::open([
@@ -10,7 +12,7 @@ $isEdit = Route::currentRouteName() == 'memo.edit';
                 'memo.store'
         ]) !!}
         @if ($isEdit)
-        {{ method_field('PUT') }}
+        @method('PUT')
         @endif
         <div class="form-group">
             {!! Form::textarea('memo', ($isEdit ? $memo->memo : null), [
@@ -19,9 +21,10 @@ $isEdit = Route::currentRouteName() == 'memo.edit';
                 'rows' => 6,
             ]) !!}
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block" disabled="disabled">
+        <button type="submit" class="btn btn-primary btn-lg btn-block" >
         	MEMO
         </button>
+        <input type="text" class="datepicker" />
         {!! Form::close() !!}
     </div>
 </div>

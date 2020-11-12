@@ -45,7 +45,7 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('가입하기') }}</a>
+                                    <a class="nav-link" href="{{ route('auth.register') }}">{{ __('가입하기') }}</a>
                                 </li>
                             @endif
                         @else

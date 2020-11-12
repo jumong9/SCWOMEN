@@ -75,9 +75,12 @@
                         <div class="form-group row">
                             <label for="class" class="col-md-4 col-form-label text-md-right">{{ __('강사단') }}</label>
                             <div class="col-md-6">
-                                <select name="class" id="class" class="form-control">
-                                    @foreach($items as $key=>$value)
+                                <select name="class_category_id" id="class_category_id" class="form-control">
+                                    {{-- @foreach($items as $key=>$value)
                                       <option value="{{ $key }}">{{ $value }}</option>
+                                    @endforeach --}}
+                                    @foreach($items as $item)
+                                        <option value="{{ $item->id }}">{{ $item->class_name }}</option>
                                     @endforeach
                                   </select>
                             </div>

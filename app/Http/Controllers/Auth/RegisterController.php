@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\classCategory;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -70,4 +72,12 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    //가입 폼
+    public function show(){
+        $items = ClassCategory::get(['id', 'class_name']);
+        //$items = array( 'code1'=>'value1','code2'=>'value2');
+        return view('auth.register', ['items'=>$items]);
+    }
+
 }

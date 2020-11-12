@@ -25,6 +25,7 @@ class MemoController extends Controller
         $memo = Memo::where('user', Auth::id())
                     ->orderBy('updated_at', 'desc')
                     ->get();
+
         return view('memo.index', ['memo'=>$memo]);
     }
 

@@ -36,13 +36,15 @@ Route::get('auth/logout', [
 ]);
 
 //회원가입 폼
-Route::get('auth/register', function () {
-    return view('Auth\AuthController@getRegister');
-});
+Route::get('auth/register', [
+   'as' => 'auth.register',
+   'uses' => 'App\Http\Controllers\Auth\RegisterController@show'
+]);
 
 //회원가입 처리
 Route::post('auth/register',[
-    'App\Http\Controllers\login\LoginController@join'
+    'as' => 'join.create',
+    'uses' => 'App\Http\Controllers\join\JoinController@create'
 ]);
 
 

@@ -4,22 +4,41 @@ namespace App\Http\Controllers\login;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller{
 
-    public function loginForm(){
+    public function getLogin(){
+        if(Auth::check()){
+            return redirect('home');
+        }
         return view('/login/loginform');
     }
 
-    public function login(Request $request){
+    public function postLogin(Request $request){
 
-        $id = $request->input('id');
-        $password = $request->input('password');
-        Log::debug('Showing user profile for user: '.$id);
-        Log::info('Showing user profile for user: '.$password);
-        return view('test.hello')->with(['id'=> $id, 'password'=>$password]);
+        $credentials = [
+            'email'    => $request->input('email'),
+            'password' => $request->input('password')
+        ];
+
+        if (! Auth::attempt($credentials)) {
+            return back()->withInput();
+        }
+
+        return redirect('home');
+
     }
+
+    public function getLogout(){
+        Auth::logout();
+        return redirect()->route('auth.create');
+    }
+
+
+
+
 
     public function joinForm(){
         return view('/login/joinForm');

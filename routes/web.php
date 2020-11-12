@@ -13,25 +13,40 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+//메인 인덱스
+Route::get('/', function () {return view('welcome');});
+
 
 //로그인폼
-Route::get('/login/loginform', function () {
-    return view('/login/loginform');
-});
+Route::get('auth/login', [
+    'as' => 'auth.create',
+    'uses' => 'App\Http\Controllers\login\LoginController@getLogin'
+]);
 
 //로그인 처리
-Route::post('/login/login/','App\Http\Controllers\login\LoginController@login');
+Route::post('auth/login',[
+    'as' => 'auth.store'
+    , 'uses' =>  'App\Http\Controllers\login\LoginController@postLogin'
+]);
+
+//로그아웃
+Route::get('auth/logout', [
+    'as' => 'auth.destory',
+    'uses' => 'App\Http\Controllers\login\LoginController@getLogout'
+]);
 
 //회원가입 폼
-Route::get('/login/joinform', function () {
-    return view('/login/joinform');
+Route::get('auth/register', function () {
+    return view('Auth\AuthController@getRegister');
 });
 
 //회원가입 처리
-Route::post('/login/join','App\Http\Controllers\login\LoginController@join');
+Route::post('auth/register',[
+    'App\Http\Controllers\login\LoginController@join'
+]);
 
 
-Route::get('/', function () {return view('welcome');});
+
 
 
 Route::match(['get','post'],'/test/main', 'App\Http\Controllers\test\MainController@main');

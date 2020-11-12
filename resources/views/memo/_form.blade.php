@@ -2,7 +2,7 @@
 $isEdit = Route::currentRouteName() == 'memo.edit';
 @endphp
 
-<script src="{{ asset('js/memo/memo.js') }}" defer></script>
+
 
 <div class="row">
     <div class="col p-4" id="form">

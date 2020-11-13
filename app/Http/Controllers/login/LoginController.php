@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller{
 
+    //로그인폼
     public function getLogin(){
         if(Auth::check()){
             return redirect('home');
         }
-        return view('/login/loginform');
+        return view('/login/login');
     }
 
+    //로그인
     public function postLogin(Request $request){
 
         $credentials = [
@@ -31,25 +33,16 @@ class LoginController extends Controller{
 
     }
 
+    //로그아웃
     public function getLogout(){
         Auth::logout();
-        return redirect()->route('auth.create');
+        return redirect('/');
     }
 
-
-
-
-
-    public function joinForm(){
-        return view('/login/joinForm');
-    }
-
-    public function join(Request $request){
-        $id = $request->input('id');
-        $user_name = $request->input('user_name');
-
-        return view('users.main')
-                ->with(['id'=> $id, 'user_name'=>$user_name]);
+    //로그아웃
+    public function postLogout(){
+        Auth::logout();
+        return redirect('/');
     }
 
 }

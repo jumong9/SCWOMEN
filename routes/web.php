@@ -13,40 +13,52 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-//메인 인덱스
+
+//Auth::routes();
+
+//메모 테스트
+Route::resource('memo', 'App\Http\Controllers\MemoController');
+
+
+
+
+//외부 인덱스
 Route::get('/', function () {return view('welcome');});
 
 
 //로그인폼
 Route::get('auth/login', [
-    'as' => 'auth.create',
+    'as' => 'auth.login',
     'uses' => 'App\Http\Controllers\login\LoginController@getLogin'
 ]);
 
 //로그인 처리
 Route::post('auth/login',[
-    'as' => 'auth.store'
+    'as' => 'auth.logindo'
     , 'uses' =>  'App\Http\Controllers\login\LoginController@postLogin'
 ]);
 
 //로그아웃
-Route::get('auth/logout', [
-    'as' => 'auth.destory',
-    'uses' => 'App\Http\Controllers\login\LoginController@getLogout'
+Route::post('auth/logout', [
+    'as' => 'auth.logoutdo',
+    'uses' => 'App\Http\Controllers\login\LoginController@postLogout'
 ]);
 
 //회원가입 폼
 Route::get('auth/register', [
    'as' => 'auth.register',
-   'uses' => 'App\Http\Controllers\Auth\RegisterController@show'
+   'uses' => 'App\Http\Controllers\join\JoinController@getRegister'
 ]);
 
 //회원가입 처리
 Route::post('auth/register',[
-    'as' => 'join.create',
-    'uses' => 'App\Http\Controllers\join\JoinController@create'
+    'as' => 'auth.registerdo',
+    'uses' => 'App\Http\Controllers\join\JoinController@postRegister'
 ]);
 
+
+//메인화면
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 
@@ -59,11 +71,4 @@ Route::get('/test/bye', 'App\Http\Controllers\test\MainController@bye');
 
 Route::get('/test/project', 'App\Http\Controllers\test\MainController@project');
 
-
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::resource('memo', 'App\Http\Controllers\MemoController');
 

@@ -41,9 +41,9 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('로그인') }}</a>
+                                <a class="nav-link" href="{{ route('auth.login') }}">{{ __('로그인') }}</a>
                             </li>
-                            @if (Route::has('register'))
+                            @if (Route::has('auth.register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('auth.register') }}">{{ __('가입하기') }}</a>
                                 </li>
@@ -55,13 +55,13 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item" href="{{ route('auth.logoutdo') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('로그아웃') }}
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('auth.logoutdo') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
                                 </div>

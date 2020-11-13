@@ -11,6 +11,7 @@ class UsersController extends Controller
     public function main(){
         $books = ['Jacson', 'Laravel'];
         return view('users.main')->with([ 'books'=> $books ]);
+
     }
 
 }

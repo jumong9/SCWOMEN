@@ -24,8 +24,17 @@ class JoinController extends Controller{
         ]);
     }
 
+
+    //가입 폼
+    public function getRegister(){
+        $items = ClassCategory::get(['id', 'class_name']);
+        //$items = array( 'code1'=>'value1','code2'=>'value2');
+        return view('join.register', ['items'=>$items]);
+    }
+
+
     //가입처리
-    public function create(Request $request){
+    public function postRegister(Request $request){
 
         $rule = [
             'name' => ['required', 'string', 'max:255'],
@@ -49,7 +58,7 @@ class JoinController extends Controller{
 
         $user->classCategories()->attach($class_category_id);
 
-        return redirect()->route('auth.create');
+        return redirect()->route('auth.login');
     }
 
 }

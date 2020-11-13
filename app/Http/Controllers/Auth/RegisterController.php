@@ -73,11 +73,4 @@ class RegisterController extends Controller
         ]);
     }
 
-    //가입 폼
-    public function show(){
-        $items = ClassCategory::get(['id', 'class_name']);
-        //$items = array( 'code1'=>'value1','code2'=>'value2');
-        return view('auth.register', ['items'=>$items]);
-    }
-
 }

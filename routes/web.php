@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\Auth;
 
 //Auth::routes();
 
-//메모 테스트
-Route::resource('memo', 'App\Http\Controllers\MemoController');
 
+Route::middleware(['auth'])->group(function(){
 
+    //메모 테스트
+    Route::resource('memo', 'App\Http\Controllers\MemoController');
+
+});
 
 
 //외부 인덱스
@@ -39,7 +42,7 @@ Route::post('auth/login',[
 ]);
 
 //로그아웃
-Route::post('auth/logout', [
+Route::match(['post','get'], 'auth/logout', [
     'as' => 'auth.logoutdo',
     'uses' => 'App\Http\Controllers\login\LoginController@postLogout'
 ]);
@@ -58,7 +61,23 @@ Route::post('auth/register',[
 
 
 //메인화면
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('adminmiddle');
+
+
+
+//관리자 권한 메뉴
+Route::middleware(['adminmiddle'])->group(function(){
+
+    //멤버관리
+    Route::match(['get','post'],'member/list',[
+        'as' => 'member.list',
+        'uses' => 'App\Http\Controllers\member\MemberController@list'
+    ]);
+
+
+});
+
+
 
 
 

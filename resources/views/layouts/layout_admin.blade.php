@@ -9,12 +9,13 @@
 
     <title>{{ config('app.name', 'Laravel8') }}</title>
 
-    <!-- Scripts -->
+    <!-- Scripts
     <script src="{{ asset('js/app.js') }}" defer></script>
+-->
 
-    <!-- Styles -->
+    <!-- Styles
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+-->
     <!-- Fonts -->
     <link href="{{ asset('sba/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link
@@ -272,7 +273,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="sba/img/undraw_profile_1.svg"
+                                        <img class="rounded-circle" src="{{ asset('sba/img/undraw_profile_1.svg') }}"
                                             alt="">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -284,7 +285,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="sba/img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="{{ asset('sba/img/undraw_profile_2.svg') }}"
                                             alt="">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -296,7 +297,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="sba/img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="{{ asset('sba/img/undraw_profile_3.svg') }}"
                                             alt="">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -328,9 +329,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }} {{ Auth::user()->grade }}</span>
                                 <img class="img-profile rounded-circle"
-                                    src="sba/img/undraw_profile.svg">
+                                    src="{{ asset('sba/img/undraw_profile.svg') }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -363,8 +364,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+                    @yield('content')
 
                 </div>
                 <!-- /.container-fluid -->
@@ -407,7 +407,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="{{ route('auth.logoutdo') }}">Logout</a>
                 </div>
             </div>
         </div>

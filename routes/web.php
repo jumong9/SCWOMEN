@@ -68,7 +68,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //관리자 권한 메뉴
 Route::middleware(['adminmiddle'])->group(function(){
 
-    //멤버관리
+    //멤버관리 리스트
     Route::match(['get','post'],'member/list',[
         'as' => 'member.list',
         'uses' => 'App\Http\Controllers\member\MemberController@list'

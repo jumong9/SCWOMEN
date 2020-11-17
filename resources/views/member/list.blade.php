@@ -16,9 +16,9 @@
                     {{ $member->name }} {{ $member->email }}
                     {{ $member->grade }} {{ $member->status }} {{ $member->gubun }}
                     {{ $member->created_at }}
-                    {{ $member->classCategories[0]->class_gubun}}
+                    {{-- $member->classCategories[0]->class_gubun}}
                     {{ $member->classCategories[0]->class_name}}
-                    {{ $member->classCategories[0]->pivot->user_id}}
+                    {{ $member->classCategories[0]->pivot->user_id --}}
                     @foreach($member->classCategories as $member)
                         {{ $loop->index }} / {{ $member->class_gubun }} {{ $member->class_name }}
                     @endforeach

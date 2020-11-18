@@ -8,11 +8,32 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            <h6 class="m-0 font-weight-bold text-primary">BBS</h6>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+                <div class="" id="dataTable_length">
+                    <label>Show
+                        <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> entries
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-5">
+                <div id="dataTable_filter" class="">
+                    <label>Search:
+                        <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>이름</th>
@@ -25,56 +46,57 @@
                             <th>등록일</th>
                         </tr>
                     </thead>
-
-
+                    <tbody>
+                        @foreach($userlist as $key => $member)
+                        <tr>
+                            <td>{{ $member->name }}</td>
+                            <td>{{ $member->email }}</td>
+                            <td>{{ $member->group }}</td>
+                            <td>
+                                @switch($member->grade)
+                                    @case(0)
+                                        승인대기중
+                                        @break
+                                    @case(1)
+                                        승인완료
+                                        @break
+                                    @default
+                                @endswitch
+                            </td>
+                            <td>
+                                @switch($member->gubun)
+                                    @case(0)
+                                        내부
+                                        @break
+                                    @case(1)
+                                        외부
+                                        @break
+                                    @default
+                                @endswitch
+                            </td>
+                            <td>{{ $member->classCategories[0]->class_gubun}}</td>
+                            <td>{{ $member->classCategories[0]->class_name}}</td>
+                            <td>{{ $member->created_at}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
+            <a class="btn btn-primary btn-sm fa-pull-right" href="">등록</a>
+            {{ $userlist->links() }}
         </div>
     </div>
 @endsection
 
 @section('scripts')
-    <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('sba/vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('sba/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="{{ asset('sba/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('sba/js/sb-admin-2.min.js') }}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{{ asset('sba/vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('sba/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
-            $('#dataTable').DataTable({
-                "responsive": true,
-                "length": 3,
-               // "pagingType" : "full_numbers",
-                "processing": true,
-                "serverSide": true,
-                "ajax":{
-                    "url": "{{ route('member.list') }}",
-                    "data":{ _token: "{{csrf_token()}}"},
-                    "dataType": "json",
-                    "dataSrc":function(res){
-                        return res.data;
-                    }
-                },
-                "columns": [
-                    { "data": "name" },
-                    { "data": "email" },
-                    { "data": "group" },
-                    { "data": "grade" },
-                    { "data": "gubun" },
-                    { "data": "class_name" },
-                    { "data": "class_gubun" },
-                    { "data": "created_at" }
-                ]
-            });
+
         });
     </script>
 @endsection

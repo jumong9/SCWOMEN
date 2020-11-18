@@ -3,21 +3,19 @@
 namespace App\Http\Controllers\member;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PDO;
 
 class MemberController extends Controller{
 
     public function index(Request $request){
 
-        return view('member.list');
+        return view('member.list_datatable');
     }
 
     //sbadmin2 적용 리스트
-    public function list(Request $request){
+    public function listbak(Request $request){
 
 
         $columns = array(
@@ -105,7 +103,7 @@ class MemberController extends Controller{
     }
 
     //부트스트랩 적용
-    public function list2(Request $request){
+    public function list(Request $request){
 
 //DB::enableQueryLog();
 
@@ -117,7 +115,7 @@ class MemberController extends Controller{
                          ->select('id', 'group', 'name', 'email', 'grade','gubun','status','created_at')
                          ->where('grade', 0)
                          ->orderBy('created_at', 'desc')
-                         ->paginate(5);
+                         ->paginate(10);
         // ->get();
         //dd($member);
 
@@ -156,7 +154,7 @@ class MemberController extends Controller{
 
 
         // dd($r_member);
-        return view('member.list2', ['userlist'=>$member2, 'count'=>$count[0]->count]);
+        return view('member.list', ['userlist'=>$member2, 'count'=>$count[0]->count]);
     }
 
 }

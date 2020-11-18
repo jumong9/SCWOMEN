@@ -36,6 +36,10 @@ class MainController extends Controller
         $projects = \App\Models\Project::all();
         return view('test.project')->with([ 'projects'=> $projects ]);
     }
+
+    public function frame(){
+        return view('test.frame');
+    }
 }
 
 

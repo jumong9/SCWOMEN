@@ -71,7 +71,7 @@ Route::middleware(['adminmiddle'])->group(function(){
     //멤버관리 리스트
     Route::match(['get','post'],'member/list',[
         'as' => 'member.list',
-        'uses' => 'App\Http\Controllers\member\MemberController@list2'
+        'uses' => 'App\Http\Controllers\member\MemberController@list'
     ]);
 
     //멤버관리 리스트
@@ -93,6 +93,8 @@ Route::match(['get','post'],'/test/main', 'App\Http\Controllers\test\MainControl
 Route::get('/test/hello', 'App\Http\Controllers\test\MainController@hello');
 
 Route::get('/test/bye', 'App\Http\Controllers\test\MainController@bye');
+
+Route::get('/test/frame', 'App\Http\Controllers\test\MainController@frame');
 
 Route::get('/test/project', 'App\Http\Controllers\test\MainController@project');
 

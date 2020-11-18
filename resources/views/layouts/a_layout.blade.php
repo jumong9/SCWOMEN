@@ -9,15 +9,19 @@
 
     <title>{{ config('app.name', 'Laravel8') }}</title>
 
-    <!-- Scripts -->
+    <!-- Scripts
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    -->
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+
+
 </head>
 <body>
     <div id="app">
@@ -72,15 +76,17 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 container">
             @yield('content')
         </main>
     </div>
 </body>
 <script src="{{ asset('sba/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('sba/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
     $(document).ready(function() {
 
     });
 </script>
+@yield('scripts')
 </html>

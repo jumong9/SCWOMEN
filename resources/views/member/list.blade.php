@@ -26,40 +26,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        @foreach($userlist as $key => $member)
-                        <tr>
-                            <td>{{ $member->name }}</td>
-                            <td>{{ $member->email }}</td>
-                            <td>{{ $member->group }}</td>
-                            <td>
-                                @switch($member->grade)
-                                    @case(0)
-                                        승인대기중
-                                        @break
-                                    @case(1)
-                                        승인완료
-                                        @break
-                                    @default
-                                @endswitch
-                            </td>
-                            <td>
-                                @switch($member->gubun)
-                                    @case(0)
-                                        내부
-                                        @break
-                                    @case(1)
-                                        외부
-                                        @break
-                                    @default
-                                @endswitch
-                            </td>
-                            <td>{{ $member->classCategories[0]->class_gubun}}</td>
-                            <td>{{ $member->classCategories[0]->class_name}}</td>
-                            <td>{{ $member->created_at}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
+
                 </table>
             </div>
         </div>
@@ -84,7 +51,29 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-               // responsive: true
+                "responsive": true,
+                "length": 3,
+               // "pagingType" : "full_numbers",
+                "processing": true,
+                "serverSide": true,
+                "ajax":{
+                    "url": "{{ route('member.list') }}",
+                    "data":{ _token: "{{csrf_token()}}"},
+                    "dataType": "json",
+                    "dataSrc":function(res){
+                        return res.data;
+                    }
+                },
+                "columns": [
+                    { "data": "name" },
+                    { "data": "email" },
+                    { "data": "group" },
+                    { "data": "grade" },
+                    { "data": "gubun" },
+                    { "data": "class_name" },
+                    { "data": "class_gubun" },
+                    { "data": "created_at" }
+                ]
             });
         });
     </script>

@@ -7,10 +7,105 @@ use App\Models\ClassCategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 class MemberController extends Controller{
 
+    public function index(Request $request){
+
+        return view('member.list');
+    }
+
+    //sbadmin2 적용 리스트
     public function list(Request $request){
+
+
+        $columns = array(
+            0 =>'id',
+            1 =>'name',
+            2=> 'email',
+            3=> 'created_at',
+        );
+
+        $limit = $request->input('length');
+        $start = $request->input('start');
+        $order = $columns[$request->input('order.0.column')];
+        $dir = $request->input('order.0.dir');
+
+        $totalData = User::where('grade',0)->count();
+
+        $totalFiltered = $totalData;
+
+
+        if(empty($request->input('search.value'))){
+
+            $member = User::with('classCategories:class_gubun,class_name')
+                            ->select('id', 'group', 'name', 'email', 'grade','gubun','status','created_at')
+                            ->where('grade', 0)
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order, $dir)
+                            ->get();
+
+        }else{
+
+            $search = $request->input('search.value');
+
+            $member =  User::with('classCategories:class_gubun,class_name')
+                            ->select('id', 'group', 'name', 'email', 'grade','gubun','status','created_at')
+                            ->where('name','LIKE',"%{$search}%")
+                            ->orWhere('email', 'LIKE',"%{$search}%")
+                            ->offset($start)
+                            ->limit($limit)
+                            ->orderBy($order,$dir)
+                            ->get();
+
+            $totalFiltered = User::where('name','LIKE',"%{$search}%")
+                             ->orWhere('email', 'LIKE',"%{$search}%")
+                             ->count();
+
+        }
+
+        $data = array();
+        if(!empty($member)){
+
+            foreach ($member as $post)
+            {
+                $show =  route('member.list',$post->id);
+                $edit =  route('member.list',$post->id);
+
+
+                $nestedData['name'] = $post->name;
+                $nestedData['email'] = $post->email;
+                $nestedData['group'] = $post->group;
+                $nestedData['grade'] = $post->grade;
+                $nestedData['gubun'] = $post->gubun;
+                $nestedData['status'] = $post->status;
+                $nestedData['class_gubun'] = $post->classCategories[0]->class_gubun;
+                $nestedData['class_name'] = $post->classCategories[0]->class_name;
+                $nestedData['created_at'] = date('Y-m-d h:i a',strtotime($post->created_at));
+
+               // $nestedData['options'] = "&emsp;<a href='{$show}' title='SHOW' ><span class='glyphicon glyphicon-list'></span></a>
+               //                           &emsp;<a href='{$edit}' title='EDIT' ><span class='glyphicon glyphicon-edit'></span></a>";
+                $data[] = $nestedData;
+
+            }
+        }
+
+
+        $json_data = array(
+                        "draw"            => intval($request->input('draw')),
+                        "recordsTotal"    => intval($totalData),
+                        "recordsFiltered" => intval($totalFiltered),
+                        "data"            => $data
+                    );
+
+        return json_encode($json_data);
+
+    }
+
+    //부트스트랩 적용
+    public function list2(Request $request){
 
 //DB::enableQueryLog();
 
@@ -22,7 +117,7 @@ class MemberController extends Controller{
                          ->select('id', 'group', 'name', 'email', 'grade','gubun','status','created_at')
                          ->where('grade', 0)
                          ->orderBy('created_at', 'desc')
-                         ->paginate(11);
+                         ->paginate(5);
         // ->get();
         //dd($member);
 
@@ -61,7 +156,7 @@ class MemberController extends Controller{
 
 
         // dd($r_member);
-        return view('member.list', ['userlist'=>$member2, 'count'=>$count[0]->count]);
+        return view('member.list2', ['userlist'=>$member2, 'count'=>$count[0]->count]);
     }
 
 }

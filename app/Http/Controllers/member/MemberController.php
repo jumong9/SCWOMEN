@@ -105,17 +105,23 @@ class MemberController extends Controller{
     //부트스트랩 적용
     public function list(Request $request){
 
-//DB::enableQueryLog();
+        //DB::enableQueryLog();
 
         //$mem = User::
      //   $member_count = User::with('classCategories')->where('grade',0)->count();
      //   dd($member_count);
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
 
-         $member2 = User::with('classCategories:class_gubun,class_name')
-                         ->select('id', 'group', 'name', 'email', 'grade','gubun','status','created_at')
-                         ->where('grade', 0)
-                         ->orderBy('created_at', 'desc')
-                         ->paginate(10);
+
+        $member2 = User::with('classCategories:class_gubun,class_name')
+                        ->select('id', 'group', 'name', 'mobile', 'email', 'grade','gubun','status','created_at')
+                        ->where('grade', 0)
+                        ->where('name','LIKE',"{$searchWord}%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($perPage);
         // ->get();
         //dd($member);
 
@@ -154,6 +160,8 @@ class MemberController extends Controller{
 
 
         // dd($r_member);
+        $member2->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord));
+   //     echo $member2;
         return view('member.list', ['userlist'=>$member2, 'count'=>$count[0]->count]);
     }
 

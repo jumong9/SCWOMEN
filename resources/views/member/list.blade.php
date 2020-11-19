@@ -8,33 +8,26 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">BBS</h6>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-md-5">
-                <div class="" id="dataTable_length">
-                    <label>Show
-                        <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                            <option value="10">10</option>
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select> entries
-                    </label>
+                <div class="input-group">
+                    <select class="custom-select-sm" id="" style="width:77px;" >
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <input type="text" class="col-xs-2 form-control bg-light form-control-sm" placeholder="Search for...">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-sm" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-12 col-md-5">
-                <div id="dataTable_filter" class="">
-                    <label>Search:
-                        <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="dataTable">
-                    </label>
-                </div>
-            </div>
         </div>
+
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-light">
                         <tr>
                             <th>이름</th>
                             <th>E-mail</th>

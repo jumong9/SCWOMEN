@@ -247,7 +247,7 @@ class MemberController extends Controller{
         $birthday = $request->input('birthday');
         $address = $request->input('address');
         $joinday = $request->input('joinday');
-
+        $stopday = $request->input('stopday');
 
         $user->fill($request->input());
 //DB::enableQueryLog();
@@ -261,7 +261,8 @@ class MemberController extends Controller{
                         'group' => $group,
                         'address' => $address,
                         'birthday' => $birthday,
-                        'joinday' => $joinday
+                        'joinday' => $joinday,
+                        'stopday' => $stopday
                         ]);
 
         //기존 클래스 조회

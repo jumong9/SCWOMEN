@@ -86,6 +86,14 @@
 
                         </tr>
                         <tr>
+                            <th>생년월일</th>
+                            <td>
+                                <input id="birthday" type="text" class="form-control col-md-6" name="birthday" value="{{ $member[0]->birthday }}" >
+                            </td>
+                            <th>등록일</th>
+                            <td>{{ $member[0]->created_at}}</td>
+                        </tr>
+                        <tr>
                             <th>주소지</th>
                             <td>
                                 <div class="row">
@@ -94,14 +102,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <th>등록일</th>
-                            <td>{{ $member[0]->created_at}}</td>
-                        </tr>
-                        <tr>
-                            <th>생년월일</th>
-                            <td>
-                                <input id="birthday" type="text" class="form-control col-md-6" name="birthday" value="{{ $member[0]->birthday }}" >
-                            </td>
+
                             <th>입단일</th>
                             <td>
                                 <div class="row">
@@ -110,6 +111,18 @@
                                     </div>
                                 </div>
                             </td>
+                        </tr>
+                        <tr style="display:none;" class="stopday">
+                            <th>보류/중단일</th>
+                            <td >
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input id="stopday" type="text" class="form-control" name="stopday" value="{{ $member[0]->stopday }}" >
+                                    </div>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <th>강사단명</th>
@@ -145,9 +158,25 @@
             checkMyClass = function(){
                 @foreach($member[0]->classCategories as $category)
                     $("#class_category_id_"+{{ $category->id }}).attr("checked", true);
-                    console.log({{ $category->id }});
                 @endforeach
             }
+
+            showStopday = function(){
+                if(6 == '{{ $member[0]->status}}' || 8 == '{{ $member[0]->status}}'){
+                    $(".stopday").show();
+                }
+            }
+
+            $("#status").change(function(){
+                var selItem = $("select[name=status]").val();
+                if(selItem == 6 || selItem == 8 ){
+                    $(".stopday").show();
+                }else{
+                    $(".stopday").hide();
+                    $("#stopday").val("");
+                }
+
+            });
 
 
             var params = "?id={{$member[0]->id}}&perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
@@ -170,6 +199,8 @@
             //$('.datepicker').datepicker();
 
             checkMyClass();
+
+            showStopday();
 
         });
     </script>

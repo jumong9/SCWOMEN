@@ -70,20 +70,34 @@
 
                         </tr>
                         <tr>
-                            <th>주소지</th>
-                            <td>{{ $member[0]->address}}</td>
+                            <th>생년월일</th>
+                            <td>{{ $member[0]->birthday}}</td>
+
                             <th>등록일</th>
                             <td>{{ $member[0]->created_at}}</td>
                         </tr>
                         <tr>
+                            <th>주소지</th>
+                            <td>{{ $member[0]->address}}</td>
+                            <th>입단일</th>
+                            <td>{{ $member[0]->joinday}}</td>
+                        </tr>
+                        @if ($member[0]->status == 6 || $member[0]->status ==9)
+                        <tr >
+                            <th>보류/중단일</th>
+                            <td>{{ $member[0]->stopday}}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @endif
+
+                        <tr>
                             <th>강사단명</th>
-                            <td>
+                            <td colspan="3">
                                 @foreach($classCategory as $category)
                                     {{ $category->class_name }}( 주 : {{ $category->main_count }}, 보조 : {{ $category->sub_count }} ) @if(!$loop->last), @endif
                                 @endforeach
                             </td>
-                            <th>입단일</th>
-                            <td>{{ $member[0]->joinday}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -62,7 +62,7 @@
             <div class="row">
 
                 <!-- 9단길이의 첫번째 열 -->
-                <div class="col-md-12">
+                <div class="col-md-12 pt-3">
 
                     @yield('content')
 

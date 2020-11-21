@@ -69,15 +69,44 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['adminmiddle'])->group(function(){
 
     //멤버관리 리스트
+    Route::match(['get','post'],'member/',[
+        'as' => 'member.index',
+        'uses' => 'App\Http\Controllers\member\MemberController@index'
+    ]);
+
+    //멤버관리 리스트
     Route::match(['get','post'],'member/list',[
         'as' => 'member.list',
         'uses' => 'App\Http\Controllers\member\MemberController@list'
     ]);
 
-    //멤버관리 리스트
-    Route::match(['get','post'],'member/',[
-        'as' => 'member.index',
-        'uses' => 'App\Http\Controllers\member\MemberController@index'
+
+    //멤버관리 상세
+    Route::match(['get','post'],'member/detail',[
+        'as' => 'member.detail',
+        'uses' => 'App\Http\Controllers\member\MemberController@detail'
+    ]);
+
+    //멤버관리 수정화면
+    Route::match(['get','post'],'member/modify',[
+        'as' => 'member.modify',
+        'uses' => 'App\Http\Controllers\member\MemberController@modify'
+    ]);
+
+
+    Route::match(['get','post'],'member/update',[
+        'as' => 'member.update',
+        'uses' => 'App\Http\Controllers\member\MemberController@update'
+    ]);
+
+    Route::match(['get','post'],'member/updateApproval',[
+        'as' => 'member.updateApproval',
+        'uses' => 'App\Http\Controllers\member\MemberController@updateApproval'
+    ]);
+
+    Route::match(['get','post'],'member/deleteUser',[
+        'as' => 'member.deleteUser',
+        'uses' => 'App\Http\Controllers\member\MemberController@deleteUser'
     ]);
 
 

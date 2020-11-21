@@ -53,4 +53,15 @@ class User extends Authenticatable
     public function classCategories(){
         return $this->belongsToMany(ClassCategory::class);
     }
+
+
+    // protected static function boot() {
+	//     parent::boot();
+
+	// 	// delete() 수행전 호출
+	//     static::deleting(function($user) {
+	//         $user->classCategories()->delete();
+	//     });
+    // }
+
 }

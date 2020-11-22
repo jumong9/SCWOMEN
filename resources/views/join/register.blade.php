@@ -102,7 +102,7 @@
                         <div class="form-group row">
                             <label for="birthday" class="col-md-4 col-form-label text-md-right">{{ __('생년월일') }}</label>
                             <div class="col-md-6">
-                                <input id="birthday" type="text" class="form-control @error('birthday') is-invalid @enderror" name="birthday" value="{{ old('birthday') }}" autocomplete="birthday" >
+                                <input id="birthday" type="text" class="form-control datepicker @error('birthday') is-invalid @enderror" readonly name="birthday" value="{{ old('birthday') }}" autocomplete="birthday" >
                             </div>
                         </div>
 

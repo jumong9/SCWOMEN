@@ -88,7 +88,7 @@
                         <tr>
                             <th>생년월일</th>
                             <td>
-                                <input id="birthday" type="text" class="form-control col-md-6" name="birthday" value="{{ $member[0]->birthday }}" >
+                                <input id="birthday" type="text" class="form-control col-md-6 datepicker" readonly name="birthday" value="{{ $member[0]->birthday }}" >
                             </td>
                             <th>등록일</th>
                             <td>{{ $member[0]->created_at}}</td>
@@ -107,7 +107,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="joinday" type="text" class="form-control" name="joinday" value="{{ $member[0]->joinday }}" >
+                                        <input id="joinday" type="text" class="form-control datepicker" readonly name="joinday" value="{{ $member[0]->joinday }}" >
                                     </div>
                                 </div>
                             </td>
@@ -117,7 +117,7 @@
                             <td >
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="stopday" type="text" class="form-control" name="stopday" value="{{ $member[0]->stopday }}" >
+                                        <input id="stopday" type="text" class="form-control datepicker" readonly name="stopday" value="{{ $member[0]->stopday }}" >
                                     </div>
                                 </div>
                             </td>
@@ -196,7 +196,11 @@
                 location.href='{{ route('member.list')}}' + params;
             });
 
-            //$('.datepicker').datepicker();
+            $('.datepicker').datepicker(
+                {
+                    showButtonPanel: false
+                }
+            );
 
             checkMyClass();
 

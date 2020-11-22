@@ -151,6 +151,8 @@
 @endsection
 
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script>
         $(document).ready(function() {
@@ -206,6 +208,18 @@
 
             showStopday();
 
+            $("#searchForm").validate({
+                rules: {
+                    name: {
+                        required:true
+                    }
+                },
+                messages : {
+                    name: {
+                        required : '이름을 입력해 주세요.'
+                    }
+                }
+            });
         });
     </script>
 @endsection

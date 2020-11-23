@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('member.list') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.member.list') }}" method="post" >
     @csrf
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -127,7 +127,7 @@
                 if(confirm("승인 처리 하시겠습니까?")){
                     $.ajax({
                         type : "post",
-                        url : "{{ route('member.updateApproval') }}",
+                        url : "{{ route('mgmt.member.updateApproval') }}",
                         data : {
                             _token: "{{csrf_token()}}",
                             'checkedItemId' : {{ $member[0]->id }}
@@ -149,7 +149,7 @@
                 if(confirm("삭제 처리 하시겠습니까?")){
                     $.ajax({
                         type : "post",
-                        url : "{{ route('member.deleteUser') }}",
+                        url : "{{ route('mgmt.member.deleteUser') }}",
                         data : {
                             _token: "{{csrf_token()}}",
                             'checkedItemId' : {{ $member[0]->id }}
@@ -166,11 +166,11 @@
             });
 
             $("#updateButton").click(function(){
-                location.href='{{ route('member.modify')}}' + params +"&id={{ $member[0]->id}}";
+                location.href='{{ route('mgmt.member.modify')}}' + params +"&id={{ $member[0]->id}}";
             });
 
             $("#listButton").click(function(){
-                location.href='{{ route('member.list')}}' + params;
+                location.href='{{ route('mgmt.member.list')}}' + params;
             });
 
 

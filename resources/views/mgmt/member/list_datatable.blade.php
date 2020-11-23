@@ -48,7 +48,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax":{
-                    "url": "{{ route('member.list') }}",
+                    "url": "{{ route('mgmt.member.list') }}",
                     "data":{ _token: "{{csrf_token()}}"},
                     "dataType": "json",
                     "dataSrc":function(res){

@@ -16,7 +16,7 @@ class MemberController extends Controller{
     public function index(Request $request){
 //DB::enableQueryLog();
 //dd(DB::getQueryLog());
-        return view('member.list_datatable');
+        return view('mgmt.member.list_datatable');
     }
 
     //sbadmin2 적용 리스트
@@ -174,7 +174,7 @@ class MemberController extends Controller{
      //   dd(DB::getQueryLog());
 
         $member->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
-        return view('member.list', ['userlist'=>$member, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
+        return view('mgmt.member.list', ['userlist'=>$member, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
 
     }
 
@@ -197,7 +197,7 @@ class MemberController extends Controller{
         $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')->where('user_id', $id)->get();
 
 
-        return view('member.detail', ['member'=>$member, 'classCategory' => $classCategory, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 
@@ -219,7 +219,7 @@ class MemberController extends Controller{
 
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
-        return view('member.modify', ['member'=>$member, 'classCategory' => $classCategory, 'classItems'=>$classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return view('mgmt.member.modify', ['member'=>$member, 'classCategory' => $classCategory, 'classItems'=>$classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 
@@ -292,7 +292,7 @@ class MemberController extends Controller{
         }
         //dd(DB::getQueryLog());
 
-        return redirect()->route('member.detail', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
+        return redirect()->route('mgmt.member.detail', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
 
         //return redirect()->route('member.detail',['id' =>$id])->with(['perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
 

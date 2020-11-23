@@ -25,12 +25,12 @@
                     <li class="nav-item pr-2">
 
                         <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 강사단 정보
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              <a class="dropdown-item" href="{{ route('member.list') }}">강사관리</a>
+                              <a class="dropdown-item" href="{{ route('mgmt.member.list') }}">강사관리</a>
                               <a class="dropdown-item" href="#">Another action</a>
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
@@ -38,7 +38,7 @@
                     </li>
                     <li class="nav-item pr-2">
                         <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.client.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 수요처 정보
                             </a>
 
@@ -56,7 +56,7 @@
                         <a class="nav-link" href="#">Link</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('member.list') }}">강사관리</a>
+                        <a class="nav-link" href="{{ route('mgmt.member.list') }}">강사관리</a>
                     </li>
                 </ul>
             </div>

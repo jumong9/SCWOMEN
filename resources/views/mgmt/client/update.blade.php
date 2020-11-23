@@ -114,7 +114,6 @@
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
             searchFormSubmit = function(){
-                //action="{{route('member.list') }}"
                 return true;
             }
 

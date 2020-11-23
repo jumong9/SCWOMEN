@@ -70,44 +70,44 @@ Route::middleware(['adminmiddle'])->group(function(){
 
     //멤버관리 리스트
     Route::match(['get','post'],'member/',[
-        'as' => 'member.index',
-        'uses' => 'App\Http\Controllers\member\MemberController@index'
+        'as' => 'mgmt.member.index',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@index'
     ]);
 
     //멤버관리 리스트
     Route::match(['get','post'],'member/list',[
-        'as' => 'member.list',
-        'uses' => 'App\Http\Controllers\member\MemberController@list'
+        'as' => 'mgmt.member.list',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@list'
     ]);
 
     //멤버관리 상세화면
     Route::match(['get','post'],'member/detail',[
-        'as' => 'member.detail',
-        'uses' => 'App\Http\Controllers\member\MemberController@detail'
+        'as' => 'mgmt.member.detail',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@detail'
     ]);
 
     //멤버관리 수정화면
     Route::match(['get','post'],'member/modify',[
-        'as' => 'member.modify',
-        'uses' => 'App\Http\Controllers\member\MemberController@modify'
+        'as' => 'mgmt.member.modify',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@modify'
     ]);
 
     //멤버관리 수정처리
     Route::match(['get','post'],'member/update',[
-        'as' => 'member.update',
-        'uses' => 'App\Http\Controllers\member\MemberController@update'
+        'as' => 'mgmt.member.update',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@update'
     ]);
 
     //멤버관리 승인처리
     Route::match(['get','post'],'member/updateApproval',[
-        'as' => 'member.updateApproval',
-        'uses' => 'App\Http\Controllers\member\MemberController@updateApproval'
+        'as' => 'mgmt.member.updateApproval',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@updateApproval'
     ]);
 
     //멤버관리 삭제처리
     Route::match(['get','post'],'member/deleteUser',[
-        'as' => 'member.deleteUser',
-        'uses' => 'App\Http\Controllers\member\MemberController@deleteUser'
+        'as' => 'mgmt.member.deleteUser',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@deleteUser'
     ]);
 
 

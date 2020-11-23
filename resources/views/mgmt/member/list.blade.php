@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('member.list') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.member.list') }}" method="post" >
         <input name="checkedItemId" type="hidden" value=""/>
     @csrf
     <!-- DataTales Example -->
@@ -88,7 +88,7 @@
                                 @endswitch
                             </td>
                             <td>{{ $member->group }}</td>
-                            <td><a href="{{ route ('member.detail', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
+                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
                             <td>{{ $member->main_count}}</td>
                             <td>{{ $member->sub_count}}</td>
@@ -171,7 +171,7 @@
                     if(confirm("승인 처리 하시겠습니까?")){
                         $.ajax({
                             type : "post",
-                            url : "{{ route('member.updateApproval') }}",
+                            url : "{{ route('mgmt.member.updateApproval') }}",
                             data : {
                                 _token: "{{csrf_token()}}",
                                 'checkedItemId' : $("input[name=checkedItemId]").val()

@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
 
-    <form name="searchForm" id="searchForm" action="{{route('member.update') }}" onsubmit="return searchFormSubmit();" method="post" >
+    <form name="searchForm" id="searchForm" action="{{route('mgmt.member.update') }}" onsubmit="return searchFormSubmit();" method="post" >
     @csrf
         <input type="hidden" name="id" value="{{ $member[0]->id}}">
     <!-- DataTales Example -->
@@ -184,18 +184,18 @@
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
             searchFormSubmit = function(){
-                //action="{{route('member.list') }}"
+                //action="{{route('mgmt.member.list') }}"
                 return true;
             }
 
 
 
             $("#cancelButton").click(function(){
-                location.href='{{ route('member.detail')}}' + params + "&id={{$member[0]->id}}";
+                location.href='{{ route('mgmt.member.detail')}}' + params + "&id={{$member[0]->id}}";
             });
 
             $("#listButton").click(function(){
-                location.href='{{ route('member.list')}}' + params;
+                location.href='{{ route('mgmt.member.list')}}' + params;
             });
 
             $('.datepicker').datepicker(

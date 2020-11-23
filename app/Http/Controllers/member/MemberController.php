@@ -250,7 +250,6 @@ class MemberController extends Controller{
         $stopday = $request->input('stopday');
 
         $user->fill($request->input());
-//DB::enableQueryLog();
         $user->where('id', $id)
              ->update([
                         'name' => $name,

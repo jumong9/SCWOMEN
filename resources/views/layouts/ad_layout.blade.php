@@ -22,11 +22,11 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item pr-2">
 
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle" href="{{ route('member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                강사관리
+                                강사단 정보
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -34,10 +34,20 @@
                               <a class="dropdown-item" href="#">Another action</a>
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
-                          </div>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="//codeply.com">Codeply</a>
+                    <li class="nav-item pr-2">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                수요처 정보
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              <a class="dropdown-item" href="{{ route('mgmt.client.list') }}">수요처관리</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>

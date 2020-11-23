@@ -15,12 +15,12 @@
             <div class="float-left">
                 <div class="form-inline">
                     <select name="perPage" id="perPage" class="form-control float-left mr-2">
-                        <option value="5" {{$clientlist->perPage() == 5 ? "selected" : "" }} >5</option>
-                        <option value="10" {{$clientlist->perPage() == 10 ? "selected" : "" }}>10</option>
-                        <option value="30" {{$clientlist->perPage() == 30 ? "selected" : "" }}>30</option>
-                        <option value="50" {{$clientlist->perPage() == 50 ? "selected" : "" }}>50</option>
+                        <option value="5" {{$contentslist->perPage() == 5 ? "selected" : "" }} >5</option>
+                        <option value="10" {{$contentslist->perPage() == 10 ? "selected" : "" }}>10</option>
+                        <option value="30" {{$contentslist->perPage() == 30 ? "selected" : "" }}>30</option>
+                        <option value="50" {{$contentslist->perPage() == 50 ? "selected" : "" }}>50</option>
                     </select>
-                    <span >전체 {{ $clientlist->total() }} 건</span>
+                    <span >전체 {{ $contentslist->total() }} 건</span>
                 </div>
             </div>
             <div class="float-right">
@@ -57,11 +57,11 @@
                             <th>행정실전화</th>
                             <th>행정실팩스</th>
                             <th>등록일</th>
-                            <th>등록일</th>
+                            <th>계약</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($clientlist as $key => $list)
+                        @foreach($contentslist as $key => $list)
                         <tr>
                             <td>
                                 @if($searchStatus == 0)
@@ -92,18 +92,18 @@
                                         기타
                                 @endswitch
                             </td>
-                            <td><a href="{{ route ('member.detail', ['id'=>$list->id, 'perPage'=>$clientlist->perPage(), 'page'=>$clientlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->name }}</a></td>
+                            <td><a href="{{ route ('mgmt.client.read', ['id'=>$list->id, 'perPage'=>$contentslist->perPage(), 'page'=>$contentslist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->name }}</a></td>
                             <td>{{ $list->client_tel}}</td>
                             <td>{{ $list->client_fax}}</td>
                             <td>{{ $list->office_tel}}</td>
                             <td>{{ $list->office_fax }}</td>
                             <td>{{ $list->created_at}}</td>
-                            <td>계약등록</td>
+                            <td><a href="{{ route('mgmt.client.list') }}">등록</a></td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                {{ $clientlist->withQueryString()->links() }}
+                {{ $contentslist->withQueryString()->links() }}
             </div>
             <div class="row-fluid" style="text-align: right;">
                 @if($searchStatus == 0)

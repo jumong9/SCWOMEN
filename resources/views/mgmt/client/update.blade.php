@@ -5,8 +5,9 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
 
-    <form name="searchForm" id="searchForm" action="{{route('mgmt.client.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
+    <form name="searchForm" id="searchForm" action="{{route('mgmt.client.updateDo') }}" onsubmit="return searchFormSubmit();" method="post" >
     @csrf
+        <input type="hidden" name="id" value="{{ $client->id}}">
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
 
@@ -25,7 +26,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" required >
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $client->name }}" required >
                                     </div>
                                 </div>
                             </td>
@@ -35,7 +36,7 @@
                                     <div class="col-md-6">
                                         <select name="gubun" id="gubun" class="form-control">
                                             @foreach($commonCode as $code)
-                                            <option value="{{$code->code_id}}">{{$code->code_value}}</option>
+                                            <option value="{{$code->code_id}}" {{ $client->code_id == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -47,7 +48,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="client_tel" type="text" class="form-control @error('mobile') is-invalid @enderror" name="client_tel" value=""  >
+                                        <input id="client_tel" type="text" class="form-control @error('mobile') is-invalid @enderror" name="client_tel" value="{{ $client->client_tel }}"  >
                                     </div>
                                 </div>
                             </td>
@@ -55,7 +56,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="client_tel" type="text" class="form-control @error('mobile') is-invalid @enderror" name="client_fax" value=""  >
+                                        <input id="client_tel" type="text" class="form-control @error('mobile') is-invalid @enderror" name="client_fax" value="{{ $client->client_fax }}"  >
                                     </div>
                                 </div>
                             </td>
@@ -65,7 +66,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="office_tel" type="text" class="form-control @error('office_tel') is-invalid @enderror" name="office_tel" value="" >
+                                        <input id="office_tel" type="text" class="form-control @error('office_tel') is-invalid @enderror" name="office_tel" value="{{ $client->office_tel }}" >
                                     </div>
                                 </div>
                             </td>
@@ -73,26 +74,22 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="office_fax" type="text" class="form-control @error('office_fax') is-invalid @enderror" name="office_fax" value="" >
+                                        <input id="office_fax" type="text" class="form-control @error('office_fax') is-invalid @enderror" name="office_fax" value="{{ $client->office_fax }}" >
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                         <tr>
                             <th>주소지</th>
                             <td>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <input id="address" type="text" class="form-control" name="address" value="" >
+                                        <input id="address" type="text" class="form-control" name="address" value="{{ $client->address }}" >
                                     </div>
                                 </div>
                             </td>
-
                             <td></td>
-                            <td>
-
-                            </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -114,18 +111,15 @@
         $(document).ready(function() {
 
 
-            {{--
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
-        --}}
+
             searchFormSubmit = function(){
                 //action="{{route('member.list') }}"
                 return true;
             }
 
-
-
             $("#cancelButton").click(function(){
-                location.href='{{ route('mgmt.client.list')}}' ;
+                location.href='{{ route('mgmt.client.read')}}'  + params +"&id={{$client->id}}";
             });
 
 
@@ -143,7 +137,7 @@
                 },
                 messages : {
                     name: {
-                        required : '이름을 입력해 주세요.'
+                        required : '수요처명을 입력해 주세요.'
                     }
                 }
             });

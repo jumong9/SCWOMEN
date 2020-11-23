@@ -108,7 +108,7 @@
                 @endif
                     <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
                     <button class="btn btn-primary" type="button"  id="deleteButton">삭제</button>
-                <button class="btn btn-primary" type="button"  id="listButton">목록</button>
+                    <button class="btn btn-primary" type="button"  id="listButton">목록</button>
             </div>
         </div>
     </div>

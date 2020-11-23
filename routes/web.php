@@ -124,6 +124,30 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@create'
     ]);
 
+    //수요처관리 등록 처리
+    Route::match(['get','post'],'mgmt/client/createDo',[
+        'as' => 'mgmt.client.createDo',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@createDo'
+    ]);
+
+    //수요처관리 상세 화면
+    Route::match(['get','post'],'mgmt/client/read',[
+        'as' => 'mgmt.client.read',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@read'
+    ]);
+
+    //수요처관리 수정 화면
+    Route::match(['get','post'],'mgmt/client/update',[
+        'as' => 'mgmt.client.update',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@update'
+    ]);
+
+    //수요처관리 수정 처리
+    Route::match(['get','post'],'mgmt/client/updateDo',[
+        'as' => 'mgmt.client.updateDo',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@updateDo'
+    ]);
+
 
 });
 

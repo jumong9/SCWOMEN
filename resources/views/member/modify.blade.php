@@ -181,7 +181,7 @@
             });
 
 
-            var params = "?id={{$member[0]->id}}&perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
+            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
             searchFormSubmit = function(){
                 //action="{{route('member.list') }}"
@@ -191,7 +191,7 @@
 
 
             $("#cancelButton").click(function(){
-                location.href='{{ route('member.detail')}}' + params;
+                location.href='{{ route('member.detail')}}' + params + "&id={{$member[0]->id}}";
             });
 
             $("#listButton").click(function(){

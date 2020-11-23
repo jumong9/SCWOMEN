@@ -80,8 +80,7 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\member\MemberController@list'
     ]);
 
-
-    //멤버관리 상세
+    //멤버관리 상세화면
     Route::match(['get','post'],'member/detail',[
         'as' => 'member.detail',
         'uses' => 'App\Http\Controllers\member\MemberController@detail'
@@ -93,20 +92,36 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\member\MemberController@modify'
     ]);
 
-
+    //멤버관리 수정처리
     Route::match(['get','post'],'member/update',[
         'as' => 'member.update',
         'uses' => 'App\Http\Controllers\member\MemberController@update'
     ]);
 
+    //멤버관리 승인처리
     Route::match(['get','post'],'member/updateApproval',[
         'as' => 'member.updateApproval',
         'uses' => 'App\Http\Controllers\member\MemberController@updateApproval'
     ]);
 
+    //멤버관리 삭제처리
     Route::match(['get','post'],'member/deleteUser',[
         'as' => 'member.deleteUser',
         'uses' => 'App\Http\Controllers\member\MemberController@deleteUser'
+    ]);
+
+
+
+    //수요처관리 리스트 화면
+    Route::match(['get','post'],'mgmt/client/list',[
+        'as' => 'mgmt.client.list',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@list'
+    ]);
+
+    //수요처관리 등록 화면
+    Route::match(['get','post'],'mgmt/client/create',[
+        'as' => 'mgmt.client.create',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@create'
     ]);
 
 

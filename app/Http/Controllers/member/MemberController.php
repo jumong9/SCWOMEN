@@ -293,7 +293,7 @@ class MemberController extends Controller{
         }
         //dd(DB::getQueryLog());
 
-        return redirect()->route('member.detail', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return redirect()->route('member.detail', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
 
         //return redirect()->route('member.detail',['id' =>$id])->with(['perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
 

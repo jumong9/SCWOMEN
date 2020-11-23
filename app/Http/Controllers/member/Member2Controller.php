@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class MemberController extends Controller{
+class Member2Controller extends Controller{
 
     public function index(Request $request){
 //DB::enableQueryLog();
@@ -110,7 +110,7 @@ class MemberController extends Controller{
     /**
      * 사용자 목록
      */
-    public function list(Request $request){
+    public function list2(Request $request){
 
         DB::enableQueryLog();
 
@@ -183,7 +183,7 @@ class MemberController extends Controller{
     /**
      * 사용자 정보 상세화면
      */
-    public function detail(Request $request){
+    public function detail2(Request $request){
 
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
@@ -204,7 +204,7 @@ class MemberController extends Controller{
     /**
      * 사용자 정보 수정화면
      */
-    public function modify(Request $request){
+    public function modify2(Request $request){
 
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
@@ -226,7 +226,7 @@ class MemberController extends Controller{
     /**
      * 사용자 정보 업데이트
      */
-    public function update(Request $request){
+    public function update2(Request $request){
 
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\mgmt\contract;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassCategory;
 use App\Models\Client;
+use App\Models\CommonCode;
 use Illuminate\Http\Request;
 
 class ContractController extends Controller{
@@ -20,8 +22,23 @@ class ContractController extends Controller{
                             )
                             ->where('clients.id', $id)->get();
 
+
+        $codelist = CommonCode::getCommonCode('contract_status');
+        $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
+
         $result[0]->id = $id;
-        return view('mgmt.contract.create', [ 'client'=>$result[0] ]);
+        return view('mgmt.contract.create', [ 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems ]);
+    }
+
+
+    public function createDo(Request $request){
+
+
+        //contract 정보 생성
+
+        //contract class 정보 생성
+
+        return 'ok';
     }
 
 }

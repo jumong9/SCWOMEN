@@ -98,7 +98,7 @@
                             <td>{{ $list->office_tel}}</td>
                             <td>{{ $list->office_fax }}</td>
                             <td>{{ $list->created_at}}</td>
-                            <td><a href="{{ route('mgmt.client.list') }}">등록</a></td>
+                            <td><a href="{{ route('mgmt.contract.create', ['id'=>$list->id]) }}">등록</a></td>
                         </tr>
                         @endforeach
                     </tbody>

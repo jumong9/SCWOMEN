@@ -114,7 +114,7 @@ $('.memo-delete').on('click', function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\playground\SCWOMEN\resources\js\memo\memo.js */"./resources/js/memo/memo.js");
+module.exports = __webpack_require__(/*! C:\PlayGround\scwomen\resources\js\memo\memo.js */"./resources/js/memo/memo.js");
 
 
 /***/ })

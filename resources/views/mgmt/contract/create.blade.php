@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">계약등록</h1>
 
-    <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
+    <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.create') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -180,7 +180,7 @@
                                 <th style="width:100px;"></th>
                             </tr>
                         </thead>
-                        <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
+                        <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
                                 <td>
                                     <div class="row">
@@ -282,13 +282,21 @@
 
 @section('scripts')
 
+    <script src="{{asset('js/memo/jquery.tmpl.min.js')}}"></script>
+
     <script id="tmpClassTr" type="text/jquery-template">
-        <tr class="btn-footer">
-            <td></td>
-            <td class="pr90"><input name="addJobDutyName" title="직책명" type="text" value="" class="w80p" /></td>
-            <td colspan="2" class="text-left">
-                <button onClick=javascript:deleteClass(this); class="btn btn-color3" type="button">추가</button>
-            </td>
+        <tr>
+            <td style="width:100px;">활동일자</td>
+            <td style="width:120px;">시간</td>
+            <td style="width:160px;">프로그램</td>
+            <td style="width:160px;">교육대상</td>
+            <td style="width:80px;">인원</td>
+            <td style="width:80px;">횟수</td>
+            <td style="width:80px;">차수</td>
+            <td style="width:80px;">주강사수</td>
+            <td style="width:80px;">보조강사수</td>
+            <td style="width:100px;">온오프</td>
+            <td style="width:100px;"><button class="btn-sm btn-primary delRow" type="button">삭제</button></td>
         </tr>
     </script>
 
@@ -296,6 +304,7 @@
     <script>
         $(document).ready(function() {
 
+            $madeIndex=0;
 
             $('.datepicker').datepicker(
                 {
@@ -312,7 +321,19 @@
             });
 
             $("#addClass").click(function(){
+                var defaultItem = {
+					name : ''
+					,validYn:'Y'
+					,uploadYn:'Y'
+					,dbData:'N'
+					,madeIndex:$madeIndex
+			    }
 
+                $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
+				.on("click",".delRow", function(e){
+					this.closest("tr").remove();
+				}).data('userData',defaultItem);
+                $madeIndex++;
             });
 
             searchFormSubmit = function(){

@@ -51,7 +51,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{ route('member.list') }}">
+                <a class="nav-link" href="{{ route('mgmt.member.list') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Members</span></a>
             </li>

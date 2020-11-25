@@ -149,11 +149,22 @@ Route::middleware(['adminmiddle'])->group(function(){
     ]);
 
 
-
     //계약관리 등록 화면
     Route::match(['get','post'],'mgmt/contract/create',[
         'as' => 'mgmt.contract.create',
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@create'
+    ]);
+
+    //계약관리 등록 처리
+    Route::match(['get','post'],'mgmt/contract/createDo',[
+        'as' => 'mgmt.contract.createDo',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@createDo'
+    ]);
+
+    //계약관리 상세 화면
+    Route::match(['get','post'],'mgmt/contract/read',[
+        'as' => 'mgmt.contract.read',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@read'
     ]);
 
 });

@@ -8,8 +8,6 @@
     <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
 
-        <input type="hidden" name="classTargetList" id="classTargetList" value="">
-        <input type="hidden" name="client_id" value="{{ $client->id}}">
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
 
@@ -132,11 +130,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <select name="status" id="status" class="form-control ">
-                                                @foreach($commonCode as $code)
-                                                    <option value="{{$code->code_id}}">{{$code->code_value}}</option>
-                                                @endforeach
-                                            </select>
+
                                         </div>
                                     </div>
                                 </td>
@@ -204,9 +198,7 @@
                                     <div class="row">
                                         <div class="col-md-12 input-group-sm">
                                             <select name="class_category_id" id="class_category_id" class="form-control ">
-                                                @foreach($classItems as $code)
-                                                    <option value="{{$code->id}}">{{$code->class_name}}</option>
-                                                @endforeach
+
                                             </select>
                                         </div>
                                     </div>
@@ -390,6 +382,7 @@
 
                 return true;
             }
+
 
         });
     </script>

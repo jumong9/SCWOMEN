@@ -27,7 +27,7 @@ class ClientController extends Controller{
         //DB::enableQueryLog();where('users.name','LIKE',"{$searchWord}%");
         $clients = Client::where('clients.name','LIKE',"{$searchWord}%")
                            ->orderBy('clients.created_at', 'desc')
-                           ->paginate($perPage);;
+                           ->paginate($perPage);
 
         $clients->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 

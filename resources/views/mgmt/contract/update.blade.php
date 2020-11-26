@@ -3,13 +3,14 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">계약등록</h1>
+    <h1 class="h3 mb-2 text-gray-800">계약수정</h1>
 
     <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
 
         <input type="hidden" name="classTargetList" id="classTargetList" value="">
         <input type="hidden" name="client_id" value="{{ $client->id}}">
+        <input type="hidden" name="id" value="{{ $contract->id}}">
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
 
@@ -38,7 +39,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" required >
+                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $contract->name }}" required >
                                         </div>
                                     </div>
                                 </td>
@@ -46,7 +47,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value=""  >
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $contract->email }}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -56,7 +57,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value=""  >
+                                            <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $contract->phone }}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -64,7 +65,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="phone2" type="text" class="form-control @error('phone2') is-invalid @enderror" name="phone2" value=""  >
+                                            <input id="phone2" type="text" class="form-control @error('phone2') is-invalid @enderror" name="phone2" value="{{ $contract->phone2 }}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -74,7 +75,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="class_cost" type="number" class="form-control @error('class_cost') is-invalid @enderror" name="class_cost" value="" >
+                                            <input id="class_cost" type="number" class="form-control @error('class_cost') is-invalid @enderror" name="class_cost" value="{{ $contract->class_cost }}" >
                                         </div>
                                     </div>
                                 </td>
@@ -82,7 +83,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="class_total_cost" type="number" class="form-control @error('class_total_cost') is-invalid @enderror" name="class_total_cost" value="" >
+                                            <input id="class_total_cost" type="number" class="form-control @error('class_total_cost') is-invalid @enderror" name="class_total_cost" value="{{ $contract->class_total_cost }}" >
                                         </div>
                                     </div>
                                 </td>
@@ -93,7 +94,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="material_cost" type="number" class="form-control @error('material_cost') is-invalid @enderror" name="material_cost" value=""  >
+                                            <input id="material_cost" type="number" class="form-control @error('material_cost') is-invalid @enderror" name="material_cost" value="{{ $contract->material_cost }}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -101,7 +102,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="material_total_cost" type="number" class="form-control @error('material_total_cost') is-invalid @enderror" name="material_total_cost" value=""  >
+                                            <input id="material_total_cost" type="number" class="form-control @error('material_total_cost') is-invalid @enderror" name="material_total_cost" value="{{ $contract->material_total_cost }}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -112,8 +113,8 @@
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
                                             <select name="paid_yn" id="paid_yn" class="form-control ">
-                                                <option value="0">미입금</option>
-                                                <option value="1">입금완료</option>
+                                                <option value="0" {{ $contract->paid_yn == 0 ? "selected" : "" }} >미입금</option>
+                                                <option value="1" {{ $contract->paid_yn == 1 ? "selected" : "" }}>입금완료</option>
                                             </select>
                                         </div>
                                     </div>
@@ -122,7 +123,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <input id="total_cost" type="number" class="form-control @error('total_cost') is-invalid @enderror" name="total_cost" value="" >
+                                            <input id="total_cost" type="number" class="form-control @error('total_cost') is-invalid @enderror" name="total_cost" value="{{ $contract->total_cost }}" >
                                         </div>
                                     </div>
                                 </td>
@@ -134,7 +135,7 @@
                                         <div class="col-md-6 input-group-sm">
                                             <select name="status" id="status" class="form-control ">
                                                 @foreach($commonCode as $code)
-                                                    <option value="{{$code->code_id}}">{{$code->code_value}}</option>
+                                                    <option value="{{$code->code_id}}" {{ $client->code_id == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -321,6 +322,10 @@
     <script>
         $(document).ready(function() {
 
+//db데이터 u
+//신규입력 i
+//삭제데이터 d - 보이지 않게 처리
+
             $madeIndex=0;
 
             $('.datepicker').datepicker(
@@ -389,7 +394,7 @@
 
                 $("#classTargetList").val(JSON.stringify(classList));
 
-                return true;
+                return false;
             }
 
         });

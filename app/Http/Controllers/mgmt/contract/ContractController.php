@@ -113,20 +113,97 @@ class ContractController extends Controller{
         $page = $request->input('page');
         $id = $request->input('id');
 
-        $contract = Contracts::where('id',$id)->get();
+        $contract = Contracts::join('common_codes as c', function($join){
+                                    $join->on('c.code_id','=', 'contracts.status')
+                                         ->where('c.code_group', '=','contract_status');
+                                    }
+                                )->where('contracts.id',$id)->get();
+        $contract[0]->id=$id;
         $client_id = $contract[0]->client_id;
 
-        $classList = ContractClass::where('contract_id', $id)->get();
+        $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
+                                    ->where('contract_id', $id)->get();
 
         $client = new Client();
         $result = $client::join('common_codes as c', function($join){
                                 $join->on('c.code_id','=', 'clients.gubun')
-                                    ->where('c.code_group', '=','client_gubun');
+                                     ->where('c.code_group', '=','client_gubun');
                                 }
                             )
                             ->where('clients.id', $client_id)->get();
+
 //dd(DB::getQueryLog());
         return view('mgmt.contract.read', ['client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
     }
+
+
+    public function list(Request $request){
+
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
+        $page = $request->input('page');
+        DB::enableQueryLog();
+        $contractList = Contracts::join('common_codes as c', function($join){
+                                            $join->on('c.code_id','=', 'contracts.status')
+                                                ->where('c.code_group', '=','contract_status');
+                                            }
+                                    )
+                                    ->join('clients as cl', function($join){
+                                            $join->on('cl.id','=', 'contracts.client_id');
+                                            }
+                                    )
+                                    ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'cl.gubun')
+                                    ->where('cl.name','LIKE',"{$searchWord}%")
+                                    ->paginate($perPage);
+        $contractList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
+
+ //       dd(DB::getQueryLog());
+        return view('mgmt.contract.list', ['contractList'=>$contractList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+
+    }
+
+
+    public function update(Request $request){
+        DB::enableQueryLog();
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = $request->input('perPage');
+        $page = $request->input('page');
+        $id = $request->input('id');
+
+        $contract = Contracts::join('common_codes as c', function($join){
+                                    $join->on('c.code_id','=', 'contracts.status')
+                                            ->where('c.code_group', '=','contract_status');
+                                    }
+                                )->where('contracts.id',$id)->get();
+        $contract[0]->id=$id;
+
+        //dd(DB::getQueryLog());
+        $client_id = $contract[0]->client_id;
+
+        $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
+                                    ->where('contract_id', $id)->get();
+
+        $client = new Client();
+        $result = $client::join('common_codes as c', function($join){
+                                $join->on('c.code_id','=', 'clients.gubun')
+                                        ->where('c.code_group', '=','client_gubun');
+                                }
+                            )
+                            ->where('clients.id', $client_id)->get();
+        $codelist = CommonCode::getCommonCode('contract_status');
+        $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
+
+
+        return view('mgmt.contract.update', ['client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+    }
+
+
+
+
+
 
 }

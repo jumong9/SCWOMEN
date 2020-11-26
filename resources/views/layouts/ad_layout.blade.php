@@ -44,7 +44,7 @@
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{{ route('mgmt.client.list') }}">수요처관리</a>
-                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="{{ route('mgmt.contract.list') }}">계약관리</a>
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </div>

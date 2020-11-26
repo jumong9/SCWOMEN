@@ -167,6 +167,19 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@read'
     ]);
 
+    //계약관리 목록 화면
+    Route::match(['get','post'],'mgmt/contract/list',[
+        'as' => 'mgmt.contract.list',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@list'
+    ]);
+
+    //계약관리 수정 화면
+    Route::match(['get','post'],'mgmt/contract/update',[
+        'as' => 'mgmt.contract.update',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@update'
+    ]);
+
+
 });
 
 

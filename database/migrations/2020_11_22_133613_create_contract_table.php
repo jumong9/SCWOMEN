@@ -25,7 +25,7 @@ class CreateContractTable extends Migration
             $table->unsignedBigInteger('material_cost')->nullable();
             $table->unsignedBigInteger('material_total_cost')->nullable();
             $table->unsignedBigInteger('total_cost')->nullable();
-            $table->char('paid_yn', 1)->default('N');
+            $table->tinyInteger('paid_yn', 1)->default('0');
             $table->tinyInteger('status')->default('1');
             $table->string('comments')->nullable();
             $table->timestamps();

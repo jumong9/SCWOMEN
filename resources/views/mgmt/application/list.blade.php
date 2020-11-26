@@ -3,9 +3,9 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
+    <h1 class="h3 mb-2 text-gray-800">강사승인관리</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('mgmt.member.list') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.application.list') }}" method="post" >
         <input name="checkedItemId" type="hidden" value=""/>
     @csrf
     <!-- DataTales Example -->
@@ -26,9 +26,9 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group mb-2">
-                        <select class="form-control" name="searchStatus" id="searchStatus">
+                        {{-- <select class="form-control" name="searchStatus" id="searchStatus">
                             <option value="99" {{ $searchStatus == 99 ? "selected" : "" }} >전체</option>
-                            {{-- <option value="0" {{ $searchStatus == 0 ? "selected" : "" }} >승인대기</option> --}}
+                            <option value="0" {{ $searchStatus == 0 ? "selected" : "" }} >승인대기</option>
                             <option value="2" {{ $searchStatus == 2 ? "selected" : "" }} >활동중</option>
                             <option value="4" {{ $searchStatus == 4 ? "selected" : "" }} >프리랜서</option>
                             <option value="6" {{ $searchStatus == 6 ? "selected" : "" }} >활동보류</option>
@@ -38,8 +38,8 @@
                             <option value="">선택하세요</option>
                             <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
-                        </select>
-                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}">
+                        </select> --}}
+                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명" >
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
                 </div>
@@ -60,8 +60,6 @@
                             <th>기수</th>
                             <th>강사명</th>
                             <th>강사단명</th>
-                            <th>주강사</th>
-                            <th>보조강사</th>
                             <th>핸드폰</th>
                             <th>E-mail</th>
                             <th>상태</th>
@@ -88,10 +86,8 @@
                                 @endswitch
                             </td>
                             <td>{{ $member->group }}</td>
-                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
+                            <td><a href="{{ route ('mgmt.application.read', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
-                            <td>{{ $member->main_count}}</td>
-                            <td>{{ $member->sub_count}}</td>
                             <td>{{ $member->mobile }}</td>
                             <td>{{ $member->email }}</td>
                             <td>
@@ -171,7 +167,7 @@
                     if(confirm("승인 처리 하시겠습니까?")){
                         $.ajax({
                             type : "post",
-                            url : "{{ route('mgmt.member.updateApproval') }}",
+                            url : "{{ route('mgmt.application.approval') }}",
                             data : {
                                 _token: "{{csrf_token()}}",
                                 'checkedItemId' : $("input[name=checkedItemId]").val()

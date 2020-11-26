@@ -5,12 +5,18 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">계약수정</h1>
 
-    <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
+    <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.updateDo') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
 
         <input type="hidden" name="classTargetList" id="classTargetList" value="">
         <input type="hidden" name="client_id" value="{{ $client->id}}">
         <input type="hidden" name="id" value="{{ $contract->id}}">
+        <input type="hidden" name="searchType" value="{{ $searchType }}">
+        <input type="hidden" name="searchWord" value="{{ $searchWord }}">
+        <input type="hidden" name="searchStatus" value="{{ $searchStatus }}">
+        <input type="hidden" name="perPage" value="{{ $perPage }}">
+        <input type="hidden" name="page" value="{{ $page }}">
+
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
 
@@ -135,7 +141,7 @@
                                         <div class="col-md-6 input-group-sm">
                                             <select name="status" id="status" class="form-control ">
                                                 @foreach($commonCode as $code)
-                                                    <option value="{{$code->code_id}}" {{ $client->code_id == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
+                                                    <option value="{{$code->code_id}}" {{ $client->status == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -291,6 +297,7 @@
 
     <script id="tmpClassTr" type="text/jquery-template">
         <tr class="classTarget"
+            data-class_id=${class_id}
             data-class_day="${class_day}"
             data-time_from="${time_from}"
             data-time_to="${time_to}"
@@ -302,7 +309,8 @@
             data-class_order="${class_order}"
             data-main_count="${main_count}"
             data-sub_count="${sub_count}"
-            data-class_type="${class_type}"  >
+            data-class_type="${class_type}"
+            data-action_type="${action_type}"  >
 
             <td style="width:100px;">${class_day}</td>
             <td style="width:120px;">${time_from}-${time_to}</td>
@@ -372,12 +380,14 @@
                     ,sub_count          :_sub_count
                     ,class_type         :_class_type
                     ,class_type_text    :_class_type_text
+                    ,action_type        : 'I'
 					,madeIndex          :$madeIndex
 			    }
 
                 $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
 				.on("click",".delRow", function(e){
 					this.closest("tr").remove();
+
 				}).data('userData',defaultItem);
                 $madeIndex++;
 
@@ -389,13 +399,43 @@
 
                 var classList = [];
 			    $("tr.classTarget").each(function(){
+                    console.log($(this).data("userData"));
                     classList.push($(this).data("userData"));
                 });
 
                 $("#classTargetList").val(JSON.stringify(classList));
 
-                return false;
+                return trud;
             }
+
+            // 최초 데이터 출력
+            @foreach($classList as $item)
+                var defaultItem = {
+					 class_id           : '{{$item->id}}'
+                    ,class_day          : '{{$item->class_day}}'
+					,time_from          : '{{$item->time_from}}'
+                    ,time_to            : '{{$item->time_to}}'
+					,class_category_id  : '{{$item->class_category_id}}'
+                    ,class_category_text: '{{$item->class_name}}'
+					,class_target       : '{{$item->class_target}}'
+                    ,class_number       : '{{$item->class_number}}'
+                    ,class_count        : '{{$item->class_count}}'
+                    ,class_order        : '{{$item->class_order}}'
+                    ,main_count         : '{{$item->main_count}}'
+                    ,sub_count          : '{{$item->sub_count}}'
+                    ,class_type         : '{{$item->class_type}}'
+                    ,class_type_text    : '{{$item->class_type==0?'오프라인':'온라인'}}'
+                    ,action_type        : 'U'
+					,madeIndex          :$madeIndex
+			    }
+
+                $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
+                    .on("click",".delRow", function(e){
+                        $.extend($(this.closest("tr")).data("userData"), {"action_type":"D"});
+                        $(this.closest("tr")).hide();
+                    }).data('userData',defaultItem);
+           @endforeach
+
 
         });
     </script>

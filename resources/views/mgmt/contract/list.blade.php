@@ -96,11 +96,6 @@
                 </table>
                 {{ $contractList->withQueryString()->links() }}
             </div>
-            <div class="row-fluid" style="text-align: right;">
-                @if($searchStatus == 0)
-                    <button class="btn btn-primary" type="button" name="createButton" id="createButton">등록</button>
-                @endif
-            </div>
         </div>
     </div>
     </form>

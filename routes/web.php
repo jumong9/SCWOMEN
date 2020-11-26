@@ -68,6 +68,46 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //관리자 권한 메뉴
 Route::middleware(['adminmiddle'])->group(function(){
 
+
+    //강사신청관리 리스트
+    Route::match(['get','post'],'application/list',[
+        'as' => 'mgmt.application.list',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@list'
+    ]);
+
+    //강사신청관리 상세화면
+    Route::match(['get','post'],'application/read',[
+        'as' => 'mgmt.application.read',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@read'
+    ]);
+
+    //강사신청관리 수정화면
+    Route::match(['get','post'],'application/update',[
+        'as' => 'mgmt.application.update',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@update'
+    ]);
+
+    //강사신청관리 수정
+    Route::match(['get','post'],'application/updateDo',[
+        'as' => 'mgmt.application.updateDo',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@updateDo'
+    ]);
+
+    //강사신청관리 승인
+    Route::match(['get','post'],'application/approval',[
+        'as' => 'mgmt.application.approval',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@approval'
+    ]);
+
+    //강사신청관리 삭제
+    Route::match(['get','post'],'application/delete',[
+        'as' => 'mgmt.application.delete',
+        'uses' => 'App\Http\Controllers\mgmt\application\ApplicationController@delete'
+    ]);
+
+
+
+
     //멤버관리 리스트
     Route::match(['get','post'],'member/',[
         'as' => 'mgmt.member.index',
@@ -124,7 +164,7 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@create'
     ]);
 
-    //수요처관리 등록 처리
+    //수요처관리 등록
     Route::match(['get','post'],'mgmt/client/createDo',[
         'as' => 'mgmt.client.createDo',
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@createDo'
@@ -142,7 +182,7 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@update'
     ]);
 
-    //수요처관리 수정 처리
+    //수요처관리 수정
     Route::match(['get','post'],'mgmt/client/updateDo',[
         'as' => 'mgmt.client.updateDo',
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@updateDo'
@@ -155,7 +195,7 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@create'
     ]);
 
-    //계약관리 등록 처리
+    //계약관리 등록
     Route::match(['get','post'],'mgmt/contract/createDo',[
         'as' => 'mgmt.contract.createDo',
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@createDo'
@@ -178,6 +218,14 @@ Route::middleware(['adminmiddle'])->group(function(){
         'as' => 'mgmt.contract.update',
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@update'
     ]);
+
+    //계약관리 수정
+    Route::match(['get','post'],'mgmt/contract/updateDo',[
+        'as' => 'mgmt.contract.updateDo',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@updateDo'
+    ]);
+
+
 
 
 });

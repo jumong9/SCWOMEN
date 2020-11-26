@@ -31,7 +31,7 @@
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{{ route('mgmt.member.list') }}">강사관리</a>
-                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="{{ route('mgmt.application.list') }}?searchStatus=0">강사승인관리</a>
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </div>

@@ -181,12 +181,13 @@ class ContractController extends Controller{
                                 )->where('contracts.id',$id)->get();
         $contract[0]->id=$id;
 
-        //dd(DB::getQueryLog());
         $client_id = $contract[0]->client_id;
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
+                                    ->select('contract_classes.*', 'class_categories.class_name')
                                     ->where('contract_id', $id)->get();
 
+        //dd(DB::getQueryLog());
         $client = new Client();
         $result = $client::join('common_codes as c', function($join){
                                 $join->on('c.code_id','=', 'clients.gubun')
@@ -203,7 +204,71 @@ class ContractController extends Controller{
 
 
 
+    public function updateDo(Request $request, Contracts $contract){
+        DB::enableQueryLog();
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = $request->input('perPage');
+        $page = $request->input('page');
 
+        $id = $request->input('id');
+        $client_id = $request->input('client_id');
+
+        $classTargetList = $request->get('classTargetList');
+        $classJson = json_decode($classTargetList, true);
+
+        $contract->fill($request->input());
+
+        $contract->where('id', $id)
+                 ->update([
+                    'client_id'                 =>  $contract->client_id,
+                    'name'                      =>  $contract->name,
+                    'email'                     =>  $contract->email,
+                    'phone'                     =>  $contract->phone,
+                    'phone2'                    =>  $contract->phone2,
+                    'class_cost'                =>  $contract->class_cost,
+                    'class_total_cost'          =>  $contract->class_total_cost,
+                    'material_cost'             =>  $contract->material_cost,
+                    'material_total_cost'       =>  $contract->material_total_cost,
+                    'total_cost'                =>  $contract->total_cost,
+                    'paid_yn'                   =>  $contract->paid_yn,
+                    'status'                    =>  $contract->status,
+                    'comments'                  =>  $contract->comments,
+                ]);
+
+        //contract class 정보 생성
+        foreach($classJson as $class){
+
+            $inputClass = new ContractClass();
+
+            $inputClass->contract_id            = $id;
+            $inputClass->client_id              = $client_id;
+            $inputClass->class_day              = $class['class_day'];
+            $inputClass->time_from              = $class['time_from'];
+            $inputClass->time_to                = $class['time_to'];
+            $inputClass->class_category_id      = $class['class_category_id'];
+            $inputClass->class_target           = $class['class_target'];
+            $inputClass->class_number           = $class['class_number'];
+            $inputClass->class_count            = $class['class_count'];
+            $inputClass->class_order            = $class['class_order'];
+            $inputClass->main_count             = $class['main_count'];
+            $inputClass->sub_count              = $class['sub_count'];
+            $inputClass->class_type             = $class['class_type'];
+            $inputClass->main_count             = $class['main_count'];
+            if('I' == $class['action_type']){
+                $inputClass->save();
+            }else if('D' == $class['action_type']){
+                $inputClass->id               = $class['class_id'];
+                $inputClass->where('id', $inputClass->id )
+                           ->delete();
+            }
+
+        }
+  //      dd(DB::getQueryLog());
+
+        return redirect()->route('mgmt.contract.read', ['id' =>$id , 'client_id' =>$client_id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
+    }
 
 
 }

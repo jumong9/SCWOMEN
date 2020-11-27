@@ -45,11 +45,6 @@
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
-                            <th>
-                                @if($searchStatus == 0)
-                                    <input type="checkbox" id="selectAllCheck">
-                                @endif
-                            </th>
                             <th>구분</th>
                             <th>수요처명</th>
                             <th>대표전화</th>
@@ -63,11 +58,6 @@
                     <tbody>
                         @foreach($contentslist as $key => $list)
                         <tr>
-                            <td>
-                                @if($searchStatus == 0)
-                                    <input type="checkbox" name="id" value="{{ $list->id }}">
-                                @endif
-                            </td>
                             <td>
                                 @switch($list->gubun)
                                     @case(1)

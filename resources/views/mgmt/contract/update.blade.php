@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">계약수정</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
     <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.updateDo') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
@@ -141,7 +141,7 @@
                                         <div class="col-md-6 input-group-sm">
                                             <select name="status" id="status" class="form-control ">
                                                 @foreach($commonCode as $code)
-                                                    <option value="{{$code->code_id}}" {{ $client->status == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
+                                                    <option value="{{$code->code_id}}" {{ $contract->status == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -201,9 +201,11 @@
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-6 input-group-sm">
-                                            <input id="time_from" type="text" class="form-control input-group-sm @error('time_from') is-invalid @enderror" name="time_from" value=""  >
-                                            <input id="time_to" type="text" class="form-control input-group-sm @error('time_to') is-invalid @enderror" name="time_to" value="" >
+                                        <div class="col-md-4 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value=""  >
+                                        </div>
+                                        <div class="col-md-4 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="" >
                                         </div>
                                     </div>
                                 </td>
@@ -330,11 +332,7 @@
     <script>
         $(document).ready(function() {
 
-//db데이터 u
-//신규입력 i
-//삭제데이터 d - 보이지 않게 처리
-
-            $madeIndex=0;
+            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
             $('.datepicker').datepicker(
                 {
@@ -342,12 +340,9 @@
                 }
             );
 
-            $("#listButton").click(function(){
-                location.href='{{ route('mgmt.client.list')}}' + params ;
-            });
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('mgmt.client.update')}}' + params +"&id={{ $client->id}}";
+            $("#cancelButton").click(function(){
+                location.href='{{ route('mgmt.contract.read')}}' + params +"&id={{ $contract->id}}";
             });
 
             $("#addClass").click(function(){
@@ -381,7 +376,6 @@
                     ,class_type         :_class_type
                     ,class_type_text    :_class_type_text
                     ,action_type        : 'I'
-					,madeIndex          :$madeIndex
 			    }
 
                 $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
@@ -389,7 +383,6 @@
 					this.closest("tr").remove();
 
 				}).data('userData',defaultItem);
-                $madeIndex++;
 
                 $("#time_from","#classList").val("");
                 $("#time_to","#classList").val("");
@@ -424,9 +417,8 @@
                     ,main_count         : '{{$item->main_count}}'
                     ,sub_count          : '{{$item->sub_count}}'
                     ,class_type         : '{{$item->class_type}}'
-                    ,class_type_text    : '{{$item->class_type==0?'오프라인':'온라인'}}'
+                    ,class_type_text    :  @if ($item->class_type==0) '오프라인' @elseif($item->class_type==1) '온라인 실시간' @else '온라인 동영상' @endif
                     ,action_type        : 'U'
-					,madeIndex          :$madeIndex
 			    }
 
                 $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))

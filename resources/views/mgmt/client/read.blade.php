@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
     <form name="searchForm" id="searchForm" action="{{route('mgmt.client.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
     @csrf

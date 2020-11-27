@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller{
     //
+    public $pageTitle;
+
+    public function __construct(){
+        $this->pageTitle = "계약관리";
+    }
 
     public function create(Request $request){
 
@@ -30,7 +35,7 @@ class ContractController extends Controller{
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
         $result[0]->id = $id;
-        return view('mgmt.contract.create', [ 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems ]);
+        return view('mgmt.contract.create', ['pageTitle'=>$this->pageTitle, 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems ]);
     }
 
 
@@ -100,7 +105,7 @@ class ContractController extends Controller{
         }
 
 
-        return redirect()->route('mgmt.contract.read', ['id' =>$contract_id , 'client_id' =>$client_id ]) ;
+        return redirect()->route('mgmt.contract.read', ['pageTitle'=>$this->pageTitle,'id' =>$contract_id , 'client_id' =>$client_id ]) ;
     }
 
 
@@ -133,7 +138,7 @@ class ContractController extends Controller{
                             ->where('clients.id', $client_id)->get();
 
 //dd(DB::getQueryLog());
-        return view('mgmt.contract.read', ['client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('mgmt.contract.read', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
     }
 
 
@@ -156,11 +161,13 @@ class ContractController extends Controller{
                                     )
                                     ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'cl.gubun')
                                     ->where('cl.name','LIKE',"{$searchWord}%")
+                                    ->orderBy('contracts.created_at', 'desc')
                                     ->paginate($perPage);
         $contractList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
+
  //       dd(DB::getQueryLog());
-        return view('mgmt.contract.list', ['contractList'=>$contractList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.contract.list', ['pageTitle'=>$this->pageTitle,'contractList'=>$contractList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
 
     }
 
@@ -180,11 +187,11 @@ class ContractController extends Controller{
                                     }
                                 )->where('contracts.id',$id)->get();
         $contract[0]->id=$id;
-
+ //       dd(DB::getQueryLog());
         $client_id = $contract[0]->client_id;
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
-                                    ->select('contract_classes.*', 'class_categories.class_name')
+                                    ->select('contract_classes.*', 'class_categories.class_name' )
                                     ->where('contract_id', $id)->get();
 
         //dd(DB::getQueryLog());
@@ -199,7 +206,7 @@ class ContractController extends Controller{
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
 
-        return view('mgmt.contract.update', ['client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
     }
 
 
@@ -259,7 +266,7 @@ class ContractController extends Controller{
             if('I' == $class['action_type']){
                 $inputClass->save();
             }else if('D' == $class['action_type']){
-                $inputClass->id               = $class['class_id'];
+                $inputClass->id                 = $class['class_id'];
                 $inputClass->where('id', $inputClass->id )
                            ->delete();
             }

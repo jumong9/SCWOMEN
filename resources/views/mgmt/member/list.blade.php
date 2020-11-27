@@ -88,7 +88,7 @@
                                 @endswitch
                             </td>
                             <td>{{ $member->group }}</td>
-                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
+                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
                             <td>{{ $member->main_count}}</td>
                             <td>{{ $member->sub_count}}</td>

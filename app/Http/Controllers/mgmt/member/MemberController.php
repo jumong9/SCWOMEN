@@ -124,7 +124,7 @@ class MemberController extends Controller{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select('users.id', 'users.group', 'users.name', 'users.mobile'
                                 , 'users.email', 'users.grade','users.gubun','users.status','users.created_at'
-                                , 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count')
+                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count')
                         ->where('users.grade', '<', 90)
                         ->where(function($query) use ($request){
                             $searchType = $request->input('searchType');
@@ -172,11 +172,16 @@ class MemberController extends Controller{
 
 
         $id = $request->input('id');
+        $cate_id = $request->input('cate_id');
+
         $member = User::with('classCategories:class_gubun,class_name')->where('id', $id)->get();
-        $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')->where('user_id', $id)->get();
+        $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
+                                            ->where('user_id', $id)
+                                            ->where('class_category_id', $cate_id)
+                                            ->get();
+        $member[0]->cate_id = $cate_id;
 
-
-        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory[0], 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 

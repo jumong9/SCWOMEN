@@ -82,21 +82,25 @@
                             <th>입단일</th>
                             <td>{{ $member[0]->joinday}}</td>
                         </tr>
-                        @if ($member[0]->status == 6 || $member[0]->status ==9)
                         <tr >
+                            <th>등급</th>
+                            <td>{{ $classCategory->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
+                            @if ($member[0]->status == 6 || $member[0]->status ==9)
                             <th>보류/중단일</th>
                             <td>{{ $member[0]->stopday}}</td>
+                            @else
                             <td></td>
                             <td></td>
+                            @endif
                         </tr>
-                        @endif
 
                         <tr>
                             <th>강사단명</th>
                             <td colspan="3">
-                                @foreach($classCategory as $category)
+                                {{-- @foreach($classCategory as $category)
                                     {{ $category->class_name }}( 주 : {{ $category->main_count }}, 보조 : {{ $category->sub_count }} ) @if(!$loop->last), @endif
-                                @endforeach
+                                @endforeach --}}
+                                {{ $classCategory->class_name }}( 주 : {{ $classCategory->main_count }}, 보조 : {{ $classCategory->sub_count }} )
                             </td>
                         </tr>
                     </tbody>
@@ -166,7 +170,7 @@
             });
 
             $("#updateButton").click(function(){
-                location.href='{{ route('mgmt.member.modify')}}' + params +"&id={{ $member[0]->id}}";
+                location.href='{{ route('mgmt.member.modify')}}' + params +"&id={{ $member[0]->id}}" +"&cate_id={{ $member[0]->cate_id}}";
             });
 
             $("#listButton").click(function(){

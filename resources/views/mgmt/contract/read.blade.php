@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">계약정보</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -152,7 +152,10 @@
                                     {{number_format($list->sub_count)}}
                                 </td>
                                 <td>
-                                    {{ $list->class_type == 0 ? '오프라인' : '온라인' }}
+                                    @if($list->class_type == 0 ) 오프라인
+                                    @elseif($list->class_type == 1) 온라인 실시간
+                                    @else 온라인 동영상
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller{
 
+    public $pageTitle;
+
+    public function __construct(){
+        $this->pageTitle = "수요처관리";
+    }
+
 
     /**
      * 사용자 목록
@@ -83,7 +89,7 @@ class ClientController extends Controller{
                             ->where('clients.id', $id)->get();
         //dd(DB::getQueryLog());
         $result[0]->id=$id;
-        return view('mgmt.client.read', ['client'=>$result[0] , 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.client.read', ['client'=>$result[0] , 'pageTitle'=>$this->pageTitle, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
 
 

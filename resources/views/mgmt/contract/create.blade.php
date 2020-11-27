@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">계약등록</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
     <form name="searchForm" id="searchForm" action="{{route('mgmt.contract.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
         @csrf
@@ -194,11 +194,14 @@
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-6 input-group-sm">
-                                            <input id="time_from" type="text" class="form-control input-group-sm @error('time_from') is-invalid @enderror" name="time_from" value=""  >
-                                            <input id="time_to" type="text" class="form-control input-group-sm @error('time_to') is-invalid @enderror" name="time_to" value="" >
+                                        <div class="col-md-4 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value=""  >
+                                        </div>
+                                        <div class="col-md-4 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="" >
                                         </div>
                                     </div>
+
                                 </td>
                                 <td>
                                     <div class="row">
@@ -321,21 +324,17 @@
     <script>
         $(document).ready(function() {
 
-            $madeIndex=0;
-
             $('.datepicker').datepicker(
                 {
                     showButtonPanel: false
                 }
             );
 
-            $("#listButton").click(function(){
-                location.href='{{ route('mgmt.client.list')}}' + params ;
+            $("#cancelButton").click(function(){
+                location.href='{{ route('mgmt.client.list')}}' ;
             });
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('mgmt.client.update')}}' + params +"&id={{ $client->id}}";
-            });
+
 
             $("#addClass").click(function(){
 
@@ -367,14 +366,12 @@
                     ,sub_count          :_sub_count
                     ,class_type         :_class_type
                     ,class_type_text    :_class_type_text
-					,madeIndex          :$madeIndex
 			    }
 
                 $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
 				.on("click",".delRow", function(e){
 					this.closest("tr").remove();
 				}).data('userData',defaultItem);
-                $madeIndex++;
 
                 $("#time_from","#classList").val("");
                 $("#time_to","#classList").val("");

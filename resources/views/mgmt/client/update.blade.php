@@ -8,6 +8,12 @@
     <form name="searchForm" id="searchForm" action="{{route('mgmt.client.updateDo') }}" onsubmit="return searchFormSubmit();" method="post" >
     @csrf
         <input type="hidden" name="id" value="{{ $client->id}}">
+        <input type="hidden" name="searchType" value="{{ $searchType }}">
+        <input type="hidden" name="searchWord" value="{{ $searchWord }}">
+        <input type="hidden" name="searchStatus" value="{{ $searchStatus }}">
+        <input type="hidden" name="perPage" value="{{ $perPage }}">
+        <input type="hidden" name="page" value="{{ $page }}">
+
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
 

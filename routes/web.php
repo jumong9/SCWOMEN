@@ -233,6 +233,18 @@ Route::middleware(['adminmiddle'])->group(function(){
 
 
 
+//관리자 + 메니저 권한 메뉴
+Route::middleware(['managermiddle'])->group(function(){
+
+    //강좌 배정 목록
+    Route::match(['get','post'],'grade/lecture/list',[
+        'as' => 'grade.lecture.list',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@list'
+    ]);
+
+});
+
+
 
 
 Route::match(['get','post'],'/test/main', 'App\Http\Controllers\test\MainController@main');

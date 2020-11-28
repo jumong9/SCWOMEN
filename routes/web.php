@@ -242,6 +242,21 @@ Route::middleware(['managermiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\lecture\LectureController@list'
     ]);
 
+
+    //강좌 배정 목록
+    Route::match(['get','post'],'grade/lecture/read',[
+        'as' => 'grade.lecture.read',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@read'
+    ]);
+
+
+    //사용자 목록 팝업
+    Route::match(['get','post'],'grade/lecture/popupUser',[
+        'as' => 'grade.lecture.popupUser',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@popupUser'
+    ]);
+
+
 });
 
 

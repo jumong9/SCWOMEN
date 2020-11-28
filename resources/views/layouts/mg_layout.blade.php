@@ -22,8 +22,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item pr-2">
-
+                    {{-- <li class="nav-item pr-2">
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 강사단 정보
@@ -48,7 +47,7 @@
                               <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.lecture.list') }}">강사배정관리</a>
                     </li>

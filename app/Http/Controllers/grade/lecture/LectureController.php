@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\grade\lecture;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassLector;
 use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +76,7 @@ class LectureController extends Controller{
         $searchStatus = $request->input('searchStatus');
         $perPage = $request->input('perPage');
         $page = $request->input('page');
+
         $id = $request->input('id');
         $user_id = Auth::id();
 
@@ -96,7 +99,7 @@ class LectureController extends Controller{
                                     }
                                 )->where('contracts.id',$classList[0]->contract_id)
                                 ->get();
-//dd(DB::getQueryLog());
+
 
         $contract[0]->id=$id;
 
@@ -108,16 +111,66 @@ class LectureController extends Controller{
                             ->where('clients.id', $contract[0]->client_id)
                             ->get();
 
+        $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
+                        ->where('conatract_class_id',$id)
+                        ->orderBy('main_yn','desc')
+                        ->get();
 
-        return view('grade.lecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+//dd(DB::getQueryLog());
+        return view('grade.lecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }
 
 
-    public function popupUser(){
+    public function popupUser(Request $request){
 
+        $id = $request->input('id');
+        DB::enableQueryLog();
+        $userList = User::join('class_category_user as b', 'b.user_id', '=', 'users.id')
+                            ->join('contract_classes as c', 'c.class_category_id', '=', 'b.class_category_id')
+                            ->select('users.id as user_id',
+                                     'users.name as user_name',
+                                     'users.status as user_status',
+                                     'users.group as group',
+                                     'b.main_count',
+                                     'b.sub_count',
+                                     'c.id as class_id')
+                            ->whereIn('users.status', [2,4])
+                            ->where('c.id' , $id)
+                            ->orderBy('users.group', 'desc')
+                            ->orderBy('users.status', 'asc')
+                            ->get();
+
+        //dd(DB::getQueryLog());
         //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
-        return view('grade.lecture.popupuser');
+        return view('grade.lecture.popupuser', ['class_id'=>$id, 'userList'=>$userList]);
     }
 
+
+    public function updateUser(Request $request){
+
+        $main_user_id = $request->input('main_user_id');
+        $sub_user_id = $request->input('sub_user_id');
+        $conatract_class_id = $request->input('conatract_class_id');
+
+        $mainUser = new ClassLector();
+        $mainUser->conatract_class_id = $conatract_class_id;
+        $mainUser->main_yn = 1;
+        $mainUser->user_id = $main_user_id;
+
+        $mainUser->save();
+
+
+        foreach($sub_user_id as $sub){
+            $subUser = new ClassLector();
+            $subUser->conatract_class_id = $conatract_class_id;
+            $subUser->main_yn = 0;
+            $subUser->user_id = $sub;
+            $subUser->save();
+        }
+
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
 }

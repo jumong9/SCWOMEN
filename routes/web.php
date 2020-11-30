@@ -257,6 +257,13 @@ Route::middleware(['managermiddle'])->group(function(){
     ]);
 
 
+    //사용자 매칭 업데이트
+    Route::match(['get','post'],'grade/lecture/updateUser',[
+        'as' => 'grade.lecture.updateUser',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateUser'
+    ]);
+
+
 });
 
 

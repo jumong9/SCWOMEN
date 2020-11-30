@@ -84,6 +84,7 @@
                     <table class="table-sm table-hover" width="100%" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
+                                <th style="width:100px;">배정상태</th>
                                 <th style="width:100px;">활동일자</th>
                                 <th style="width:120px;">시간</th>
                                 <th style="width:160px;">프로그램</th>
@@ -99,6 +100,9 @@
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             @foreach($contentsList as $key => $list)
                             <tr>
+                                <td>
+                                    {{$list->lector_apply_yn == 0? '배정중' : '배정완료'}}
+                                </td>
                                 <td>
                                     {{ $list->class_day }}
                                 </td>
@@ -146,52 +150,32 @@
 
             <div class="card-body">
                 <div class="table">
-                    <table class="table-sm" id="" cellspacing="0">
-                        <colgroup>
-                            <col width="200px">
-                            <col width="40%">
-                            <col width="200px">
-                            <col width="40%">
-                        </colgroup>
+                    <table class="table-sm" id="" width="100%" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>구분</th>
+                                <th>기수</th>
+                                <th>강사명</th>
+                                <th>핸드폰</th>
+                            </tr>
+                        </thead>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
+                            @foreach($lectorsList as $key => $list)
                             <tr>
-                                <th>주강사</th>
                                 <td>
-                                    {{ $client->name }}
+                                    {{ $list->main_yn == 1 ? '주강사' : '보조강사' }}
                                 </td>
-                                <th>보조강사</th>
                                 <td>
-                                    {{ $client->code_value }}
+                                    {{ $list->group }}
+                                </td>
+                                <td>
+                                    {{ $list->name }}
+                                </td>
+                                <td>
+                                    {{ $list->mobile }}
                                 </td>
                             </tr>
-                            <tr>
-                                <th >보조강사</th>
-                                <td>
-                                    {{ $contract->name }}
-                                </td>
-                                <th >보조강사</th>
-                                <td>
-                                    {{ $contract->email }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>보조강사</th>
-                                <td>
-                                    {{ $contract->phone }}
-                                </td>
-                                <th>보조강사</th>
-                                <td>
-                                    {{ $contract->phone2 }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>배정상태</th>
-                                <td></td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -226,6 +210,7 @@
                     url : "{{ route('grade.lecture.popupUser') }}",
                     data : {
                         _token: "{{csrf_token()}}",
+                        'id' : '{{ $contract->id }}'
                     },
                     success : function(data){
                         $("#modalFrame").html(data);

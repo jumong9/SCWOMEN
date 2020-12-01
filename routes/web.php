@@ -263,6 +263,11 @@ Route::middleware(['managermiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateUser'
     ]);
 
+    //클래스 강사 매핑 상태 업데이트
+    Route::match(['get','post'],'grade/lecture/updateStatus',[
+        'as' => 'grade.lecture.updateStatus',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateStatus'
+    ]);
 
 });
 

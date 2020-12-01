@@ -143,7 +143,11 @@ class LectureController extends Controller{
 
         //dd(DB::getQueryLog());
         //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
-        return view('grade.lecture.popupuser', ['class_id'=>$id, 'userList'=>$userList]);
+
+        $selectedUser = ClassLector::where('conatract_class_id',$id)
+                                    ->get();
+        // dd(DB::getQueryLog());
+        return view('grade.lecture.popupuser', ['class_id'=>$id, 'selectedUser'=>$selectedUser, 'userList'=>$userList]);
     }
 
 
@@ -153,6 +157,9 @@ class LectureController extends Controller{
         $sub_user_id = $request->input('sub_user_id');
         $conatract_class_id = $request->input('conatract_class_id');
 
+        ClassLector::where('conatract_class_id',$conatract_class_id)
+                    ->delete();
+
         $mainUser = new ClassLector();
         $mainUser->conatract_class_id = $conatract_class_id;
         $mainUser->main_yn = 1;
@@ -160,17 +167,35 @@ class LectureController extends Controller{
 
         $mainUser->save();
 
-
-        foreach($sub_user_id as $sub){
-            $subUser = new ClassLector();
-            $subUser->conatract_class_id = $conatract_class_id;
-            $subUser->main_yn = 0;
-            $subUser->user_id = $sub;
-            $subUser->save();
+        if(!empty($sub_user_id)){
+            foreach($sub_user_id as $sub){
+                $subUser = new ClassLector();
+                $subUser->conatract_class_id = $conatract_class_id;
+                $subUser->main_yn = 0;
+                $subUser->user_id = $sub;
+                $subUser->save();
+            }
         }
 
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
     }
+
+
+    public function updateStatus(Request $request){
+
+
+        $id = $request->input('id');
+
+        ContractClass::where('id',$id)
+                    ->update([
+                        'lector_apply_yn'=>'1'
+                    ]);
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
+
+
 }

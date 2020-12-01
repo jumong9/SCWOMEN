@@ -161,7 +161,7 @@
                         </thead>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             @foreach($lectorsList as $key => $list)
-                            <tr>
+                            <tr class="selecteUser">
                                 <td>
                                     {{ $list->main_yn == 1 ? '주강사' : '보조강사' }}
                                 </td>
@@ -181,8 +181,10 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    <button class="btn btn-primary" type="button"  id="openPopup">강사매칭</button>
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
+                    @if($contentsList[0]->lector_apply_yn == 0)
+                        <button class="btn btn-primary" type="button"  id="openPopup">강사매칭</button>
+                        <button class="btn btn-primary" type="button"  id="applyButton">배정완료</button>
+                    @endif
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>
@@ -200,11 +202,6 @@
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
             $("#openPopup").click(function(e){
-            //    var data = $("#modalFrame").load("{{ route('grade.lecture.popupUser') }}");
-            //    $("#modalFrame").html(data).modal('show');
-
-            //     var loadurl = $(e.relatedTarget).data('{{ route('grade.lecture.popupUser') }}');
-            //     $(this).find('#modalFrame').load(loadurl);
                 $.ajax({
                     type : "post",
                     url : "{{ route('grade.lecture.popupUser') }}",
@@ -223,11 +220,31 @@
             });
 
             $("#listButton").click(function(){
-                location.href='{{ route('mgmt.contract.list')}}' + params ;
+                location.href='{{ route('grade.lecture.list')}}' + params ;
             });
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('mgmt.contract.update')}}' + params +"&id={{$contract->id}}";
+            $("#applyButton").click(function(){
+
+                if( $(".selecteUser").length==0){
+                    alert('배정된 강사 정보가 없습니다. 강사를 배정해 주세요.');
+                    return false;
+                }
+
+                $.ajax({
+                    type : "post",
+                    url : "{{ route('grade.lecture.updateStatus') }}",
+                    data : {
+                        _token: "{{csrf_token()}}",
+                        'id' : '{{ $contract->id }}'
+                    },
+                    success : function(data){
+                        alert(data.msg);
+                        location.reload();
+                    },
+                    error : function(xhr, exMessage) {
+                        alert('error');
+                    },
+                });
             });
 
         });

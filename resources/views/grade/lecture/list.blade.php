@@ -1,7 +1,7 @@
 @extends('layouts.mg_layout')
 
 @section('content')
-
+    <div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
@@ -46,9 +46,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th>
-                                @if($searchStatus == 0)
                                     <input type="checkbox" id="selectAllCheck">
-                                @endif
                             </th>
                             <th>활동일자</th>
                             <th>시간</th>
@@ -68,14 +66,14 @@
                         @foreach($classList as $key => $list)
                         <tr>
                             <td>
-                                @if($searchStatus == 0)
-                                    <input type="checkbox" name="id" value="{{ $list->id }}">
+                                @if($list->lector_apply_yn == 0)
+                                    <input type="checkbox" name="id" id="id" value="{{ $list->id }}" data-class_id={{ $list->class_category_id }}>
                                 @endif
                             </td>
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('grade.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }}</a></td>
+                            <td><a href="{{ route ('grade.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->class_count}}</td>
@@ -88,6 +86,9 @@
                     </tbody>
                 </table>
                 {{ $classList->withQueryString()->links() }}
+            </div>
+            <div class="row-fluid" style="text-align: right;">
+                <button class="btn btn-primary" type="button" name="approvalButton" id="approvalButton">일괄배정</button>
             </div>
         </div>
     </div>
@@ -117,8 +118,50 @@
 
             });
 
-            $("#createButton").click(function(){
-                location.href='{{ route('mgmt.client.create')}}';
+            $("#approvalButton").click(function(e){
+
+                if($("input:checkbox[name=id]:checked").length == 0){
+                    alert("강사 배정 할 대상을 선택해 주세요.")
+                    return false;
+                }
+
+                var checkIds = [];
+                var checkCateIds;
+                var loop =0;
+                var pass =true;
+                $.each($("input:checkbox[name=id]:checked"), function(){
+                    if(loop==0) {
+                        checkCateIds = $(this).data('class_id');
+                        loop++;
+                    }else if(checkCateIds != $(this).data('class_id')){
+                        alert("동일한 프로그램만 다중 선택이 가능합니다.");
+                        pass=false;
+                        return false;
+                    }
+
+                    checkIds.push($(this).val());
+                });
+
+                if(!pass){
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('grade.lecture.popupUserMulti') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'id' : checkIds.join(","),
+                            'class_category_id' : checkCateIds,
+                        },
+                        success : function(data){
+                            $("#modalFrame").html(data);
+                            $("#showModal").modal("show");
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    });
+                }
+                alert(checkIds.join(","))
+
             });
 
 

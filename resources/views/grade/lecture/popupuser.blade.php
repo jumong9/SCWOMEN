@@ -20,7 +20,13 @@
                         <label>주강사</label>
                         <select class="col-md-11 mdb-select md-form md-outline" name="main_user" id="main_user" size="10">
                             @foreach($userList as $user)
-                                <option value="{{$user->user_id}}">{{$user->group}}기 {{$user->user_name}} {{$user->user_status == 2? '강사' : '프리랜서'}} ( 주 {{$user->main_count}}회  보조 {{$user->sub_count}}회 )</option>
+                                @php $selItem="";@endphp
+                                @foreach($selectedUser as $selUser)
+                                    @if($user->user_id == $selUser->user_id && $selUser->main_yn==1)
+                                        @php $selItem ="selected";@endphp
+                                    @endif
+                                @endforeach
+                                <option value="{{$user->user_id}}" {{$selItem}}>{{$user->group}}기 {{$user->user_name}} {{$user->user_status == 2? '강사' : '프리랜서'}} ( 주 {{$user->main_count}}회  보조 {{$user->sub_count}}회 )</option>
                             @endforeach
                         </select>
                     </div>
@@ -30,7 +36,13 @@
                         <label>보조강사</label>
                         <select class="col-md-11 mdb-select md-form md-outline" name="sub_user" id="sub_user" multiple size="10">
                             @foreach($userList as $user)
-                                <option value="{{$user->user_id}}">{{$user->group}}기 {{$user->user_name}} {{$user->user_status == 2? '강사' : '프리랜서'}} ( 주 {{$user->main_count}}회  보조 {{$user->sub_count}}회 )</option>
+                                @php $selItem="";@endphp
+                                @foreach($selectedUser as $selUser)
+                                    @if($user->user_id == $selUser->user_id && $selUser->main_yn==0)
+                                        @php $selItem ="selected";@endphp
+                                    @endif
+                                @endforeach
+                                <option value="{{$user->user_id}}" {{$selItem}}>{{$user->group}}기 {{$user->user_name}} {{$user->user_status == 2? '강사' : '프리랜서'}} ( 주 {{$user->main_count}}회  보조 {{$user->sub_count}}회 )</option>
                             @endforeach
                         </select>
                     </div>

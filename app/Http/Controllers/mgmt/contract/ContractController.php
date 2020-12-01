@@ -278,4 +278,20 @@ class ContractController extends Controller{
     }
 
 
+
+    public function updateContractStatus(Request $request){
+
+
+        $contract_id = $request->input('contract_id');
+        $status_code = $request->input('status_code');
+
+        Contracts::where('id',$contract_id)
+                   ->update([
+                        'status'=> $status_code
+                    ]);
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
+
 }

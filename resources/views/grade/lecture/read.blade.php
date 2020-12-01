@@ -1,4 +1,4 @@
-@extends('layouts.ad_layout')
+@extends('layouts.mg_layout')
 
 @section('content')
     <div id="modalFrame"></div>

@@ -31,6 +31,7 @@ class LectureController extends Controller{
         $page = $request->input('page');
         DB::enableQueryLog();
         $user_id = Auth::id();
+        //echo Auth::user()->grade;
 
         $classList = ContractClass::join('contracts', 'contracts.id', '=','contract_classes.contract_id')
                                     ->join('clients as b', 'b.id', '=', 'contract_classes.client_id')
@@ -44,25 +45,15 @@ class LectureController extends Controller{
                                     ->where('contracts.status',2)
                                     ->where('c.user_id', $user_id)
                                     ->where('c.user_grade',10)
+                                    ->where('b.name','LIKE',"{$searchWord}%")
+                                    ->orderBy('contract_classes.created_at', 'desc')
                                     ->paginate($perPage);
 
-        $contractList = Contracts::join('common_codes as c', function($join){
-                                            $join->on('c.code_id','=', 'contracts.status')
-                                                ->where('c.code_group', '=','contract_status');
-                                            }
-                                    )
-                                    ->join('clients as cl', function($join){
-                                            $join->on('cl.id','=', 'contracts.client_id');
-                                            }
-                                    )
-                                    ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'cl.gubun')
-                                    ->where('cl.name','LIKE',"{$searchWord}%")
-                                    ->orderBy('contracts.created_at', 'desc')
-                                    ->paginate($perPage);
+
         $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
 
- //       dd(DB::getQueryLog());
+        //dd(DB::getQueryLog());
         return view('grade.lecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
 
     }
@@ -91,6 +82,7 @@ class LectureController extends Controller{
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
                                     ->where('c.user_grade',10)
+
                                     ->get();
 
         $contract = Contracts::join('common_codes as c', function($join){
@@ -146,8 +138,37 @@ class LectureController extends Controller{
 
         $selectedUser = ClassLector::where('conatract_class_id',$id)
                                     ->get();
-        // dd(DB::getQueryLog());
+        //dd(DB::getQueryLog());
         return view('grade.lecture.popupuser', ['class_id'=>$id, 'selectedUser'=>$selectedUser, 'userList'=>$userList]);
+    }
+
+
+    public function popupUserMulti(Request $request){
+
+        $contract_class_id = $request->input('contract_class_id');
+        $id = $request->input('class_category_id');
+
+        DB::enableQueryLog();
+        $userList = User::join('class_category_user as b', 'b.user_id', '=', 'users.id')
+                            ->select('users.id as user_id',
+                                     'users.name as user_name',
+                                     'users.status as user_status',
+                                     'users.group as group',
+                                     'b.main_count',
+                                     'b.sub_count')
+                            ->whereIn('users.status', [2,4])
+                            ->where('b.class_category_id' , $id)
+                            ->orderBy('users.group', 'desc')
+                            ->orderBy('users.status', 'asc')
+                            ->get();
+
+        //dd(DB::getQueryLog());
+        //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+        // $selectedUser = ClassLector::where('conatract_class_id',$id)
+        //                             ->get();
+        // dd(DB::getQueryLog());
+        return view('grade.lecture.popupusermulti', ['class_id'=>$id, 'contract_class_id'=>$contract_class_id, 'userList'=>$userList]);
     }
 
 
@@ -181,6 +202,49 @@ class LectureController extends Controller{
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
     }
+
+
+    public function updateUserMulti(Request $request){
+
+        $main_user_id = $request->input('main_user_id');
+        $sub_user_id = $request->input('sub_user_id');
+        $conatract_class_id = $request->input('conatract_class_id');
+
+
+        $list_class = explode(",", $conatract_class_id);
+
+        foreach($list_class as $class_id){
+
+            ClassLector::where('conatract_class_id',$class_id)
+                        ->delete();
+
+            $mainUser = new ClassLector();
+            $mainUser->conatract_class_id = $class_id;
+            $mainUser->main_yn = 1;
+            $mainUser->user_id = $main_user_id;
+            $mainUser->save();
+
+            if(!empty($sub_user_id)){
+                foreach($sub_user_id as $sub){
+                    $subUser = new ClassLector();
+                    $subUser->conatract_class_id = $class_id;
+                    $subUser->main_yn = 0;
+                    $subUser->user_id = $sub;
+                    $subUser->save();
+                }
+            }
+
+            ContractClass::where('id',$class_id)
+                    ->update([
+                        'lector_apply_yn'=>'1'
+                    ]);
+        }
+
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
+
 
 
     public function updateStatus(Request $request){

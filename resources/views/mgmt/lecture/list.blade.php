@@ -1,11 +1,11 @@
-@extends('layouts.mg_layout')
+@extends('layouts.ad_layout')
 
 @section('content')
     <div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('grade.lecture.list') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.lecture.list') }}" method="post" >
         <input name="checkedItemId" type="hidden" value=""/>
     @csrf
     <!-- DataTales Example -->
@@ -73,7 +73,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('grade.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
+                            <td><a href="{{ route ('mgmt.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->class_count}}</td>

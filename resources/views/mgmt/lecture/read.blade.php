@@ -1,7 +1,7 @@
 @extends('layouts.ad_layout')
 
 @section('content')
-
+    <div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
@@ -28,7 +28,7 @@
                                     {{ $client->code_value }}
                                 </td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <th >담당자</th>
                                 <td>
                                     {{ $contract->name }}
@@ -69,32 +69,7 @@
                                     {{ number_format($contract->material_total_cost) }}
                                 </td>
                             </tr>
-                            <tr>
-                                <th>입금여부</th>
-                                <td>
-                                    {{ $contract->paid_yn == 0 ? '미입금' : '입금완료' }}
-                                </td>
-                                <th>총비용</th>
-                                <td>
-                                    {{ number_format($contract->total_cost) }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>진행상태</th>
-                                <td>
-                                    {{ $contract->code_value }}
-                                </td>
-                                <td>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>비고</th>
-                                <td colspan="3">
-                                    {{ $contract->comments }}
-                                </td>
-                            </tr>
+                             --}}
                         </tbody>
                     </table>
                 </div>
@@ -123,10 +98,10 @@
                             </tr>
                         </thead>
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
-                            @foreach($classList as $key => $list)
+                            @foreach($contentsList as $key => $list)
                             <tr>
                                 <td>
-                                    {{$list->lector_apply_yn == 0? '' : '배정완료'}}
+                                    {{$list->lector_apply_yn == 0? '배정중' : '배정완료'}}
                                 </td>
                                 <td>
                                     {{ $list->class_day }}
@@ -166,20 +141,50 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+
+        <span>강사 배정</span>
+        <div class="card shadow mb-4">
+
+            <div class="card-body">
+                <div class="table">
+                    <table class="table-sm" id="" width="100%" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>구분</th>
+                                <th>기수</th>
+                                <th>강사명</th>
+                                <th>핸드폰</th>
+                            </tr>
+                        </thead>
+                        <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
+                            @foreach($lectorsList as $key => $list)
+                            <tr class="selecteUser">
+                                <td>
+                                    {{ $list->main_yn == 1 ? '주강사' : '보조강사' }}
+                                </td>
+                                <td>
+                                    {{ $list->group }}
+                                </td>
+                                <td>
+                                    {{ $list->name }}
+                                </td>
+                                <td>
+                                    {{ $list->mobile }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="row-fluid" style="text-align: right;">
-                    @if ($contract->code_id == 1)
-                        <button class="btn btn-primary" type="button"  data-status='2' id="updateStatusButton">오픈</button>
+                    <button class="btn btn-primary" type="button"  id="openPopup">강사매칭</button>
+                    @if($contentsList[0]->lector_apply_yn == 0)
+                        <button class="btn btn-primary" type="button"  id="applyButton">배정완료</button>
                     @endif
-                    @if ($contract->code_id == 2)
-                        <button class="btn btn-primary" type="button"  data-status='4' id="updateStatusButton">강사승인</button>
-                    @endif
-                    @if ($contract->code_id == 4)
-                        <button class="btn btn-primary" type="button"  data-status='5' id="updateStatusButton">서류 제출완료</button>
-                    @endif
-                    @if ($contract->code_id == 5)
-                        <button class="btn btn-primary" type="button"  data-status='6' id="updateStatusButton">최종확정</button>
-                    @endif
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>
@@ -196,37 +201,56 @@
 
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
+            $("#openPopup").click(function(e){
+                $.ajax({
+                    type : "post",
+                    url : "{{ route('grade.lecture.popupUser') }}",
+                    data : {
+                        _token: "{{csrf_token()}}",
+                        'id' : '{{ $contract->id }}'
+                    },
+                    success : function(data){
+                        $("#modalFrame").html(data);
+                        $("#showModal").modal("show");
+                    },
+                    error : function(xhr, exMessage) {
+                        alert('error');
+                    },
+                });
+            });
+
             $("#listButton").click(function(){
-                location.href='{{ route('mgmt.contract.list')}}' + params ;
+                location.href='{{ route('mgmt.lecture.list')}}' + params ;
             });
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('mgmt.contract.update')}}' + params +"&id={{$contract->id}}";
-            });
+            $("#applyButton").click(function(){
 
-            $("#updateStatusButton").click(function(){
-                if(confirm( $(this).text() + ' 처리 하시겠습니까?')){
-                    var status_code = $(this).data('status');
-                    $.ajax({
-                        type : "post",
-                        url : "{{ route('mgmt.contract.updateContractStatus') }}",
-                        data : {
-                            _token: "{{csrf_token()}}",
-                            'contract_id' : '{{ $contract->id }}',
-                            'status_code' : status_code,
-                        },
-                        success : function(data){
-                            alert(data.msg);
-                            location.reload();
-                        },
-                        error : function(xhr, exMessage) {
-                            alert('error');
-                        },
-                    });
+                if( $(".selecteUser").length==0){
+                    alert('배정된 강사 정보가 없습니다. 강사를 배정해 주세요.');
+                    return false;
                 }
+
+                $.ajax({
+                    type : "post",
+                    url : "{{ route('grade.lecture.updateStatus') }}",
+                    data : {
+                        _token: "{{csrf_token()}}",
+                        'id' : '{{ $contract->id }}'
+                    },
+                    success : function(data){
+                        alert(data.msg);
+                        location.reload();
+                    },
+                    error : function(xhr, exMessage) {
+                        alert('error');
+                    },
+                });
             });
 
         });
 
     </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
 @endsection

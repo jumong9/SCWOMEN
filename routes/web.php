@@ -225,7 +225,25 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@updateDo'
     ]);
 
+    //계약관리 상태 업데이트
+    Route::match(['get','post'],'mgmt/contract/updateContractStatus',[
+        'as' => 'mgmt.contract.updateContractStatus',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@updateContractStatus'
+    ]);
 
+
+    //강좌 배정 목록
+    Route::match(['get','post'],'mgmt/lecture/list',[
+        'as' => 'mgmt.lecture.list',
+        'uses' => 'App\Http\Controllers\mgmt\lecture\LectureController@list'
+    ]);
+
+
+    //강좌 배정 상세
+    Route::match(['get','post'],'mgmt/lecture/read',[
+        'as' => 'mgmt.lecture.read',
+        'uses' => 'App\Http\Controllers\mgmt\lecture\LectureController@read'
+    ]);
 
 
 });
@@ -243,7 +261,7 @@ Route::middleware(['managermiddle'])->group(function(){
     ]);
 
 
-    //강좌 배정 목록
+    //강좌 배정 상세
     Route::match(['get','post'],'grade/lecture/read',[
         'as' => 'grade.lecture.read',
         'uses' => 'App\Http\Controllers\grade\lecture\LectureController@read'
@@ -263,11 +281,27 @@ Route::middleware(['managermiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateUser'
     ]);
 
+
     //클래스 강사 매핑 상태 업데이트
     Route::match(['get','post'],'grade/lecture/updateStatus',[
         'as' => 'grade.lecture.updateStatus',
         'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateStatus'
     ]);
+
+
+    //사용자 목록 팝업
+    Route::match(['get','post'],'grade/lecture/popupUserMulti',[
+        'as' => 'grade.lecture.popupUserMulti',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@popupUserMulti'
+    ]);
+
+
+    //사용자 매칭 업데이트
+    Route::match(['get','post'],'grade/lecture/updateUserMulti',[
+        'as' => 'grade.lecture.updateUserMulti',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@updateUserMulti'
+    ]);
+
 
 });
 

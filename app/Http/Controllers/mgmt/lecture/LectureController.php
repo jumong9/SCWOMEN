@@ -38,7 +38,7 @@ class LectureController extends Controller{
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             )
-                                    ->where('contracts.status',2)
+                                    ->where('contracts.status','>',1)
                                     ->where('b.name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.created_at', 'desc')
                                     ->paginate($perPage);

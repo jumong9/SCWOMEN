@@ -307,6 +307,44 @@ Route::middleware(['managermiddle'])->group(function(){
 
 
 
+//로그인 유저 권한 메뉴
+Route::middleware(['auth'])->group(function(){
+
+    //내 강좌 배정 목록
+    Route::match(['get','post'],'grade/mylecture/list',[
+        'as' => 'grade.mylecture.list',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@list'
+    ]);
+
+    //내 강좌 상세
+    Route::match(['get','post'],'grade/mylecture/read',[
+        'as' => 'grade.mylecture.read',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@read'
+    ]);
+
+    //내 강좌 수정화면
+    Route::match(['get','post'],'grade/mylecture/update',[
+        'as' => 'grade.mylecture.update',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@update'
+    ]);
+
+    //내 강좌 수정
+    Route::match(['get','post'],'grade/mylecture/updateDo',[
+        'as' => 'grade.mylecture.updateDo',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@updateDo'
+    ]);
+
+    //내 강좌 상태 수정
+    Route::match(['get','post'],'grade/mylecture/updateClassStatus',[
+        'as' => 'grade.mylecture.updateClassStatus',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@updateClassStatus'
+    ]);
+
+
+});
+
+
+
 
 Route::match(['get','post'],'/test/main', 'App\Http\Controllers\test\MainController@main');
 

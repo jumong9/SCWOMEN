@@ -392,7 +392,6 @@
 
                 var classList = [];
 			    $("tr.classTarget").each(function(){
-                    console.log($(this).data("userData"));
                     classList.push($(this).data("userData"));
                 });
 

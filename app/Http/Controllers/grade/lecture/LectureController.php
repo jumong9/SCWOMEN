@@ -42,7 +42,7 @@ class LectureController extends Controller{
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             )
-                                    ->where('contracts.status',2)
+                                    ->where('contracts.status','>',1)
                                     ->where('c.user_id', $user_id)
                                     ->where('c.user_grade',10)
                                     ->where('b.name','LIKE',"{$searchWord}%")
@@ -100,7 +100,7 @@ class LectureController extends Controller{
                                      ->where('c.code_group', '=','client_gubun');
                                 }
                             )
-                            ->where('clients.id', $contract[0]->client_id)
+                            ->where('clients.id', $classList[0]->client_id)
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')

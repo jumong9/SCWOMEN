@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\grade\mylecture;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassCategory;
+use App\Models\ClassCategoryUser;
 use App\Models\ClassLector;
 use App\Models\Client;
 use App\Models\ContractClass;
@@ -30,7 +32,7 @@ class MyLectureController extends Controller{
         //echo Auth::user()->grade;
 
         $classList = ContractClass::join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
-                                    ->join('class_lectors as c', 'c.conatract_class_id', '=','contract_classes.id')
+                                    ->join('class_lectors as c', 'c.contract_class_id', '=','contract_classes.id')
                                     ->join('contracts as d', 'd.id', '=', 'contract_classes.contract_id')
                                     ->join('clients as e', 'e.id', '=', 'contract_classes.client_id')
                                     ->select('contract_classes.*'
@@ -98,7 +100,7 @@ class MyLectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('conatract_class_id',$id)
+                        ->where('contract_class_id',$id)
                         ->orderBy('main_yn','desc')
                         ->get();
 
@@ -150,7 +152,7 @@ class MyLectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('conatract_class_id',$id)
+                        ->where('contract_class_id',$id)
                         ->orderBy('main_yn','desc')
                         ->get();
 
@@ -166,9 +168,9 @@ class MyLectureController extends Controller{
         $class_status = $request->input('class_status');
         $class_type = $request->input('class_type');
         $online_type = $request->input('online_type');
+        $material_cost = $request->input('material_cost');
 
-
-        if(!ClassLector::where('conatract_class_id',$id)
+        if(!ClassLector::where('contract_class_id',$id)
                         ->where('user_id',  Auth::id())
                         ->first()){
             return response()->json(['msg'=>'잘못된 접근입니다.']);
@@ -180,6 +182,7 @@ class MyLectureController extends Controller{
                             'class_status'=> $class_status,
                             'class_type'=> $class_type,
                             'online_type'=> $online_type,
+                            'material_cost'=>$material_cost,
                         ]);
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
@@ -197,6 +200,102 @@ class MyLectureController extends Controller{
                         ->update([
                             'class_status'=>$class_status
                         ]);
+
+        $contractClass = ContractClass::where('id',$id)->get();
+        $class_category_id = $contractClass[0]->class_category_id;
+        $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
+        $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
+        $class_order = $contractClass[0]->class_order; //수업차수
+
+        $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
+        foreach($classLectorsList as $user){
+
+            $classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
+                                              ->where('user_id', $user->user_id)->get();
+
+            $main_count = $classCateUser[0]->main_count;
+            $sub_count = $classCateUser[0]->sub_count;
+
+            $main_yn = $user->main_yn;   // 0:sub, 1:main
+
+            $lector_cost =0;
+
+            if($main_yn){                                       //주강사
+
+                if($class_type < 2){                            //오프라인, 온라인실시간
+
+                    if($main_count >= 10){                      //주강사 10회 초과시
+                        $lector_cost = 50000;
+                        if($class_order > 1){                   //추가시간
+                            $lector_cost += 25000;
+                        }
+
+                    }else{
+                        $lector_cost = 30000;
+                        if($class_order > 1){                   //추가시간
+                            $lector_cost += 10000;
+                        }
+                    }
+
+                } else {                                        //온라인 동영상
+
+                    if(!$online_type){                          //최초방송:0, 재방:1
+
+                        if($main_count >= 10){                      //주강사 10회 초과시
+                            $lector_cost = 50000;
+                            if($class_order > 1){                   //추가시간
+                                $lector_cost += 25000;
+                            }
+
+                        }else{                                      //10회 이하
+                            $lector_cost = 30000;
+                            if($class_order > 1){                   //추가시간
+                                $lector_cost += 10000;
+                            }
+                        }
+
+                    } else {                                        //재방
+
+                        $lector_cost = 30000;
+                        if($class_order > 1){                       //추가시간
+                            $lector_cost += 30000;
+                        }
+
+                    }
+
+                }
+
+            } else {                                                //보조강사
+
+                if($class_type < 2){                                //오프라인, 온라인실시간
+                    $lector_cost = 20000;
+                    if($class_order > 1){                           //추가시간
+                        $lector_cost += 10000;
+                    }
+                } else {                                            //온라인동영상
+                    $lector_cost = 20000;
+                }
+            }
+
+
+            if($main_yn){
+                ClassCategoryUser::where('class_category_id', $class_category_id)
+                                 ->where('user_id', $user->user_id)
+                                 ->increment('main_count', 1);
+            }else{
+                ClassCategoryUser::where('class_category_id', $class_category_id)
+                                 ->where('user_id', $user->user_id)
+                                 ->increment('sub_count', 1);
+
+            }
+
+
+            ClassLector::where('contract_class_id', $id)
+                        ->where('user_id', $user->user_id)
+                        ->update(['lector_cost' => $lector_cost]);
+
+        }
+
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 

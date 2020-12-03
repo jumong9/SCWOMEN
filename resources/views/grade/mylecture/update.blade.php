@@ -70,6 +70,16 @@
                                 </td>
                             </tr>
                              --}}
+                             <tr>
+                                <th>인당 재료비</th>
+                                <td>
+                                    {{ number_format($contract->material_cost) }}
+                                </td>
+                                <th>총 재료비</th>
+                                <td>
+                                    {{ number_format($contract->material_total_cost) }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -94,6 +104,7 @@
                                 <th style="width:80px;">차수</th>
                                 <th style="width:80px;">주강사수</th>
                                 <th style="width:80px;">보조강사수</th>
+                                <th style="width:80px;">재료비</th>
                                 <th style="width:100px;">수업방식</th>
                                 <th style="width:100px;">구분</th>
                             </tr>
@@ -132,6 +143,9 @@
                                     {{number_format($list->sub_count)}}
                                 </td>
                                 <td>
+                                    {{number_format($list->material_cost)}}
+                                </td>
+                                <td>
                                     @if($list->class_type == 0 ) 오프라인
                                     @elseif($list->class_type == 1) 온라인 실시간
                                     @else 온라인 동영상
@@ -160,6 +174,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th>진행상태</th>
+                                <th>재료비</th>
                                 <th>수업방식</th>
                                 <th>구분</th>
                             </tr>
@@ -173,6 +188,13 @@
                                                 <option value="0" {{ $contentsList[0]->class_status == 0 ? "selected" : "" }} >미완료</option>
                                                 <option value="1" {{ $contentsList[0]->class_status == 1 ? "selected" : "" }} >완료</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6 input-group-sm">
+                                            <input id="material_cost" type="number" class="form-control @error('class_total_cost') is-invalid @enderror" name="material_cost" value="{{ $contentsList[0]->material_cost }}" >
                                         </div>
                                     </div>
                                 </td>
@@ -226,7 +248,7 @@
                     var classStatus = $("#class_status option:selected").val();
                     var classType = $("#class_type option:selected").val();
                     var onlineType = $("#online_type option:selected").val();
-
+                    var materialCost = $("#material_cost").val();
                     $.ajax({
                         type : "post",
                         url : "{{ route('grade.mylecture.updateDo') }}",
@@ -236,6 +258,7 @@
                             'class_status' : classStatus,
                             'class_type' : classType,
                             'online_type' : onlineType,
+                            'material_cost' : materialCost,
                         },
                         success : function(data){
                             alert(data.msg);

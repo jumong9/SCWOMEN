@@ -94,7 +94,7 @@ class LectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('conatract_class_id',$id)
+                        ->where('contract_class_id',$id)
                         ->orderBy('main_yn','desc')
                         ->get();
 

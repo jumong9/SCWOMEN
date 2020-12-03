@@ -70,6 +70,16 @@
                                 </td>
                             </tr>
                              --}}
+                             <tr>
+                                <th>인당 재료비</th>
+                                <td>
+                                    {{ number_format($contract->material_cost) }}
+                                </td>
+                                <th>총 재료비</th>
+                                <td>
+                                    {{ number_format($contract->material_total_cost) }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -94,6 +104,7 @@
                                 <th style="width:80px;">차수</th>
                                 <th style="width:80px;">주강사수</th>
                                 <th style="width:80px;">보조강사수</th>
+                                <th style="width:80px;">재료비</th>
                                 <th style="width:100px;">수업방식</th>
                                 <th style="width:100px;">구분</th>
                             </tr>
@@ -130,6 +141,9 @@
                                 </td>
                                 <td>
                                     {{number_format($list->sub_count)}}
+                                </td>
+                                <td>
+                                    {{number_format($list->material_cost)}}
                                 </td>
                                 <td>
                                     @if($list->class_type == 0 ) 오프라인

@@ -104,7 +104,7 @@ class LectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('conatract_class_id',$id)
+                        ->where('contract_class_id',$id)
                         ->orderBy('main_yn','desc')
                         ->get();
 
@@ -136,7 +136,7 @@ class LectureController extends Controller{
         //dd(DB::getQueryLog());
         //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
-        $selectedUser = ClassLector::where('conatract_class_id',$id)
+        $selectedUser = ClassLector::where('contract_class_id',$id)
                                     ->get();
         //dd(DB::getQueryLog());
         return view('grade.lecture.popupuser', ['class_id'=>$id, 'selectedUser'=>$selectedUser, 'userList'=>$userList]);
@@ -165,7 +165,7 @@ class LectureController extends Controller{
         //dd(DB::getQueryLog());
         //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
-        // $selectedUser = ClassLector::where('conatract_class_id',$id)
+        // $selectedUser = ClassLector::where('contract_class_id',$id)
         //                             ->get();
         // dd(DB::getQueryLog());
         return view('grade.lecture.popupusermulti', ['class_id'=>$id, 'contract_class_id'=>$contract_class_id, 'userList'=>$userList]);
@@ -176,13 +176,13 @@ class LectureController extends Controller{
 
         $main_user_id = $request->input('main_user_id');
         $sub_user_id = $request->input('sub_user_id');
-        $conatract_class_id = $request->input('conatract_class_id');
+        $contract_class_id = $request->input('contract_class_id');
 
-        ClassLector::where('conatract_class_id',$conatract_class_id)
+        ClassLector::where('contract_class_id',$contract_class_id)
                     ->delete();
 
         $mainUser = new ClassLector();
-        $mainUser->conatract_class_id = $conatract_class_id;
+        $mainUser->contract_class_id = $contract_class_id;
         $mainUser->main_yn = 1;
         $mainUser->user_id = $main_user_id;
 
@@ -191,7 +191,7 @@ class LectureController extends Controller{
         if(!empty($sub_user_id)){
             foreach($sub_user_id as $sub){
                 $subUser = new ClassLector();
-                $subUser->conatract_class_id = $conatract_class_id;
+                $subUser->contract_class_id = $contract_class_id;
                 $subUser->main_yn = 0;
                 $subUser->user_id = $sub;
                 $subUser->save();
@@ -208,18 +208,18 @@ class LectureController extends Controller{
 
         $main_user_id = $request->input('main_user_id');
         $sub_user_id = $request->input('sub_user_id');
-        $conatract_class_id = $request->input('conatract_class_id');
+        $contract_class_id = $request->input('contract_class_id');
 
 
-        $list_class = explode(",", $conatract_class_id);
+        $list_class = explode(",", $contract_class_id);
 
         foreach($list_class as $class_id){
 
-            ClassLector::where('conatract_class_id',$class_id)
+            ClassLector::where('contract_class_id',$class_id)
                         ->delete();
 
             $mainUser = new ClassLector();
-            $mainUser->conatract_class_id = $class_id;
+            $mainUser->contract_class_id = $class_id;
             $mainUser->main_yn = 1;
             $mainUser->user_id = $main_user_id;
             $mainUser->save();
@@ -227,7 +227,7 @@ class LectureController extends Controller{
             if(!empty($sub_user_id)){
                 foreach($sub_user_id as $sub){
                     $subUser = new ClassLector();
-                    $subUser->conatract_class_id = $class_id;
+                    $subUser->contract_class_id = $class_id;
                     $subUser->main_yn = 0;
                     $subUser->user_id = $sub;
                     $subUser->save();

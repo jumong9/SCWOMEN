@@ -341,6 +341,28 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+
+    //내 강좌 활동일지 작성화면
+    Route::match(['get','post'],'grade/acreport/create',[
+        'as' => 'grade.acreport.create',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@create'
+    ]);
+
+
+    //내 강좌 활동일지 작성
+    Route::match(['get','post'],'grade/acreport/createDo',[
+        'as' => 'grade.acreport.createDo',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@createDo'
+    ]);
+
+
+    //내 강좌 활동일지 상세
+    Route::match(['get','post'],'grade/acreport/read',[
+        'as' => 'grade.acreport.read',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@read'
+    ]);
+
+
 });
 
 

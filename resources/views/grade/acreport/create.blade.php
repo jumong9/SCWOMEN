@@ -1,9 +1,17 @@
 @extends('layouts.mg_layout')
 
 @section('content')
-    <div id="modalFrame"></div>
+
+<div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
+
+    <form name="searchForm" id="searchForm" action="{{route('grade.acreport.createDo') }}" onsubmit="return searchFormSubmit();" method="post" enctype="multipart/form-data" >
+        @csrf
+
+        <input type="hidden" name="conatract_class_id" value="{{ $contentsList[0]->id }}">
+        <input type="hidden" name="class_category_id" value="{{ $contentsList[0]->class_category_id }}">
+        <input type="hidden" name="class_day" value="{{ $contentsList[0]->class_day }}">
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -94,7 +102,7 @@
                     <table class="table-sm table-hover" width="100%" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width:100px;">수업상태</th>
+                                <th style="width:100px;">진행상태</th>
                                 <th style="width:100px;">활동일자</th>
                                 <th style="width:120px;">시간</th>
                                 <th style="width:160px;">프로그램</th>
@@ -165,53 +173,82 @@
         </div>
 
 
-        <span>강사 배정</span>
+        <span>활동일지 등록</span>
         <div class="card shadow mb-4">
 
             <div class="card-body">
                 <div class="table">
-                    <table class="table-sm" id="" width="100%" cellspacing="0">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>구분</th>
-                                <th>기수</th>
-                                <th>강사명</th>
-                                <th>핸드폰</th>
-                            </tr>
-                        </thead>
+                    <table class="table" id="" width="100%" cellspacing="0">
+                        <colgroup>
+                            <col width="200px">
+                            <col width="40%">
+                            <col width="200px">
+                            <col width="40%">
+                        </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
-                            @foreach($lectorsList as $key => $list)
-                            <tr class="selecteUser">
+                            <tr>
+                                <th>교육시간</th>
                                 <td>
-                                    {{ $list->main_yn == 1 ? '주강사' : '보조강사' }}
+                                    <div class="row">
+                                        <div class="col-md-2 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$contentsList[0]->time_from}}"  >
+                                        </div>
+                                        <div class="col-md-2 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$contentsList[0]->time_to}}" >
+                                        </div>
+                                    </div>
                                 </td>
+                                <th>교육장소</th>
                                 <td>
-                                    {{ $list->group }}
-                                </td>
-                                <td>
-                                    {{ $list->name }}
-                                </td>
-                                <td>
-                                    {{ $list->mobile }}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{$contentsList[0]->class_target}}" required >
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            <tr>
+                                <th>교육내용</th>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>강사소견 및 평가</th>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>사진자료</th>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    @if($contentsList[0]->class_status == 1)
-                        <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
-                    @endif
-                    @if($contentsList[0]->class_status == 0)
-                        <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
-                    @endif
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
-                    <button class="btn btn-primary" type="button"  id="listButton">목록</button>
+                    <button class="btn btn-primary" type="submit"  id="createButton">저장</button>
+                    <button class="btn btn-primary" type="button"  id="calcelButton">취소</button>
                 </div>
             </div>
         </div>
+    </form>
+
 @endsection
 
 @section('scripts')
@@ -224,39 +261,22 @@
 
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('grade.mylecture.update')}}' + params +"&id={{$contract->id}}";
+            $("#createButton").click(function(){
+                return ture;
             });
 
-            $("#listButton").click(function(){
-                location.href='{{ route('grade.mylecture.list')}}' + params ;
+            $("#calcelButton").click(function(){
+                location.href='{{ route('grade.mylecture.read')}}' + params +"&id={{$contract->id}}";
             });
 
-            $("#finishButton").click(function(){
-                if(confirm( $(this).text() + ' 처리 하시겠습니까?')){
-                    var status_code = $(this).data('status');
-                    $.ajax({
-                        type : "post",
-                        url : "{{ route('grade.mylecture.updateClassStatus') }}",
-                        data : {
-                            _token: "{{csrf_token()}}",
-                            'id' : '{{ $contract->id }}',
-                            'class_status' : status_code,
-                        },
-                        success : function(data){
-                            alert(data.msg);
-                            location.reload();
-                        },
-                        error : function(xhr, exMessage) {
-                            alert('error');
-                        },
-                    });
+            $("#class_type").change(function(){
+                if($(this).val() == 2 ) {
+                    $(".online_type").show();
+                }else{
+                    $(".online_type").hide();
                 }
             });
 
-            $("#reportButton").click(function(){
-                location.href='{{ route('grade.acreport.create')}}' + "?id={{$contract->id}}";
-            });
 
         });
 

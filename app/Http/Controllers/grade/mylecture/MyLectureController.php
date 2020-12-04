@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 
 class MyLectureController extends Controller{
 
+    public $pageTitle;
+
     public function __construct(){
         $this->pageTitle = "나의 강좌 관리";
     }

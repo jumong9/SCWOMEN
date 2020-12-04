@@ -196,9 +196,11 @@ class MemberController extends Controller{
         $perPage = $request->input('perPage');
         $page = $request->input('page');
 
-
+        $cate_id = $request->input('cate_id');
         $id = $request->input('id');
         $member = User::with('classCategories')->where('id', $id)->get();
+        $member[0]->cate_id = $cate_id;
+
         $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')->where('user_id', $id)->get();
 
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);

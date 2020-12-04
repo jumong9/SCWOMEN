@@ -191,7 +191,7 @@
 
 
             $("#cancelButton").click(function(){
-                location.href='{{ route('mgmt.member.detail')}}' + params + "&id={{$member[0]->id}}";
+                location.href='{{ route('mgmt.member.detail')}}' + params + "&id={{$member[0]->id}}&cate_id={{$member[0]->cate_id}}";
             });
 
             $("#listButton").click(function(){

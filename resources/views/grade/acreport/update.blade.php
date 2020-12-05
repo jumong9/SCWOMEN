@@ -6,6 +6,13 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
+    <form name="searchForm" id="searchForm" action="{{route('grade.acreport.updateDo') }}" onsubmit="return searchFormSubmit();" method="post" enctype="multipart/form-data" >
+        @csrf
+        <input type="hidden" name="report_id" value="{{ $calssReport->id }}">
+        <input type="hidden" name="contract_class_id" value="{{ $contentsList[0]->id }}">
+        <input type="hidden" name="class_category_id" value="{{ $contentsList[0]->class_category_id }}">
+        <input type="hidden" name="class_day" value="{{ $contentsList[0]->class_day }}">
+
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
 
@@ -182,30 +189,55 @@
                             <tr>
                                 <th>교육시간</th>
                                 <td>
-                                    {{$calssReport->time_from}} - {{$calssReport->time_to}}
+                                    <div class="row">
+                                        <div class="col-md-2 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$calssReport->time_from}}"  >
+                                        </div>
+                                        <div class="col-md-2 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$calssReport->time_to}}" >
+                                        </div>
+                                    </div>
                                 </td>
                                 <th>교육장소</th>
                                 <td>
-                                    {{$calssReport->class_place}}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input id="class_place" type="text" class="form-control @error('name') is-invalid @enderror" name="class_place" value="{{$calssReport->class_place}}" required >
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <th>교육내용</th>
                                 <td colspan="3">
-                                    {!! nl2br($calssReport->class_contents) !!}
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3">{{ $calssReport->class_contents }}</textarea>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <th>강사소견 및 평가</th>
                                 <td colspan="3">
-                                    {!! nl2br($calssReport->class_rating) !!}
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3">{{ $calssReport->class_rating }}</textarea>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <th>사진자료</th>
                                 <td colspan="3">
-                                    {{ $fileInfo[0]->file_real_name }}
-                                <img src="{{ asset($fileInfo[0]->file_path.'/'.$fileInfo[0]->file_name)}}" width="300" height="200">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            {{ $fileInfo[0]->file_real_name }}
+                                            <input type="hidden" name="old_file_id" value="{{ $fileInfo[0]->id }}">
+                                            <input type="hidden" name="old_file_name" value="{{ $fileInfo[0]->file_name }}">
+                                            <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -213,11 +245,12 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
-                    <button class="btn btn-primary" type="button"  id="listButton">목록</button>
+                    <button class="btn btn-primary" type="submit"  id="createButton">저장</button>
+                    <button class="btn btn-primary" type="button"  id="calcelButton">취소</button>
                 </div>
             </div>
         </div>
+    </form>
 
 @endsection
 
@@ -231,16 +264,21 @@
 
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
-
-            $("#listButton").click(function(){
-                location.href='{{ route('grade.acreport.list')}}' + params;
+            $("#createButton").click(function(){
+                return ture;
             });
 
-            $("#updateButton").click(function(){
-                location.href='{{ route('grade.acreport.update')}}' + params +"&id={{$contract->id}}";
+            $("#calcelButton").click(function(){
+                location.href='{{ route('grade.acreport.read')}}' + params +"&id={{$contract->id}}";
             });
 
-
+            $("#class_type").change(function(){
+                if($(this).val() == 2 ) {
+                    $(".online_type").show();
+                }else{
+                    $(".online_type").hide();
+                }
+            });
 
 
         });

@@ -9,7 +9,7 @@
     <form name="searchForm" id="searchForm" action="{{route('grade.acreport.createDo') }}" onsubmit="return searchFormSubmit();" method="post" enctype="multipart/form-data" >
         @csrf
 
-        <input type="hidden" name="conatract_class_id" value="{{ $contentsList[0]->id }}">
+        <input type="hidden" name="contract_class_id" value="{{ $contentsList[0]->id }}">
         <input type="hidden" name="class_category_id" value="{{ $contentsList[0]->class_category_id }}">
         <input type="hidden" name="class_day" value="{{ $contentsList[0]->class_day }}">
 
@@ -202,7 +202,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{$contentsList[0]->class_target}}" required >
+                                            <input id="class_place" type="text" class="form-control @error('name') is-invalid @enderror" name="class_place" value="{{$contentsList[0]->class_target}}" required >
                                         </div>
                                     </div>
                                 </td>

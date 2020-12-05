@@ -341,6 +341,12 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //내 강좌 활동일지 목록
+    Route::match(['get','post'],'grade/acreport/list',[
+        'as' => 'grade.acreport.list',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@list'
+    ]);
+
 
     //내 강좌 활동일지 작성화면
     Route::match(['get','post'],'grade/acreport/create',[
@@ -363,6 +369,23 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //내 강좌 활동일지 수정화면
+    Route::match(['get','post'],'grade/acreport/update',[
+        'as' => 'grade.acreport.update',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@update'
+    ]);
+
+
+    //내 강좌 활동일지 수정
+    Route::match(['get','post'],'grade/acreport/updateDo',[
+        'as' => 'grade.acreport.updateDo',
+        'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@updateDo'
+    ]);
+
+
+
+
+
 });
 
 
@@ -378,4 +401,6 @@ Route::get('/test/frame', 'App\Http\Controllers\test\MainController@frame');
 
 Route::get('/test/project', 'App\Http\Controllers\test\MainController@project');
 
+Route::get('/test/file', 'App\Http\Controllers\test\MainController@file');
+Route::post('/test/fileDo', 'App\Http\Controllers\test\MainController@fileDo');
 

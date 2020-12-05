@@ -5,6 +5,7 @@ namespace App\Http\Controllers\test;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MainController extends Controller
 {
@@ -39,6 +40,20 @@ class MainController extends Controller
 
     public function frame(){
         return view('test.frame');
+    }
+
+    public function file(){
+        return view('test.file');
+    }
+
+    public function fileDO(Request $request){
+
+        $file = $request->upload_file->store('excels');
+
+        $url = Storage::url($file);
+        echo $url;
+
+        return $url;
     }
 }
 

@@ -55,7 +55,7 @@
                         <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('mgmt.member.list') }}">강사관리</a>
+                        <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
                     </li>
                 </ul>
             </div>

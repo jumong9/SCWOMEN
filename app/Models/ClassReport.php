@@ -10,7 +10,7 @@ class ClassReport extends Model
     use HasFactory;
 
     protected $fillable = [
-        'conatract_class_id',
+        'contract_class_id',
         'user_id',
         'class_category_id',
         'class_day',

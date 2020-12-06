@@ -84,7 +84,7 @@
                     _token: "{{csrf_token()}}",
                     'main_user_id' : main_user_id,
                     'sub_user_id' : sub_user_id,
-                    'conatract_class_id' : '{{$class_id}}',
+                    'contract_class_id' : '{{$class_id}}',
                 },
                 success : function(data){
                     alert(data.msg);

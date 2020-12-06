@@ -136,6 +136,8 @@ class AcRepoertController extends Controller{
 
 
         $user_id = Auth::id();
+        $user_name = Auth::user()->name;
+
         $file_real_name = $file->getClientOriginalName();
         $file_extension = $file->getClientOriginalExtension();
         $file_size = $file->getSize();
@@ -170,6 +172,10 @@ class AcRepoertController extends Controller{
         $classReport->class_contents = $request->input('class_contents');
         $classReport->class_rating = $request->input('class_rating');
         $classReport->file_id = $file_id;
+        $classReport->created_id = $user_id;
+        $classReport->created_name = $user_name;
+        $classReport->updated_id = $user_id;
+        $classReport->updated_name = $user_name;
         $classReport->save();
 
         ContractClass::where('id',$class_id)
@@ -314,6 +320,7 @@ class AcRepoertController extends Controller{
         // ]);
 
         $user_id = Auth::id();
+        $user_name =  Auth::user()->name;
         $file_id = $request->input('old_file_id');
         $old_file_id = $request->input('old_file_id');
         $old_file_name = $request->input('old_file_name');
@@ -361,6 +368,8 @@ class AcRepoertController extends Controller{
                             'class_contents'=> $request->input('class_contents'),
                             'class_rating'=> $request->input('class_rating'),
                             'file_id'=> $file_id,
+                            'updated_id'=> $user_id,
+                            'updated_name'=> $user_name,
                         ]);
 
         return redirect()->route('grade.acreport.read', ['pageTitle'=>$this->pageTitle,'id' =>$class_id ]) ;

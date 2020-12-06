@@ -19,6 +19,10 @@ class ClassReport extends Model
         'class_place',
         'class_contents',
         'class_rating',
+        'created_id',
+        'created_name',
+        'updated_id',
+        'updated_name',
     ];
 
 

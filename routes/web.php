@@ -246,6 +246,11 @@ Route::middleware(['adminmiddle'])->group(function(){
     ]);
 
 
+    //활동일지 목록
+    Route::match(['get','post'],'mgmt/acreport/list',[
+        'as' => 'mgmt.acreport.list',
+        'uses' => 'App\Http\Controllers\mgmt\acreport\AcReportController@list'
+    ]);
 });
 
 

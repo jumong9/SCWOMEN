@@ -212,7 +212,6 @@ class LectureController extends Controller{
 
 
         $list_class = explode(",", $contract_class_id);
-
         foreach($list_class as $class_id){
 
             ClassLector::where('contract_class_id',$class_id)

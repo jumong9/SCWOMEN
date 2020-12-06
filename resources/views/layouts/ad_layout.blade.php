@@ -32,7 +32,6 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{{ route('mgmt.member.list') }}">강사관리</a>
                               <a class="dropdown-item" href="{{ route('mgmt.application.list') }}?searchStatus=0">강사승인관리</a>
-                              <a class="dropdown-item" href="#">Something else here</a>
                             </div>
                         </div>
                     </li>
@@ -45,12 +44,20 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                               <a class="dropdown-item" href="{{ route('mgmt.client.list') }}">수요처관리</a>
                               <a class="dropdown-item" href="{{ route('mgmt.contract.list') }}">계약관리</a>
-                              <a class="dropdown-item" href="{{ route('mgmt.lecture.list') }}">강사배정관리</a>
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('grade.lecture.list') }}">강사배정관리</a>
+                    <li class="nav-item pr-2">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.lecture.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                강사배정 정보
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('mgmt.lecture.list') }}">강사배정관리</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.acreport.list') }}">활동일지관리</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Link</a>

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\mgmt\member;
 
+use App\Exports\UserExcelExport as ExportsUserExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\User;
-use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller{
 
@@ -323,5 +323,8 @@ class MemberController extends Controller{
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
 
+     public function export(){
+        return Excel::download(new ExportsUserExcelExport, 'users.xlsx');
+    }
 
 }

@@ -150,6 +150,13 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\member\MemberController@deleteUser'
     ]);
 
+    //멤버관리 삭제처리
+    Route::match(['get','post'],'member/export',[
+        'as' => 'mgmt.member.export',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@export'
+    ]);
+
+
 
 
     //수요처관리 리스트 화면

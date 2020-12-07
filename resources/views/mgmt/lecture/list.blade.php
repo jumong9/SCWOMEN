@@ -25,7 +25,7 @@
             </div>
             <div class="float-right">
                 <div class="form-inline">
-                    <div class="form-group mb-2">
+                    <div class="form-group">
                         {{--
                         <select class="form-control" name="searchType" id="searchType">
                             <option value="">선택하세요</option>
@@ -33,6 +33,8 @@
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
                         </select>
                         --}}
+                        <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
+                        <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>

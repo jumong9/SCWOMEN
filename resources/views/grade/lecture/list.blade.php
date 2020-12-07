@@ -25,7 +25,7 @@
             </div>
             <div class="float-right">
                 <div class="form-inline">
-                    <div class="form-group mb-2">
+                    <div class="form-group">
                         {{--
                         <select class="form-control" name="searchType" id="searchType">
                             <option value="">선택하세요</option>

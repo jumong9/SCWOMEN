@@ -25,7 +25,7 @@
             </div>
             <div class="float-right">
                 <div class="form-inline">
-                    <div class="form-group mb-2">
+                    <div class="form-group">
                         {{--
                         <select class="form-control" name="searchType" id="searchType">
                             <option value="">선택하세요</option>
@@ -33,6 +33,8 @@
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
                         </select>
                         --}}
+                        <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
+                        <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
@@ -68,7 +70,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('grade.acreport.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
+                            <td><a href="{{ route ('mgmt.acreport.read', ['id'=>$list->contract_class_id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord , 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate]) }}">{{ $list->class_name }} </a></td>
                             <td>
                                 @switch($list->class_type)
                                     @case(0)
@@ -97,9 +99,9 @@
         </div>
     </div>
     </form>
-    <form name="winopen" id="winopen" action="{{route('mgmt.acreport.list') }}" method="post">
+    <form target="printPopup" name="winopen" id="winopen" action="{{route('mgmt.acreport.printPopup') }}" method="post">
         @csrf
-        <input type="hidden" name="ids" id="ids" value="12,1">
+        <input type="hidden" name="ids" id="ids" value="">
     </form>
 @endsection
 
@@ -140,15 +142,16 @@
                 });
                 $("#ids").val(ids.join(","));
 
-                var url = '{{ route('mgmt.acreport.list') }}';
+                var url = '{{ route('mgmt.acreport.printPopup') }}';
 
                 if( /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor) ){
-                    window.open(url, "winopen");
+                    window.open('', "printPopup");
                 }else{
-                    window.open(url, "winopen", "resizable=yes,toolbar=yes,menubar=yes,location=yes");
+                    window.open('', "printPopup", "resizable=yes,toolbar=yes,menubar=yes,location=yes");
                 }
 
-                form.submit();
+                document.getElementById('winopen').submit();
+
 
             });
 

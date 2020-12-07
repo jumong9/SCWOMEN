@@ -25,7 +25,7 @@
             </div>
             <div class="float-right">
                 <div class="form-inline">
-                    <div class="form-group mb-2">
+                    <div class="form-group">
                         {{-- <select class="form-control" name="searchStatus" id="searchStatus">
                             <option value="99" {{ $searchStatus == 99 ? "selected" : "" }} >전체</option>
                             <option value="0" {{ $searchStatus == 0 ? "selected" : "" }} >승인대기</option>

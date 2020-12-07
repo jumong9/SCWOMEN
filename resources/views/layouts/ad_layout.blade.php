@@ -25,7 +25,7 @@
                     <li class="nav-item pr-2">
 
                         <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="{{ route('mgmt.member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 강사단 정보
                             </a>
 
@@ -37,7 +37,7 @@
                     </li>
                     <li class="nav-item pr-2">
                         <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.client.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="{{ route('mgmt.client.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 수요처 정보
                             </a>
 
@@ -49,7 +49,7 @@
                     </li>
                     <li class="nav-item pr-2">
                         <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" href="{{ route('mgmt.lecture.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="{{ route('mgmt.lecture.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 강사배정 정보
                             </a>
 

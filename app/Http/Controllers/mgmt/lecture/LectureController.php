@@ -26,6 +26,10 @@ class LectureController extends Controller{
         $searchStatus = $request->input('searchStatus');
         $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
         $page = $request->input('page');
+
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
         DB::enableQueryLog();
         $user_id = Auth::id();
         //echo Auth::user()->grade;
@@ -40,15 +44,22 @@ class LectureController extends Controller{
                                             )
                                     ->where('contracts.status','>',1)
                                     ->where('b.name','LIKE',"{$searchWord}%")
+                                    ->where(function ($query) use ($request){
+                                        $searcFromDate = $request->input('searcFromDate');
+                                        $searcToDate = $request->input('searcToDate');
+                                        if(!empty($searcFromDate) && !empty($searcToDate) ){
+                                            $query->whereBetween('contract_classes.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+                                    })
                                     ->orderBy('contract_classes.created_at', 'desc')
                                     ->paginate($perPage);
 
 
-        $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
+        $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
 
 
         //dd(DB::getQueryLog());
-        return view('mgmt.lecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.lecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
 
     }
 

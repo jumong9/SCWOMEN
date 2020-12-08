@@ -324,7 +324,7 @@ class MemberController extends Controller{
      }
 
      public function export(){
-        return Excel::download(new ExportsUserExcelExport, 'users.xlsx');
+         return Excel::download(new ExportsUserExcelExport, 'users.xlsx');
     }
 
 }

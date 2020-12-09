@@ -338,6 +338,33 @@ Route::middleware(['managermiddle'])->group(function(){
 //로그인 유저 권한 메뉴
 Route::middleware(['auth'])->group(function(){
 
+    //개인정보 수정화면
+    Route::match(['get','post'],'auth/myinfo/update',[
+        'as' => 'auth.myinfo.update',
+        'uses' => 'App\Http\Controllers\users\UsersController@update'
+    ]);
+
+    //개인정보 수정
+    Route::match(['get','post'],'auth/myinfo/updateDo',[
+        'as' => 'auth.myinfo.updateDo',
+        'uses' => 'App\Http\Controllers\users\UsersController@updateDo'
+    ]);
+
+
+    //비밀번호 수정화면
+    Route::match(['get','post'],'auth/myinfo/passwd',[
+        'as' => 'auth.myinfo.passwd',
+        'uses' => 'App\Http\Controllers\users\UsersController@passwd'
+    ]);
+
+    //비밀번호 수정
+    Route::match(['get','post'],'auth/myinfo/passwdDo',[
+        'as' => 'auth.myinfo.passwdDo',
+        'uses' => 'App\Http\Controllers\users\UsersController@passwdDo'
+    ]);
+
+
+
     //내 강좌 배정 목록
     Route::match(['get','post'],'grade/mylecture/list',[
         'as' => 'grade.mylecture.list',

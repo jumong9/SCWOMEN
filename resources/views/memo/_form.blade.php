@@ -24,7 +24,6 @@ $isEdit = Route::currentRouteName() == 'memo.edit';
         <button type="submit" class="btn btn-primary btn-lg btn-block" >
         	MEMO
         </button>
-        <input type="text" class="datepicker" />
         {!! Form::close() !!}
     </div>
 </div>

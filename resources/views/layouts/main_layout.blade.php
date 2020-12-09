@@ -21,9 +21,18 @@
         <!-- 상단 메뉴바 -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item pr-2">
 
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">공지사항</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">서식자료함</a>
+                    </li>
+
+                @if (Auth::user()->grade >=90 )
+
+                    <li class="nav-item pr-2">
                         <div class="dropdown show">
                             <a class="nav-link dropdown-toggle" href="{{ route('mgmt.member.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 강사단 정보
@@ -59,12 +68,29 @@
                             </div>
                         </div>
                     </li>
+
+                @elseif (Auth::user()->grade >=10 )
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link" href="{{ route('grade.lecture.list') }}">강사배정관리</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('mgmt.member.list') }}">강사관리</a>
+                        <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
+                    </li>
+
+                @else
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
+                    </li>
+
+                @endif
                 </ul>
             </div>
             <div class="mx-auto order-0">
@@ -77,12 +103,16 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 159px;">
                                 {{ Auth::user()->name }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#">개인정보</a>
-                              <a class="dropdown-item" href="{{ route('auth.logoutdo') }}">로그아웃</a>
+                                @if (Auth::user()->grade < 90 )
+                                    <a class="dropdown-item" href="{{ route('auth.myinfo.update') }}">개인정보</a>
+                                @endif
+                                    <a class="dropdown-item" href="{{ route('auth.myinfo.passwd') }}">비밀번호변경</a>
+
+                                    <a class="dropdown-item" href="{{ route('auth.logoutdo') }}">로그아웃</a>
                             </div>
                         </div>
                     </li>

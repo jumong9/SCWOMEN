@@ -49,8 +49,16 @@
                         </div>
                     </li> --}}
                     <li class="nav-item">
+                        <a class="nav-link" href="">공지사항</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">서식자료함</a>
+                    </li>
+                    @if (Auth::user()->grade >=10 )
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.lecture.list') }}">강사배정관리</a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
                     </li>
@@ -60,7 +68,7 @@
                 </ul>
             </div>
             <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto" href="#">Navbar 2</a>
+                <a class="navbar-brand mx-auto" href="#">{{ config('app.name', 'Laravel8') }}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -70,10 +78,10 @@
                     <li class="nav-item">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }} {{ Auth::user()->grade }}
+                                {{ Auth::user()->name }}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a class="dropdown-item" href="#">개인정보</a>
+                              <a class="dropdown-item" href="{{ route('auth.myinfo.update') }}">개인정보</a>
                               <a class="dropdown-item" href="{{ route('auth.logoutdo') }}">로그아웃</a>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-@extends('layouts.ad_layout')
+@extends('layouts.main_layout')
 
 @section('content')
 
@@ -125,7 +125,7 @@
                 @if($searchStatus == 0)
                     <button class="btn btn-primary" type="button" name="approvalButton" id="approvalButton">승인</button>
                 @endif
-                <a class="btn btn-success" href="{{ route('mgmt.member.export') }}">Export data</a>
+                {{-- <a class="btn btn-success" href="{{ route('mgmt.member.export') }}">Export data</a> --}}
             </div>
         </div>
     </div>

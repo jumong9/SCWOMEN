@@ -29,12 +29,19 @@ class LoginController extends Controller{
             return back()->withInput();
         }
 
+        //미승인 사용자 로그아웃 처리
+        if(0 == Auth::user()->status){
+            Auth::logout();
+            return redirect('/');
+        }
+
         //관리자 메인페이지
         if(90 <= Auth::user()->grade){
             return redirect()->route('mgmt.member.list');
         }else{
-            return redirect('home');
+            return redirect()->route('grade.mylecture.list');
         }
+
     }
 
     //로그아웃

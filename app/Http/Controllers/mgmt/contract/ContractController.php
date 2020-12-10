@@ -45,23 +45,11 @@ class ContractController extends Controller{
         $classJson = json_decode($classTargetList, true);
         $client_id = $request->input('client_id');
 
-        // $contracts = new Contracts();
-        // $contracts->client_id           =  $client_id;
-        // $contracts->name                =  $request->input('name');
-        // $contracts->email               =  $request->input('email');
-        // $contracts->phone               =  $request->input('phone');
-        // $contracts->phone2              =  $request->input('phone2');
-        // $contracts->class_cost          =  $request->input('class_cost');
-        // $contracts->class_total_cost    =  $request->input('class_total_cost');
-        // $contracts->material_cost       =  $request->input('material_cost');
-        // $contracts->material_total_cost =  $request->input('material_total_cost');
-        // $contracts->total_cost          =  $request->input('total_cost');
-        // $contracts->paid_yn             =  $request->input('paid_yn');
-        // $contracts->status              =  $request->input('status');
-        // $contracts->comments            =  $request->input('comments');
+        $client_info = Client::where('id', $client_id)->first();
 
         $contrats_arr = [
             "client_id"           =>  $client_id,
+            "client_name"         =>  $client_info->name,
             "name"                =>  $request->input('name'),
             "email"               =>  $request->input('email'),
             "phone"               =>  $request->input('phone'),

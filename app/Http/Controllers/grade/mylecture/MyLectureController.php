@@ -102,12 +102,22 @@ class MyLectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('contract_class_id',$id)
-                        ->orderBy('main_yn','desc')
-                        ->get();
+                                    ->where('contract_class_id',$id)
+                                    ->orderBy('main_yn','desc')
+                                    ->get();
+
+        $mainYn = ClassLector::where('contract_class_id',$id)
+                                ->where('user_id', $user_id)
+                                ->where('main_yn', 1)->first();
+
+        if(empty($mainYn)){
+            $mainYn =0;
+        }else{
+            $mainYn =1;
+        }
 
 //dd(DB::getQueryLog());
-        return view('grade.mylecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.mylecture.read', ['pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }
 
@@ -181,7 +191,7 @@ class MyLectureController extends Controller{
 
         ContractClass::where('id',$id)
                         ->update([
-                            'class_status'=> $class_status,
+         //                   'class_status'=> $class_status,
                             'class_type'=> $class_type,
                             'online_type'=> $online_type,
                             'material_cost'=>$material_cost,
@@ -284,17 +294,22 @@ class MyLectureController extends Controller{
                 ClassCategoryUser::where('class_category_id', $class_category_id)
                                  ->where('user_id', $user->user_id)
                                  ->increment('main_count', 1);
+                $main_count++;
             }else{
                 ClassCategoryUser::where('class_category_id', $class_category_id)
                                  ->where('user_id', $user->user_id)
                                  ->increment('sub_count', 1);
-
+                $sub_count++;
             }
 
 
             ClassLector::where('contract_class_id', $id)
                         ->where('user_id', $user->user_id)
-                        ->update(['lector_cost' => $lector_cost]);
+                        ->update([
+                            'lector_cost' => $lector_cost,
+                            'main_count'  => $main_count,
+                            'sub_count'   => $sub_count,
+                            ]);
 
         }
 

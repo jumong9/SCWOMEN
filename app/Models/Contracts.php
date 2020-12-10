@@ -11,6 +11,7 @@ class Contracts extends Model
 
     protected $fillable = [
         'client_id',
+        'client_name',
         'name',
         'email',
         'phone',

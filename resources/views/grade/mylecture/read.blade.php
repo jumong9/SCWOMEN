@@ -201,11 +201,13 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    @if($contentsList[0]->class_status == 1)
-                        <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
-                    @endif
-                    @if($contentsList[0]->class_status == 0)
-                        <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
+                    @if($mainYn)
+                        @if($contentsList[0]->class_status == 1)
+                            <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
+                        @endif
+                        @if($contentsList[0]->class_status == 0)
+                            <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
+                        @endif
                     @endif
                     <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>

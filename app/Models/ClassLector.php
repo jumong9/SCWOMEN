@@ -13,6 +13,8 @@ class ClassLector extends Model
         'user_id',
         'user_name',
         'main_yn',
+        'main_count',
+        'sub_count',
     ];
 
 }

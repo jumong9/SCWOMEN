@@ -184,7 +184,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
-                                            <select name="class_status" id="class_status" class="form-control ">
+                                            <select name="class_status" id="class_status" class="form-control " disabled>
                                                 <option value="0" {{ $contentsList[0]->class_status == 0 ? "selected" : "" }} >미완료</option>
                                                 <option value="1" {{ $contentsList[0]->class_status == 1 ? "selected" : "" }} >완료</option>
                                             </select>

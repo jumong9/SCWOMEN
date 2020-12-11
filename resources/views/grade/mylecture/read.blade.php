@@ -94,7 +94,7 @@
                     <table class="table-sm table-hover" width="100%" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width:100px;">수업상태</th>
+                                <th style="width:100px;">진행상태</th>
                                 <th style="width:100px;">활동일자</th>
                                 <th style="width:120px;">시간</th>
                                 <th style="width:160px;">프로그램</th>
@@ -113,7 +113,7 @@
                             @foreach($contentsList as $key => $list)
                             <tr>
                                 <td>
-                                    {{$list->class_status == 0? '미완료' : '완료'}}
+                                    {{ $list->class_status_value }}
                                 </td>
                                 <td>
                                     {{ $list->class_day }}

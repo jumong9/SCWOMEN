@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('grade.mylecture.list') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.payment.list') }}" method="post" >
         <input name="checkedItemId" type="hidden" value=""/>
     @csrf
     <!-- DataTales Example -->
@@ -33,6 +33,8 @@
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
                         </select>
                         --}}
+                        <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
+                        <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
@@ -56,7 +58,10 @@
                             <th>인원</th>
                             <th>횟수</th>
                             <th>차수</th>
+                            <th>강사명</th>
                             <th>자격</th>
+                            <th>강사비</th>
+                            <th>재료비</th>
                             <th>진행상태</th>
                             <th>등록일</th>
                         </tr>
@@ -65,28 +70,31 @@
                         @foreach($classList as $key => $list)
                         <tr>
                             <td>
-                                @if($list->class_status > 0 and $list->class_status < 3)
+                                @if($list->class_status < 4)
                                     <input type="checkbox" name="id" id="id" value="{{ $list->id }}" >
                                 @endif
                             </td>
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
-                            <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('grade.mylecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
+                            <td>{{ $list->client_name}} </td>
+                            <td>{{ $list->class_name }} </td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
+                            <td>{{ $list->name}}</td>
                             <td>{{ $list->main_yn == 0 ? '보조강사' : '주강사' }}</td>
+                            <td>{{ number_format($list->lector_cost) }}</td>
+                            <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td>
                             <td>{{ $list->class_status_value }}</td>
-                            <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
+                            <td>{{ date_format($list->updated_at,'Y-m-d')}}</td>
                         @endforeach
                     </tbody>
                 </table>
                 {{ $classList->withQueryString()->links() }}
             </div>
             <div class="row-fluid" style="text-align: right;">
-                <button class="btn btn-primary" type="button" name="requestButton" id="requestButton">지급요청</button>
+                <button class="btn btn-primary" type="button" name="payButton" id="payButton">지급완료</button>
             </div>
         </div>
     </div>
@@ -116,10 +124,10 @@
 
             });
 
-            $("#requestButton").click(function(e){
+            $("#payButton").click(function(e){
 
                 if($("input:checkbox[name=id]:checked").length == 0){
-                    alert("지급요청 할 목록을 선택해 주세요.")
+                    alert("지급완료 할 목록을 선택해 주세요.")
                     return false;
                 }
 
@@ -130,7 +138,7 @@
 
                 $.ajax({
                     type : "post",
-                    url : "{{ route('grade.mylecture.updatePayment') }}",
+                    url : "{{ route('mgmt.payment.updatePayment') }}",
                     data : {
                         _token: "{{csrf_token()}}",
                         'contract_class_id' : checkIds.join(","),
@@ -145,7 +153,6 @@
                 });
 
             });
-
 
         });
     </script>

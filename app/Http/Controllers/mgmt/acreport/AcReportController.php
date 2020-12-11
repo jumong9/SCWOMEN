@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
 use App\Models\UserFile;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,12 @@ class AcReportController extends Controller{
         $searcFromDate = $request->input('searcFromDate');
         $searcToDate = $request->input('searcToDate');
 
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+        }
+
         DB::enableQueryLog();
         $user_id = Auth::id();
 
@@ -45,9 +52,7 @@ class AcReportController extends Controller{
                                             , 'f.class_name'
                                     )
                                     ->where('d.name','LIKE',"{$searchWord}%")
-                                    ->where(function ($query) use ($request){
-                                        $searcFromDate = $request->input('searcFromDate');
-                                        $searcToDate = $request->input('searcToDate');
+                                    ->where(function ($query) use ($searcFromDate, $searcToDate){
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
                                             $query->whereBetween('class_reports.class_day', [$searcFromDate, $searcToDate]);
                                         }

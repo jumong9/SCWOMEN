@@ -36,16 +36,22 @@ class MyLectureController extends Controller{
         $classList = ContractClass::join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
                                     ->join('class_lectors as c', 'c.contract_class_id', '=','contract_classes.id')
                                     ->join('contracts as d', 'd.id', '=', 'contract_classes.contract_id')
-                                    ->join('clients as e', 'e.id', '=', 'contract_classes.client_id')
+                     //               ->join('clients as e', 'e.id', '=', 'contract_classes.client_id')
+                                    ->join('common_codes as f', function($join){
+                                        $join->on('f.code_id','=', 'contract_classes.class_status')
+                                                ->where('f.code_group', '=','contract_class_status');
+                                        }
+                                    )
                                     ->select('contract_classes.*'
                                             , 'b.class_name'
                                             , 'c.main_yn'
                                             , 'c.user_id'
-                                            , 'e.name as client_name'
+                                            , 'd.client_name'
+                                            , 'f.code_value as class_status_value'
                                     )
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
-                                    ->where('e.name','LIKE',"{$searchWord}%")
+                                    ->where('d.client_name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.class_day', 'desc')
                                     ->orderBy('contract_classes.created_at', 'desc')
                                     ->paginate($perPage);
@@ -54,7 +60,7 @@ class MyLectureController extends Controller{
         $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
 
-        //dd(DB::getQueryLog());
+ //       dd(DB::getQueryLog());
         return view('grade.mylecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
 
     }
@@ -74,10 +80,16 @@ class MyLectureController extends Controller{
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
                                     ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
+                                    ->join('common_codes as f', function($join){
+                                        $join->on('f.code_id','=', 'contract_classes.class_status')
+                                                ->where('f.code_group', '=','contract_class_status');
+                                        }
+                                    )
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
+                                            , 'f.code_value as class_status_value'
                                             )
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
@@ -136,10 +148,16 @@ class MyLectureController extends Controller{
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
                                     ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
+                                    ->join('common_codes as f', function($join){
+                                        $join->on('f.code_id','=', 'contract_classes.class_status')
+                                                ->where('f.code_group', '=','contract_class_status');
+                                        }
+                                    )
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
+                                            , 'f.code_value as class_status_value'
                                             )
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
@@ -316,6 +334,21 @@ class MyLectureController extends Controller{
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
+    }
+
+
+
+    public function updatePayment(Request $request){
+
+        $ids = $request->input('contract_class_id');
+        $inputIds = explode(',', $ids);
+        ContractClass::whereIn('id', $inputIds)
+                        ->update([
+                            'class_status'=> 3
+                        ]);
+
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
     }
 
 }

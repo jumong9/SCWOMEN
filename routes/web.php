@@ -272,6 +272,23 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\acreport\AcReportController@read'
     ]);
 
+    //강사비 지급 관리
+    Route::match(['get','post'],'mgmt/payment/list',[
+        'as' => 'mgmt.payment.list',
+        'uses' => 'App\Http\Controllers\mgmt\payment\PaymentController@list'
+    ]);
+
+    //강사비 지급
+    Route::match(['get','post'],'mgmt/payment/updatePayment',[
+        'as' => 'mgmt.payment.updatePayment',
+        'uses' => 'App\Http\Controllers\mgmt\payment\PaymentController@updatePayment'
+    ]);
+
+    //강사비 지급 대상
+    Route::match(['get','post'],'mgmt/payreport/list',[
+        'as' => 'mgmt.payreport.list',
+        'uses' => 'App\Http\Controllers\mgmt\payreport\PayReportController@list'
+    ]);
 
 
 });
@@ -396,6 +413,13 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //내 강좌 지급요청
+    Route::match(['get','post'],'grade/mylecture/updatePayment',[
+        'as' => 'grade.mylecture.updatePayment',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@updatePayment'
+    ]);
+
+
     //내 강좌 활동일지 목록
     Route::match(['get','post'],'grade/acreport/list',[
         'as' => 'grade.acreport.list',
@@ -437,6 +461,11 @@ Route::middleware(['auth'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\acreport\AcRepoertController@updateDo'
     ]);
 
+    //지급요청 관리
+    Route::match(['get','post'],'grade/payment/list',[
+        'as' => 'grade.payment.list',
+        'uses' => 'App\Http\Controllers\grade\payment\PaymentController@list'
+    ]);
 
 
 

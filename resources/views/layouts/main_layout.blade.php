@@ -68,6 +68,18 @@
                             </div>
                         </div>
                     </li>
+                    <li class="nav-item pr-2">
+                        <div class="dropdown show">
+                            <a class="nav-link dropdown-toggle" href="{{ route('mgmt.payment.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                강사비 정산정보
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('mgmt.payreport.list') }}">강시비 지급대상</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.payment.list') }}">강사비 지급관리</a>
+                            </div>
+                        </div>
+                    </li>
 
                 @elseif (Auth::user()->grade >=10 )
 
@@ -80,6 +92,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.payment.list') }}">지급요청관리</a>
+                    </li>
 
                 @else
 
@@ -88,6 +103,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.payment.list') }}">지급요청관리</a>
                     </li>
 
                 @endif

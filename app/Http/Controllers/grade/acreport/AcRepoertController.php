@@ -38,20 +38,20 @@ class AcRepoertController extends Controller{
         $classList = ContractClass::join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
                                     ->join('class_lectors as c', 'c.contract_class_id', '=','contract_classes.id')
                                     ->join('contracts as d', 'd.id', '=', 'contract_classes.contract_id')
-                                    ->join('clients as e', 'e.id', '=', 'contract_classes.client_id')
+                                  //  ->join('clients as e', 'e.id', '=', 'contract_classes.client_id')
                                     ->join('class_reports as f', 'f.contract_class_id', '=', 'contract_classes.id')
                                     ->select('contract_classes.*'
                                             , 'b.class_name'
                                             , 'c.main_yn'
                                             , 'c.user_id'
-                                            , 'e.name as client_name'
+                                            , 'd.client_name'
                                             , 'f.time_from as r_time_from'
                                             , 'f.time_to as r_time_to'
                                             , 'f.updated_at as r_updated_at'
                                     )
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
-                                    ->where('e.name','LIKE',"{$searchWord}%")
+                                    ->where('d.client_name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.class_day', 'desc')
                                     ->orderBy('contract_classes.created_at', 'desc')
                                     ->paginate($perPage);

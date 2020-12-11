@@ -113,7 +113,7 @@
                             @foreach($contentsList as $key => $list)
                             <tr>
                                 <td>
-                                    {{$list->class_status == 0? '미완료' : '완료'}}
+                                    {{$list->class_status_value }}
                                 </td>
                                 <td>
                                     {{ $list->class_day }}
@@ -185,8 +185,7 @@
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
                                             <select name="class_status" id="class_status" class="form-control " disabled>
-                                                <option value="0" {{ $contentsList[0]->class_status == 0 ? "selected" : "" }} >미완료</option>
-                                                <option value="1" {{ $contentsList[0]->class_status == 1 ? "selected" : "" }} >완료</option>
+                                                <option value="0" >{{ $contentsList[0]->class_status_value }} </option>
                                             </select>
                                         </div>
                                     </div>

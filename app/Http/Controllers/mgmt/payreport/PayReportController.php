@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\mgmt\payreport;
 
+use App\Exports\CalculatorExport;
 use App\Http\Controllers\Controller;
 use App\Models\ContractClass;
 use DateTime;
@@ -82,6 +83,21 @@ class PayReportController extends Controller{
         //dd(DB::getQueryLog());
         return view('mgmt.payreport.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
 
+    }
+
+
+    public function exportExcel(Request $request){
+
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+        }
+
+        return (new CalculatorExport)->forYear($searcFromDate, $searcToDate)->download('PayReport.xlsx');
     }
 
 

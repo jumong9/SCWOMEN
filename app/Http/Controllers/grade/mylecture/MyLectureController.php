@@ -9,6 +9,7 @@ use App\Models\ClassLector;
 use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -222,115 +223,123 @@ class MyLectureController extends Controller{
 
     public function updateClassStatus(Request $request){
 
+        try {
+            DB::beginTransaction();
 
-        $id = $request->input('id');
-        $class_status = $request->input('class_status');
+            $id = $request->input('id');
+            $class_status = $request->input('class_status');
 
-        ContractClass::where('id',$id)
-                        ->update([
-                            'class_status'=>$class_status
-                        ]);
+            ContractClass::where('id',$id)
+                            ->update([
+                                'class_status'=>$class_status
+                            ]);
 
-        $contractClass = ContractClass::where('id',$id)->get();
-        $class_category_id = $contractClass[0]->class_category_id;
-        $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
-        $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
-        $class_order = $contractClass[0]->class_order; //수업차수
+            $contractClass = ContractClass::where('id',$id)->get();
+            $class_category_id = $contractClass[0]->class_category_id;
+            $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
+            $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
+            $class_order = $contractClass[0]->class_order; //수업차수
 
-        $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
-        foreach($classLectorsList as $user){
+            $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
+            foreach($classLectorsList as $user){
 
-            $classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
-                                              ->where('user_id', $user->user_id)->get();
+                $classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
+                                                ->where('user_id', $user->user_id)->get();
 
-            $main_count = $classCateUser[0]->main_count;
-            $sub_count = $classCateUser[0]->sub_count;
+                $main_count = $classCateUser[0]->main_count;
+                $sub_count = $classCateUser[0]->sub_count;
 
-            $main_yn = $user->main_yn;   // 0:sub, 1:main
+                $main_yn = $user->main_yn;   // 0:sub, 1:main
 
-            $lector_cost =0;
+                $lector_cost =0;
 
-            if($main_yn){                                       //주강사
+                if($main_yn){                                       //주강사
 
-                if($class_type < 2){                            //오프라인, 온라인실시간
-
-                    if($main_count >= 10){                      //주강사 10회 초과시
-                        $lector_cost = 50000;
-                        if($class_order > 1){                   //추가시간
-                            $lector_cost += 25000;
-                        }
-
-                    }else{
-                        $lector_cost = 30000;
-                        if($class_order > 1){                   //추가시간
-                            $lector_cost += 10000;
-                        }
-                    }
-
-                } else {                                        //온라인 동영상
-
-                    if(!$online_type){                          //최초방송:0, 재방:1
+                    if($class_type < 2){                            //오프라인, 온라인실시간
 
                         if($main_count >= 10){                      //주강사 10회 초과시
                             $lector_cost = 50000;
                             if($class_order > 1){                   //추가시간
-                                $lector_cost += 25000;
+                                $lector_cost += (25000*($class_order-1));
                             }
 
-                        }else{                                      //10회 이하
+                        }else{
                             $lector_cost = 30000;
                             if($class_order > 1){                   //추가시간
-                                $lector_cost += 10000;
+                                $lector_cost += (10000*($class_order-1));
                             }
                         }
 
-                    } else {                                        //재방
+                    } else {                                        //온라인 동영상
 
-                        $lector_cost = 30000;
-                        if($class_order > 1){                       //추가시간
-                            $lector_cost += 30000;
+                        if(!$online_type){                          //최초방송:0, 재방:1
+
+                            if($main_count >= 10){                      //주강사 10회 초과시
+                                $lector_cost = 50000;
+                                if($class_order > 1){                   //추가시간
+                                    $lector_cost += (25000*($class_order-1));
+                                }
+
+                            }else{                                      //10회 이하
+                                $lector_cost = 30000;
+                                if($class_order > 1){                   //추가시간
+                                    $lector_cost += (10000*($class_order-1));
+                                }
+                            }
+
+                        } else {                                        //재방
+
+                            $lector_cost = 30000;
+                            if($class_order > 1){                       //추가시간
+                                $lector_cost += (30000*($class_order-1));
+                            }
+
                         }
 
                     }
 
-                }
+                } else {                                                //보조강사
 
-            } else {                                                //보조강사
-
-                if($class_type < 2){                                //오프라인, 온라인실시간
-                    $lector_cost = 20000;
-                    if($class_order > 1){                           //추가시간
-                        $lector_cost += 10000;
+                    if($class_type < 2){                                //오프라인, 온라인실시간
+                        $lector_cost = 20000;
+                        if($class_order > 1){                           //추가시간
+                            $lector_cost += 10000;
+                        }
+                    } else {                                            //온라인동영상
+                        $lector_cost = 20000;
                     }
-                } else {                                            //온라인동영상
-                    $lector_cost = 20000;
                 }
+
+
+                if($main_yn){
+                    ClassCategoryUser::where('class_category_id', $class_category_id)
+                                    ->where('user_id', $user->user_id)
+                                    ->increment('main_count', 1);
+                    $main_count++;
+                }else{
+                    ClassCategoryUser::where('class_category_id', $class_category_id)
+                                    ->where('user_id', $user->user_id)
+                                    ->increment('sub_count', 1);
+                    $sub_count++;
+                }
+
+
+                ClassLector::where('contract_class_id', $id)
+                            ->where('user_id', $user->user_id)
+                            ->update([
+                                'lector_cost' => $lector_cost,
+                                'main_count'  => $main_count,
+                                'sub_count'   => $sub_count,
+                                ]);
+
             }
 
+            DB::commit();
 
-            if($main_yn){
-                ClassCategoryUser::where('class_category_id', $class_category_id)
-                                 ->where('user_id', $user->user_id)
-                                 ->increment('main_count', 1);
-                $main_count++;
-            }else{
-                ClassCategoryUser::where('class_category_id', $class_category_id)
-                                 ->where('user_id', $user->user_id)
-                                 ->increment('sub_count', 1);
-                $sub_count++;
-            }
-
-
-            ClassLector::where('contract_class_id', $id)
-                        ->where('user_id', $user->user_id)
-                        ->update([
-                            'lector_cost' => $lector_cost,
-                            'main_count'  => $main_count,
-                            'sub_count'   => $sub_count,
-                            ]);
-
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg'=>'처리중 오류가 발생 하였습니다. 잠시후 다시 시도해 주세요.']);
         }
-
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 

@@ -290,6 +290,12 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\payreport\PayReportController@list'
     ]);
 
+    //강사비 지급 대상
+    Route::match(['get','post'],'mgmt/payreport/exportExcel',[
+        'as' => 'mgmt.payreport.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\payreport\PayReportController@exportExcel'
+    ]);
+
 
 });
 

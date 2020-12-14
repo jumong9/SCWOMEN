@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -214,75 +215,83 @@ class MemberController extends Controller{
      */
     public function update(Request $request){
 
-        $searchType = $request->input('searchType');
-        $searchWord = $request->input('searchWord');
-        $searchStatus = $request->input('searchStatus');
-        $perPage = $request->input('perPage');
-        $page = $request->input('page');
+        try {
+            DB::beginTransaction();
+
+            $searchType = $request->input('searchType');
+            $searchWord = $request->input('searchWord');
+            $searchStatus = $request->input('searchStatus');
+            $perPage = $request->input('perPage');
+            $page = $request->input('page');
 
 
-        $user = new User;
+            $user = new User;
 
-        $id = $request->input('id');
-        $name = $request->input('name');
-        $mobile = $request->input('mobile');
-        $email = $request->input('email');
-        $gubun = $request->input('gubun');
-        $status = $request->input('status');
-        $group = $request->input('group');
-        $birthday = $request->input('birthday');
-        $address = $request->input('address');
-        $joinday = $request->input('joinday');
-        $stopday = $request->input('stopday');
+            $id = $request->input('id');
+            $name = $request->input('name');
+            $mobile = $request->input('mobile');
+            $email = $request->input('email');
+            $gubun = $request->input('gubun');
+            $status = $request->input('status');
+            $group = $request->input('group');
+            $birthday = $request->input('birthday');
+            $address = $request->input('address');
+            $joinday = $request->input('joinday');
+            $stopday = $request->input('stopday');
 
-        $user->fill($request->input());
-        $user->where('id', $id)
-             ->update([
-                        'name' => $name,
-                        'email' => $email,
-                        'mobile' => $mobile,
-                        'gubun' =>  $gubun,
-                        'status' => $status,
-                        'group' => $group,
-                        'address' => $address,
-                        'birthday' => $birthday,
-                        'joinday' => $joinday,
-                        'stopday' => $stopday
-                        ]);
+            $user->fill($request->input());
+            $user->where('id', $id)
+                ->update([
+                            'name' => $name,
+                            'email' => $email,
+                            'mobile' => $mobile,
+                            'gubun' =>  $gubun,
+                            'status' => $status,
+                            'group' => $group,
+                            'address' => $address,
+                            'birthday' => $birthday,
+                            'joinday' => $joinday,
+                            'stopday' => $stopday
+                            ]);
 
-        //기존 클래스 조회
-        $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
+            //기존 클래스 조회
+            $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
 
-        //기존 클래스 정보 삭제
-        ClassCategoryUser::where('user_id',$id)->delete();
+            //기존 클래스 정보 삭제
+            ClassCategoryUser::where('user_id',$id)->delete();
 
-        //신규 클래스 등록
-        $classCategory = $request->input('class_category_id');
-        foreach($classCategory as $cate){
-            $classUser = new ClassCategoryUser();
-            $classUser->user_id = $id;
-            $classUser->class_category_id = $cate;
+            //신규 클래스 등록
+            $classCategory = $request->input('class_category_id');
+            foreach($classCategory as $cate){
+                $classUser = new ClassCategoryUser();
+                $classUser->user_id = $id;
+                $classUser->class_category_id = $cate;
 
-            $classUser->save();
+                $classUser->save();
 
+            }
+
+            //기존 클래스 존재시 업데이트(주,보조강사 횟수)
+            foreach($oldClassCategory as $cate){
+                $cate->where('user_id', $cate->user_id)
+                    ->where('class_category_id', $cate->class_category_id)
+                    ->update([
+                                'main_count' => $cate->main_count,
+                                'sub_count' =>  $cate->sub_count,
+                                'user_grade' =>  $cate->user_grade,
+                            ]);
+            }
+            //dd(DB::getQueryLog());
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return view('errors.500');
         }
 
-        //기존 클래스 존재시 업데이트(주,보조강사 횟수)
-        foreach($oldClassCategory as $cate){
-            $cate->where('user_id', $cate->user_id)
-                 ->where('class_category_id', $cate->class_category_id)
-                 ->update([
-                            'main_count' => $cate->main_count,
-                            'sub_count' =>  $cate->sub_count
-                        ]);
-        }
-        //dd(DB::getQueryLog());
+        return redirect()->route('mgmt.member.list', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
 
-        return redirect()->route('mgmt.member.detail', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
-
-        //return redirect()->route('member.detail',['id' =>$id])->with(['perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
-
-        //return Redirect::route('member.detail',['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page ]);
     }
 
 

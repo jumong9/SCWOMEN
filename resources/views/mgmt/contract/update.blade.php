@@ -195,7 +195,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-10 input-group-sm">
-                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="" required >
+                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="" >
                                         </div>
                                     </div>
                                 </td>

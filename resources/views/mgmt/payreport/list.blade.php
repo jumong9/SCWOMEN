@@ -91,7 +91,7 @@
                 {{ $classList->withQueryString()->links() }}
             </div>
             <div class="row-fluid" style="text-align: right;">
-                <button class="btn btn-primary" type="button" name="payButton" id="payButton">엑셀다운로드</button>
+                <button class="btn btn-primary" type="button" name="exportExcelButton" id="exportExcelButton">엑셀다운로드</button>
             </div>
         </div>
     </div>
@@ -121,34 +121,10 @@
 
             });
 
-            $("#payButton").click(function(e){
-
-                if($("input:checkbox[name=id]:checked").length == 0){
-                    alert("지급완료 할 목록을 선택해 주세요.")
-                    return false;
-                }
-
-                var checkIds = [];
-                $.each($("input:checkbox[name=id]:checked"), function(){
-                    checkIds.push($(this).val());
-                });
-
-                $.ajax({
-                    type : "post",
-                    url : "{{ route('mgmt.payment.updatePayment') }}",
-                    data : {
-                        _token: "{{csrf_token()}}",
-                        'contract_class_id' : checkIds.join(","),
-                    },
-                    success : function(data){
-                        alert(data.msg);
-                        $("#searchButton").trigger("click");
-                    },
-                    error : function(xhr, exMessage) {
-                        alert('error');
-                    },
-                });
-
+            $("#exportExcelButton").click(function(e){
+                $("#searchForm").attr("action", "{{ route('mgmt.payreport.exportExcel') }}");
+                $("#searchForm").submit();
+                $("#searchForm").attr("action", "{{route('mgmt.payreport.list') }}");
             });
 
         });

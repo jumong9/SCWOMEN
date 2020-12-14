@@ -59,7 +59,7 @@ class PayReportController extends Controller{
                                             , DB::raw('round((case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END)*0.003) AS r_tax')
                                             , DB::raw('(case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END ) - round((case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END )*0.033) AS pay')
                                     )
-                                    ->where('contract_classes.class_status', '>', '2')
+                                    ->where('contract_classes.class_status', '>', '0')
                                     ->where(function ($query) use ($searcFromDate, $searcToDate){
 
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){

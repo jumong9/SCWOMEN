@@ -75,7 +75,7 @@
                             <td>{{ $list->class_order}}</td>
                             <td>{{ $list->main_yn == 0 ? '보조강사' : '주강사' }}</td>
                             <td>{{ number_format($list->lector_cost) }}</td>
-                            <td>{{ number_format($list->material_cost) }}</td>
+                            <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td>
                             <td>{{ $list->class_status_value }}</td>
                             <td>{{ date_format($list->updated_at,'Y-m-d')}}</td>
                         @endforeach

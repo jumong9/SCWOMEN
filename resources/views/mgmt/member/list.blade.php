@@ -60,6 +60,7 @@
                             <th>기수</th>
                             <th>강사명</th>
                             <th>강사단명</th>
+                            <th>등급</th>
                             <th>주강사</th>
                             <th>보조강사</th>
                             <th>핸드폰</th>
@@ -90,6 +91,7 @@
                             <td>{{ $member->group }}</td>
                             <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
+                            <td>{{ $member->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
                             <td>{{ number_format($member->main_count) }}</td>
                             <td>{{ number_format($member->sub_count) }}</td>
                             <td>{{ $member->mobile }}</td>

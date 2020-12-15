@@ -125,7 +125,7 @@ class MemberController extends Controller{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select('users.id', 'users.group', 'users.name', 'users.mobile'
                                 , 'users.email', 'users.grade','users.gubun','users.status','users.created_at'
-                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count')
+                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_grade')
                         ->where('users.grade', '<', 90)
                         ->where(function($query) use ($request){
                             $searchType = $request->input('searchType');
@@ -331,6 +331,23 @@ class MemberController extends Controller{
          }
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
+
+
+     public function updateClassCategory(Request $request){
+        // DB::enableQueryLog();
+         $user_id = $request->input('checkedItemId');
+         $grade = $request->input('grade');
+         $cate_id = $request->input('cate_id');
+
+         ClassCategoryUser::where('class_category_id', $cate_id)
+                            ->where('user_id', $user_id)
+                            ->update([
+                                'user_grade'=>$grade
+                            ]);
+      //   dd(DB::getQueryLog());
+         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+     }
+
 
      public function export(){
          return Excel::download(new ExportsUserExcelExport, 'users.xlsx');

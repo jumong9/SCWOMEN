@@ -150,12 +150,17 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\member\MemberController@deleteUser'
     ]);
 
-    //멤버관리 삭제처리
+    //멤버관리 엑셀 export
     Route::match(['get','post'],'member/export',[
         'as' => 'mgmt.member.export',
         'uses' => 'App\Http\Controllers\mgmt\member\MemberController@export'
     ]);
 
+    //멤버관리 승인처리
+    Route::match(['get','post'],'member/updateClassCategory',[
+        'as' => 'mgmt.member.updateClassCategory',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@updateClassCategory'
+    ]);
 
 
 

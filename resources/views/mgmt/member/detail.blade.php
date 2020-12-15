@@ -84,7 +84,14 @@
                         </tr>
                         <tr >
                             <th>등급</th>
-                            <td>{{ $classCategory->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
+                            <td>{{ $classCategory->user_grade == 0 ? '일반강사' : '반장강사' }}
+                                @if ($classCategory->user_grade == 0 )
+                                    &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="leaderButton">반장강사로 변경</button>
+                                @endif
+                                @if ($classCategory->user_grade == 10 )
+                                    &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="normalButton">일반강사로 변경</button>
+                                @endif
+                            </td>
                             @if ($member[0]->status == 6 || $member[0]->status ==9)
                             <th>보류/중단일</th>
                             <td>{{ $member[0]->stopday}}</td>
@@ -125,7 +132,51 @@
         $(document).ready(function() {
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
-            //승인처리
+
+            $("#leaderButton").click(function(){
+                if(confirm("반장 강사로 변경 하시겠습니까?")){
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('mgmt.member.updateClassCategory') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'checkedItemId' : {{ $member[0]->id }},
+                            'grade' : 10,
+                            'cate_id' : {{$classCategory->class_category_id}},
+                        },
+                        success : function(data){
+                            alert(data.msg);
+                            location.reload();
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    })
+                }
+            });
+
+            $("#normalButton").click(function(){
+                if(confirm("일반 강사로 변경 하시겠습니까?")){
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('mgmt.member.updateClassCategory') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'checkedItemId' : {{ $member[0]->id }},
+                            'grade' : 0,
+                            'cate_id' : {{$classCategory->class_category_id}},
+                        },
+                        success : function(data){
+                            alert(data.msg);
+                            location.reload();
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    })
+                }
+            });
+
             $("#approvalButton").click(function(){
 
                 if(confirm("승인 처리 하시겠습니까?")){
@@ -134,7 +185,8 @@
                         url : "{{ route('mgmt.member.updateApproval') }}",
                         data : {
                             _token: "{{csrf_token()}}",
-                            'checkedItemId' : {{ $member[0]->id }}
+                            'checkedItemId' : {{ $member[0]->id }},
+                            'cate_id' : {{$classCategory->class_category_id}},
                         },
                         success : function(data){
                             alert(data.msg);
@@ -156,7 +208,8 @@
                         url : "{{ route('mgmt.member.deleteUser') }}",
                         data : {
                             _token: "{{csrf_token()}}",
-                            'checkedItemId' : {{ $member[0]->id }}
+                            'checkedItemId' : {{ $member[0]->id }},
+                            'cate_id' : {{$classCategory->class_category_id}},
                         },
                         success : function(data){
                             alert(data.msg);

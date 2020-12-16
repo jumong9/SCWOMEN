@@ -35,7 +35,7 @@
                         --}}
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
                         <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
-                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
+                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="계약번호">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
                 </div>
@@ -50,6 +50,7 @@
                             <th>
                                     <input type="checkbox" id="selectAllCheck">
                             </th>
+                            <th>계약번호</th>
                             <th>활동일자</th>
                             <th>시간</th>
                             <th>수요처</th>
@@ -72,6 +73,7 @@
                                     <input type="checkbox" name="id" id="id" value="{{ $list->id }}" data-class_id={{ $list->class_category_id }}>
                                 @endif
                             </td>
+                            <td>{{ $list->contract_id}}</td>
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>

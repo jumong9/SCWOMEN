@@ -45,6 +45,7 @@
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
+                            <th>계약번호</th>
                             <th>구분</th>
                             <th>수요처</th>
                             <th>담당자</th>
@@ -59,6 +60,7 @@
                     <tbody>
                         @foreach($contractList as $key => $list)
                         <tr>
+                            <td>{{ $list->id}}</td>
                             <td>
                                 @switch($list->gubun)
                                     @case(1)
@@ -86,8 +88,8 @@
                             <td><a href="{{ route ('mgmt.contract.read', ['id'=>$list->id, 'perPage'=>$contractList->perPage(), 'page'=>$contractList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->client_name }}</a></td>
                             <td>{{ $list->name}}</td>
                             <td>{{ $list->phone}}</td>
-                            <td>{{ $list->class_total_cost}}</td>
-                            <td>{{ $list->material_total_cost}}</td>
+                            <td>{{ number_format($list->class_total_cost) }}</td>
+                            <td>{{ number_format($list->material_total_cost) }}</td>
                             <td>{{ $list->paid_yn == 0 ? '미입금' : '입금완료' }}</td>
                             <td>{{ $list->code_value}}</td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>

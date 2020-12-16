@@ -41,14 +41,20 @@ class LectureController extends Controller{
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
+                                            , 'contracts.id as contract_id'
                                             )
                                     ->where('contracts.status','>',1)
-                                    ->where('b.name','LIKE',"{$searchWord}%")
+                                   // ->where('contracts.id', "{$searchWord}")
                                     ->where(function ($query) use ($request){
                                         $searcFromDate = $request->input('searcFromDate');
                                         $searcToDate = $request->input('searcToDate');
+                                        $searchWord = $request->input('searchWord');
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
                                             $query->whereBetween('contract_classes.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+
+                                        if(!empty($searchWord)){
+                                            $query->where('contracts.id', "{$searchWord}");
                                         }
                                     })
                                     ->orderBy('contract_classes.created_at', 'desc')

@@ -45,10 +45,10 @@ class CalculatorExport implements FromQuery, WithHeadings{
                                             ,  DB::raw('case when c.main_yn = 1 then c.main_count else c.sub_count END')
                                             ,  'contract_classes.class_count'
                                             ,  'contract_classes.class_order'
-                                            , DB::raw('(case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END ) AS tot')
-                                            , DB::raw('round((case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END)*0.03) AS i_tax')
-                                            , DB::raw('round((case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END)*0.003) AS r_tax')
-                                            , DB::raw('(case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END ) - round((case when c.main_yn = 1 then c.lector_cost + contract_classes.material_cost ELSE c.lector_cost END )*0.033) AS pay')
+                                            , 'c.lector_cost as tot'
+                                            , DB::raw('round(c.lector_cost * 0.03) AS i_tax')
+                                            , DB::raw('round(c.lector_cost * 0.003) AS r_tax')
+                                            , DB::raw('c.lector_cost - round(c.lector_cost * 0.033) AS pay')
                                             , 'd.client_name'
                                             , 'b.class_name'
                                             , 'f.code_value as class_status_value'

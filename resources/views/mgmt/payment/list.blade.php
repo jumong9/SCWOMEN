@@ -61,7 +61,7 @@
                             <th>강사명</th>
                             <th>자격</th>
                             <th>강사비</th>
-                            <th>재료비</th>
+                             {{-- <th>재료비</th> --}}
                             <th>진행상태</th>
                             <th>등록일</th>
                         </tr>
@@ -85,7 +85,7 @@
                             <td>{{ $list->name}}</td>
                             <td>{{ $list->main_yn == 0 ? '보조강사' : '주강사' }}</td>
                             <td>{{ number_format($list->lector_cost) }}</td>
-                            <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td>
+                            {{-- <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td> --}}
                             <td>{{ $list->class_status_value }}</td>
                             <td>{{ date_format($list->updated_at,'Y-m-d')}}</td>
                         @endforeach

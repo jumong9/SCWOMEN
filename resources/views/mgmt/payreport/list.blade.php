@@ -55,7 +55,7 @@
                             <th>횟수</th>
                             <th>차수</th>
                             <th>강사비</th>
-                            <th>재료비</th>
+                            {{-- <th>재료비</th> --}}
                             <th>총액</th>
                             <th>소득세</th>
                             <th>주민세</th>
@@ -77,7 +77,7 @@
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
                             <td>{{ number_format($list->lector_cost) }}</td>
-                            <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td>
+                            {{-- <td>{{ $list->main_yn == 1 ? number_format($list->material_cost) : 0 }}</td> --}}
                             <td>{{ number_format( $list->tot ) }} </td>
                             <td>{{ number_format( $list->i_tax ) }} </td>
                             <td>{{ number_format( $list->r_tax ) }} </td>

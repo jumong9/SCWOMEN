@@ -141,6 +141,7 @@ class ContractController extends Controller{
                                             , 'c.sub_count')
                                    ->where('contract_classes.contract_id', $id)
                                    ->orderBy('contract_classes.class_day', 'asc')
+                                   ->orderBy('contract_classes.class_category_id', 'asc')
                                    ->orderBy('contract_classes.time_from', 'asc')
                                    ->orderBy('c.main_yn', 'desc')
                                    ->get();

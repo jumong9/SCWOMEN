@@ -101,10 +101,21 @@
             </div>
         </div>
 
-        <span>신청 강좌</span>
-        <div class="card shadow mb-4">
 
-            <div class="card-body">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                <a class="nav-link active" id="classinfo-tab" data-toggle="tab" href="#classinfo" role="tab" aria-controls="classinfo" aria-selected="true">신청강좌</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" id="lectorinfo-tab" data-toggle="tab" href="#lectorinfo" role="tab" aria-controls="lectorinfo" aria-selected="false">강사배정목록</a>
+                </li>
+            </ul>
+
+
+        {{-- <span>신청 강좌</span> --}}
+        <div class="card shadow mb-4 mt-1 tab-content" id="myTabContent">
+
+            <div class="card-body tab-pane fade show active" id="classinfo" role="tabpanel" aria-labelledby="classinfo-tab">
                 <div class="table">
                     <table class="table-sm table-hover" width="100%" cellspacing="0">
                         <thead class="thead-light">
@@ -183,6 +194,60 @@
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>
+
+            <div class="card-body tab-pane fade" id="lectorinfo" role="tabpanel" aria-labelledby="lectorinfo-tab">
+                <div class="table">
+                    <table class="table-sm table-hover" width="100%" cellspacing="0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width:100px;">활동일자</th>
+                                <th style="width:120px;">시간</th>
+                                <th style="width:160px;">프로그램</th>
+                                <th style="width:160px;">교육대상</th>
+                                <th style="width:80px;">강사명</th>
+                                <th style="width:80px;">구분</th>
+                                <th style="width:80px;">주횟수</th>
+                                <th style="width:80px;">보조횟수</th>
+                            </tr>
+                        </thead>
+                        <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
+                            @foreach($lectorList as $key => $list)
+                            <tr>
+
+                                <td>
+                                    {{ $list->class_day }}
+                                </td>
+                                <td>
+                                    {{$list->time_from}} - {{$list->time_to}}
+                                </td>
+                                <td>
+                                    {{$list->class_name}}
+                                </td>
+                                <td>
+                                    {{$list->class_target}}
+                                </td>
+                                <td>
+                                    {{$list->user_name}}
+                                </td>
+                                <td>
+                                    {{$list->main_yn == 0 ? '보조강사' : '주강사'}}
+                                </td>
+                                <td>
+                                    {{number_format($list->main_count)}}
+                                </td>
+                                <td>
+                                    {{number_format($list->sub_count)}}
+                                </td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row-fluid" style="text-align: right;">
+                    <button class="btn btn-primary" type="button"  id="listButton2">목록</button>
+                </div>
+            </div>
         </div>
 @endsection
 
@@ -196,7 +261,7 @@
 
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
-            $("#listButton").click(function(){
+            $("#listButton, #listButton2").click(function(){
                 location.href='{{ route('mgmt.contract.list')}}' + params ;
             });
 
@@ -225,6 +290,18 @@
                     });
                 }
             });
+
+            // $('#myTab a').on('click', function (e) {
+            //     e.preventDefault()
+            //     var selId = $(this).attr('id');
+            //     $("#"+selId).show();
+
+            //     $(this).addClass("active");
+            //     $(this).tab('show');
+            //     //$(this).siblings().removeClass("active");
+            //     //$(this).siblings().tab('hide');
+            // })
+           // $('#class-tab a[href="#class"]').tab('show');
 
         });
 

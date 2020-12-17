@@ -4,6 +4,7 @@ namespace App\Http\Controllers\mgmt\contract;
 
 use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
+use App\Models\ClassLector;
 use App\Models\Client;
 use App\Models\CommonCode;
 use App\Models\ContractClass;
@@ -125,8 +126,27 @@ class ContractController extends Controller{
                             )
                             ->where('clients.id', $client_id)->get();
 
+        $lectorList = ContractClass::join('class_lectors as c', 'contract_classes.id', '=', 'c.contract_class_id')
+                                   ->join('users as d', 'c.user_id', '=', 'd.id')
+                                   ->join('class_categories as e' , 'e.id' ,'=', 'contract_classes.class_category_id')
+                                   ->select('contract_classes.contract_id'
+                                            , 'contract_classes.class_day'
+                                            , 'contract_classes.time_from'
+                                            , 'contract_classes.time_to'
+                                            , 'contract_classes.class_target'
+                                            , 'e.class_name'
+                                            , 'd.name as user_name'
+                                            , 'c.main_yn'
+                                            , 'c.main_count'
+                                            , 'c.sub_count')
+                                   ->where('contract_classes.contract_id', $id)
+                                   ->orderBy('contract_classes.class_day', 'asc')
+                                   ->orderBy('contract_classes.time_from', 'asc')
+                                   ->orderBy('c.main_yn', 'desc')
+                                   ->get();
+
 //dd(DB::getQueryLog());
-        return view('mgmt.contract.read', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('mgmt.contract.read', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'lectorList'=>$lectorList, 'contract'=>$contract[0], 'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
     }
 
 

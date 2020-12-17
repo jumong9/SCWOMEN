@@ -33,6 +33,7 @@
                                 <option value="{{$user->user_id}}" >{{$user->group}}기 {{$user->user_name}} {{$user->user_status == 2? '강사' : '프리랜서'}} ( 주 {{$user->main_count}}회  보조 {{$user->sub_count}}회 )</option>
                             @endforeach
                         </select>
+                        <br>Ctrl키를 누른 상태로 멀티 선택/해제 가능
                     </div>
                 </div>
                 </div>

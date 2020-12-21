@@ -24,10 +24,10 @@
 
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="">공지사항</a>
+                        <a class="nav-link" href="{{ route('common.board.list')}}?board_id=notice">공지사항</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">서식자료함</a>
+                        <a class="nav-link" href="{{ route('common.board.list')}}?board_id=documents">서식자료함</a>
                     </li>
 
                 @if (Auth::user()->grade >=90 )

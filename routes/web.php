@@ -366,6 +366,15 @@ Route::middleware(['managermiddle'])->group(function(){
 //로그인 유저 권한 메뉴
 Route::middleware(['auth'])->group(function(){
 
+
+    //파일다운
+    Route::match(['get','post'],'common/file/fileDown',[
+        'as' => 'common.file.fileDown',
+        'uses' => 'App\Http\Controllers\common\file\FileUtilController@fileDown'
+    ]);
+
+
+
     //개인정보 수정화면
     Route::match(['get','post'],'auth/myinfo/update',[
         'as' => 'auth.myinfo.update',
@@ -479,7 +488,48 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //게시판 목록
+    Route::match(['get','post'], 'common/board/list',[
+        'as' => 'common.board.list',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@list'
+    ]);
 
+
+    //게시판 등록 화면
+    Route::match(['get','post'], 'common/board/create',[
+        'as' => 'common.board.create',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@create'
+    ]);
+
+    //게시판 등록 화면
+    Route::match(['get','post'], 'common/board/createDo',[
+        'as' => 'common.board.createDo',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@createDo'
+    ]);
+
+    //게시판 상세 화면
+    Route::match(['get','post'], 'common/board/read',[
+        'as' => 'common.board.read',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@read'
+    ]);
+
+    //게시판 수정화면
+    Route::match(['get','post'], 'common/board/update',[
+        'as' => 'common.board.update',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@update'
+    ]);
+
+    //게시판 수정
+    Route::match(['get','post'], 'common/board/updateDo',[
+        'as' => 'common.board.updateDo',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@updateDo'
+    ]);
+
+    //게시판 삭제
+    Route::match(['get','post'], 'common/board/delete',[
+        'as' => 'common.board.delete',
+        'uses' => 'App\Http\Controllers\common\board\BoardController@delete'
+    ]);
 
 });
 

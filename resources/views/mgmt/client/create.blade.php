@@ -21,7 +21,7 @@
                     </colgroup>
                     <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                         <tr>
-                            <th>수요처명</th>
+                            <th><span class="text-danger">*</span>수요처명</th>
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <th>구분</th>
+                            <th><span class="text-danger">*</span>구분</th>
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">

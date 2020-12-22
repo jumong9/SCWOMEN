@@ -28,7 +28,7 @@
                         </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
-                                <th>제목</th>
+                                <th><span class="text-danger">*</span>제목</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-9">
@@ -38,11 +38,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>내용</th>
+                                <th><span class="text-danger">*</span>내용</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-9">
-                                            <textarea class="form-control" id="board_contents" name="board_contents" rows="9">{{ $boardInfo->board_contents }}</textarea>
+                                            <textarea class="form-control" id="board_contents" name="board_contents" rows="9" required>{{ $boardInfo->board_contents }}</textarea>
                                         </div>
                                     </div>
                                 </td>

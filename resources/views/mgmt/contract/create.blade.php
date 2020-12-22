@@ -34,7 +34,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th >담당자</th>
+                                <th ><span class="text-danger">*</span>담당자</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6 input-group-sm">
@@ -170,16 +170,16 @@
                     <table class="table-sm" id="" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width:100px;">활동일자</th>
-                                <th style="width:120px;">시간</th>
-                                <th style="width:160px;">프로그램</th>
-                                <th style="width:160px;">교육대상</th>
-                                <th style="width:80px;">인원</th>
-                                <th style="width:80px;">횟수</th>
-                                <th style="width:80px;">차수</th>
-                                <th style="width:80px;">주강사수</th>
-                                <th style="width:80px;">보조강사수</th>
-                                <th style="width:100px;">수업방식</th>
+                                <th style="width:100px;"><span class="text-danger">*</span>활동일자</th>
+                                <th style="width:120px;"><span class="text-danger">*</span>시간</th>
+                                <th style="width:160px;"><span class="text-danger">*</span>프로그램</th>
+                                <th style="width:160px;"><span class="text-danger">*</span>교육대상</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>인원</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>횟수</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>차수</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>주강사수</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>보조강사수</th>
+                                <th style="width:100px;"><span class="text-danger">*</span>수업방식</th>
                                 <th style="width:100px;"></th>
                             </tr>
                         </thead>
@@ -188,7 +188,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-10 input-group-sm">
-                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="" required >
+                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$today}}" required >
                                         </div>
                                     </div>
                                 </td>

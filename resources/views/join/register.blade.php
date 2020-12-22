@@ -12,9 +12,9 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('이름') }}</label>
+                            <label for="name" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('이름') }}</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -25,9 +25,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('이메일') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('이메일') }}</label>
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required placeholder="로그인시 사용 할 이메일">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -38,10 +38,9 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('비밀번호') }}</label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('비밀번호') }}</label>
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required placeholder="8자 이상 입력">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -51,18 +50,18 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('비밀번호확인') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('비밀번호확인') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
 
 
                         <div class="form-group row">
-                            <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('핸드폰') }}</label>
+                            <label for="mobile" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('핸드폰') }}</label>
                             <div class="col-md-6">
-                                <input id="mobile" type="text" class="form-control @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required autocomplete="mobile" >
+                                <input id="mobile" type="text" class="form-control @error('mobile') is-invalid @enderror" name="mobile" value="{{ old('mobile') }}" required placeholder="010-XXXX-XXXX">
 
                                 @error('mobile')
                                     <span class="invalid-feedback" role="alert">
@@ -73,7 +72,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="class" class="col-md-4 col-form-label text-md-right">{{ __('강사단') }}</label>
+                            <label for="class" class="col-md-4 col-form-label text-md-right"><span class="text-danger">*</span>{{ __('강사단') }}</label>
                             <div class="col-md-6">
                                 <select name="class_category_id" id="class_category_id" class="form-control">
                                     {{-- @foreach($items as $key=>$value)
@@ -89,7 +88,7 @@
                         <div class="form-group row">
                             <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('강사단기수') }}</label>
                             <div class="col-md-6">
-                                <input id="group" type="text" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ old('group') }}" required autocomplete="group" >
+                                <input id="group" type="text" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ old('group') }}" >
 
                                 @error('group')
                                     <span class="invalid-feedback" role="alert">
@@ -102,21 +101,21 @@
                         <div class="form-group row">
                             <label for="birthday" class="col-md-4 col-form-label text-md-right">{{ __('생년월일') }}</label>
                             <div class="col-md-6">
-                                <input id="birthday" type="text" class="form-control datepicker @error('birthday') is-invalid @enderror" readonly name="birthday" value="{{ old('birthday') }}" autocomplete="birthday" >
+                                <input id="birthday" type="text" class="form-control datepicker @error('birthday') is-invalid @enderror" readonly name="birthday" value="{{ old('birthday') }}" >
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="zipcode" class="col-md-4 col-form-label text-md-right">{{ __('우편번호') }}</label>
                             <div class="col-md-6">
-                                <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}" autocomplete="zipcode" >
+                                <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}"  >
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('주소') }}</label>
                             <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" autocomplete="address" >
+                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" >
                             </div>
                         </div>
 
@@ -136,3 +135,4 @@
     </div>
 </div>
 @endsection
+

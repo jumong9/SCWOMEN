@@ -187,7 +187,7 @@
                         </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
-                                <th>교육시간</th>
+                                <th><span class="text-danger">*</span>교육시간</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2 input-group-sm" style="padding-right: 2px;">
@@ -198,7 +198,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <th>교육장소</th>
+                                <th><span class="text-danger">*</span>교육장소</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -208,27 +208,27 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>교육내용</th>
+                                <th><span class="text-danger">*</span>교육내용</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3">{{ $calssReport->class_contents }}</textarea>
+                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3" required>{{ $calssReport->class_contents }}</textarea>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th>강사소견 및 평가</th>
+                                <th><span class="text-danger">*</span>강사소견 및 평가</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3">{{ $calssReport->class_rating }}</textarea>
+                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3" required>{{ $calssReport->class_rating }}</textarea>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th>사진자료</th>
+                                <th><span class="text-danger">*</span>사진자료</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-10">

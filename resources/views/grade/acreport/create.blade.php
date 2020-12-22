@@ -187,18 +187,18 @@
                         </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
-                                <th>교육시간</th>
+                                <th><span class="text-danger">*</span>교육시간</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-2 input-group-sm" style="padding-right: 2px;">
-                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$contentsList[0]->time_from}}"  >
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$contentsList[0]->time_from}}" required >
                                         </div>
                                         <div class="col-md-2 input-group-sm" style="padding-left: 2px;">
-                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$contentsList[0]->time_to}}" >
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$contentsList[0]->time_to}}" required>
                                         </div>
                                     </div>
                                 </td>
-                                <th>교육장소</th>
+                                <th><span class="text-danger">*</span>교육장소</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -208,27 +208,27 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>교육내용</th>
+                                <th><span class="text-danger">*</span>교육내용</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3"></textarea>
+                                            <textarea class="form-control" id="class_contents" name="class_contents" rows="3" required></textarea>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th>강사소견 및 평가</th>
+                                <th><span class="text-danger">*</span>강사소견 및 평가</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-8">
-                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3"></textarea>
+                                            <textarea class="form-control" id="class_rating" name="class_rating" rows="3" required></textarea>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th>사진자료</th>
+                                <th><span class="text-danger">*</span>사진자료</th>
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-10">

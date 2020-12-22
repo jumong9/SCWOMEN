@@ -34,9 +34,10 @@ class ContractController extends Controller{
 
         $codelist = CommonCode::getCommonCode('contract_status');
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
+        $today = date("Y-m-d", time());
 
         $result[0]->id = $id;
-        return view('mgmt.contract.create', ['pageTitle'=>$this->pageTitle, 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems ]);
+        return view('mgmt.contract.create', ['pageTitle'=>$this->pageTitle, 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems, 'today'=>$today ]);
     }
 
 
@@ -214,8 +215,9 @@ class ContractController extends Controller{
         $codelist = CommonCode::getCommonCode('contract_status');
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
+        $today = date("Y-m-d", time());
 
-        return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus,  'today'=>$today]);
     }
 
 

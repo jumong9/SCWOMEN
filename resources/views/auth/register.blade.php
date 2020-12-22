@@ -8,13 +8,13 @@
                 <div class="card-header">{{ __('가입신청') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('auth.register') }}">
+                    <form method="POST" id="searchForm" action="{{ route('auth.register') }}" onsubmit="return searchFormSubmit();" >
                         @csrf
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('이름') }}</label>
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -124,7 +124,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" id="createButton">
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -136,3 +136,46 @@
     </div>
 </div>
 @endsection
+
+
+
+@section('scripts')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script>
+
+        $(document).ready(function() {
+
+            searchFormSubmit = function(){
+                alert('searchForm');
+                return true;
+            }
+
+            $("#createButton").click(function(){
+
+                alert(1);
+                $("#searchForm").validate({
+                    rules: {
+                        name: {
+                            required:true
+                        }
+                    },
+                    messages : {
+                        name: {
+                            required : '이름을 입력해 주세요.'
+                        }
+                    }
+                });
+
+                return ture;
+            });
+
+
+        });
+
+    </script>
+
+
+@endsection
+

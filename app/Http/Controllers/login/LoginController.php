@@ -37,9 +37,9 @@ class LoginController extends Controller{
 
         //관리자 메인페이지
         if(90 <= Auth::user()->grade){
-            return redirect()->route('mgmt.member.list');
+            return redirect()->route('common.board.list');
         }else{
-            return redirect()->route('grade.mylecture.list');
+            return redirect()->route('common.board.list');
         }
 
     }

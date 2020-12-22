@@ -55,7 +55,7 @@ class PaymentController extends Controller{
                                             , 'f.code_value as class_status_value'
                                             , 'e.name'
                                     )
-                                    ->where('contract_classes.class_status', '>', '2')
+                                    ->where('contract_classes.class_status', '>', '0')
                                     ->where(function ($query) use ($searcFromDate, $searcToDate){
 
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){

@@ -78,7 +78,7 @@
                         </tr>
                         <tr>
                             <th>주소지</th>
-                            <td>{{ $member[0]->address}}</td>
+                            <td>{{ $member[0]->zipcode}} {{ $member[0]->address}}</td>
                             <th>입단일</th>
                             <td>{{ $member[0]->joinday}}</td>
                         </tr>

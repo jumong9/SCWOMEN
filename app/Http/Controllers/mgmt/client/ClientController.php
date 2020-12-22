@@ -37,7 +37,7 @@ class ClientController extends Controller{
 
         $clients->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
-        return view('mgmt.client.list', ['contentslist'=>$clients, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
+        return view('mgmt.client.list', ['contentslist'=>$clients, 'pageTitle'=>$this->pageTitle, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
 
     }
 
@@ -53,7 +53,7 @@ class ClientController extends Controller{
 
         $codelist = CommonCode::getCommonCode('client_gubun');
         //dd(DB::getQueryLog());
-        return view('mgmt.client.create', [ 'commonCode'=> $codelist ]);
+        return view('mgmt.client.create', [ 'commonCode'=> $codelist, 'pageTitle'=>$this->pageTitle ]);
     }
 
     /**
@@ -119,7 +119,7 @@ class ClientController extends Controller{
         //dd(DB::getQueryLog());
         $result[0]->id=$id;
 
-        return view('mgmt.client.update', ['client'=>$result[0], 'commonCode'=> $codelist, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.client.update', ['client'=>$result[0], 'pageTitle'=>$this->pageTitle, 'commonCode'=> $codelist, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
 
 
@@ -148,6 +148,7 @@ class ClientController extends Controller{
                     'office_tel'=>$client->office_tel,
                     'office_fax'=>$client->office_fax,
                     'address'=>$client->address,
+                    'zipcode'=>$client->zipcode,
                 ]);
 
 

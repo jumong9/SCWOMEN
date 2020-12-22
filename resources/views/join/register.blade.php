@@ -106,20 +106,19 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="zipcode" class="col-md-4 col-form-label text-md-right">{{ __('우편번호') }}</label>
-                            <div class="col-md-6">
-                                <input id="zipcode" type="text" class="form-control @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}"  >
+                            <label for="zipcode" class="col-md-4 col-form-label text-md-right " >{{ __('우편번호') }}</label>
+                            <div class="col-md-3 row-fluid">
+                                <input id="zipcode" type="text" class="form-control postcodify_postcode5 @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}"  >
                             </div>
+                            <button class="btn btn-primary" type="button"  id="postcodify_search_button">조회</button>
                         </div>
 
                         <div class="form-group row">
                             <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('주소') }}</label>
                             <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" >
+                                <input id="address" type="text" class="form-control postcodify_address @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" >
                             </div>
                         </div>
-
-
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -136,3 +135,9 @@
 </div>
 @endsection
 
+@section('scripts')
+
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+
+@endsection

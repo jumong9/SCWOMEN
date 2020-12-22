@@ -53,7 +53,7 @@
                         <tr>
                             <th>주소지</th>
                             <td>
-                                {{ $client->address }}
+                                {{ $client->zipcode }} {{ $client->address }}
                             </td>
                             <td></td>
                             <td></td>

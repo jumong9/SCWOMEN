@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
+    <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
     <form name="searchForm" id="searchForm" action="{{route('mgmt.client.createDo') }}" onsubmit="return searchFormSubmit();" method="post" >
     @csrf
@@ -83,8 +83,12 @@
                             <th>주소지</th>
                             <td>
                                 <div class="row">
-                                    <div class="col-md-10">
-                                        <input id="address" type="text" class="form-control" name="address" value="" >
+                                    <div class="col-md-3">
+                                        <input id="zipcode" type="text" class="form-control postcodify_postcode5 @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ old('zipcode') }}"  >
+                                    </div>
+                                        <button class="btn btn-primary" type="button"  id="postcodify_search_button">조회</button>
+                                    <div class="col-md-10 mt-1">
+                                        <input id="address" type="text" class="form-control postcodify_address" name="address" value="" >
                                     </div>
                                 </div>
                             </td>
@@ -108,7 +112,8 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
     <!-- Custom scripts for all pages-->
     <script>
         $(document).ready(function() {

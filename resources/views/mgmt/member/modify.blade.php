@@ -103,8 +103,12 @@
                             <th>주소지</th>
                             <td>
                                 <div class="row">
-                                    <div class="col-md-10">
-                                        <input id="address" type="text" class="form-control" name="address" value="{{ $member[0]->address }}" >
+                                    <div class="col-md-3">
+                                        <input id="zipcode" type="text" class="form-control postcodify_postcode5" name="zipcode" value="{{ $member[0]->zipcode }}" >
+                                    </div>
+                                    <button class="btn btn-primary" type="button"  id="postcodify_search_button">조회</button>
+                                    <div class="col-md-10 mt-1">
+                                        <input id="address" type="text" class="form-control postcodify_address" name="address" value="{{ $member[0]->address }}" >
                                     </div>
                                 </div>
                             </td>
@@ -158,7 +162,8 @@
 
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-
+<script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
+<script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
     <!-- Custom scripts for all pages-->
     <script>
         $(document).ready(function() {

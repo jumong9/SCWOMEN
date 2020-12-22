@@ -236,6 +236,7 @@ class MemberController extends Controller{
             $group = $request->input('group');
             $birthday = $request->input('birthday');
             $address = $request->input('address');
+            $zipcode = $request->input('zipcode');
             $joinday = $request->input('joinday');
             $stopday = $request->input('stopday');
 
@@ -249,6 +250,7 @@ class MemberController extends Controller{
                             'status' => $status,
                             'group' => $group,
                             'address' => $address,
+                            'zipcode' => $zipcode,
                             'birthday' => $birthday,
                             'joinday' => $joinday,
                             'stopday' => $stopday

@@ -200,6 +200,10 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@updateDo'
     ]);
 
+    Route::match(['get','post'],'mgmt/client/exportExcel',[
+        'as' => 'mgmt.client.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@exportExcel'
+    ]);
 
     //계약관리 등록 화면
     Route::match(['get','post'],'mgmt/contract/create',[

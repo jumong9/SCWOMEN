@@ -14,6 +14,7 @@ class Client extends Model
         'gubun',
         'client_tel',
         'client_fax',
+        'client_loctype',
         'office_tel',
         'office_fax',
         'office_email',

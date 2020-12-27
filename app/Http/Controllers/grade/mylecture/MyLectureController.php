@@ -259,13 +259,13 @@ class MyLectureController extends Controller{
 
                         if($main_count >= 10){                      //주강사 10회 초과시
                             $lector_cost = 50000;
-                            if($class_order > 1){                   //추가시간
+                            if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                 $lector_cost += (25000*($class_order-1));
                             }
 
                         }else{
                             $lector_cost = 30000;
-                            if($class_order > 1){                   //추가시간
+                            if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                 $lector_cost += (10000*($class_order-1));
                             }
                         }
@@ -276,22 +276,29 @@ class MyLectureController extends Controller{
 
                             if($main_count >= 10){                      //주강사 10회 초과시
                                 $lector_cost = 50000;
-                                if($class_order > 1){                   //추가시간
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                     $lector_cost += (25000*($class_order-1));
                                 }
 
                             }else{                                      //10회 이하
                                 $lector_cost = 30000;
-                                if($class_order > 1){                   //추가시간
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                     $lector_cost += (10000*($class_order-1));
                                 }
                             }
 
                         } else {                                        //재방
 
-                            $lector_cost = 30000;
-                            if($class_order > 1){                       //추가시간
-                                $lector_cost += (30000*($class_order-1));
+                            if($main_count >= 10){                      //주강사 10회 초과시
+                                $lector_cost = 30000;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_cost += (30000*($class_order-1));
+                                }
+                            }else{                                      //10회 이하
+                                $lector_cost = 30000;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_cost += (10000*($class_order-1));
+                                }
                             }
 
                         }
@@ -302,7 +309,7 @@ class MyLectureController extends Controller{
 
                     if($class_type < 2){                                //오프라인, 온라인실시간
                         $lector_cost = 20000;
-                        if($class_order > 1){                           //추가시간
+                        if($class_order > 1){                           //추가시간 기본1보다 클경우에만 적용
                             $lector_cost += 10000;
                         }
                     } else {                                            //온라인동영상

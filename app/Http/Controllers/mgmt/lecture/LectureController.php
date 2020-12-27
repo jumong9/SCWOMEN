@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class LectureController extends Controller{
 
     public function __construct(){
-        $this->pageTitle = "강좌배정관리";
+        $this->pageTitle = "강사배정관리";
     }
 
 
@@ -46,6 +46,7 @@ class LectureController extends Controller{
                                     ->where('contracts.status','>',1)
                                    // ->where('contracts.id', "{$searchWord}")
                                     ->where(function ($query) use ($request){
+                                        $searchType = $request->input('searchType');
                                         $searcFromDate = $request->input('searcFromDate');
                                         $searcToDate = $request->input('searcToDate');
                                         $searchWord = $request->input('searchWord');
@@ -54,7 +55,11 @@ class LectureController extends Controller{
                                         }
 
                                         if(!empty($searchWord)){
-                                            $query->where('contracts.id', "{$searchWord}");
+                                            if('contract_id'==$searchType) {
+                                                $query->where('contracts.id', "{$searchWord}");
+                                            }elseif('client_name'==$searchType) {
+                                                $query->where('b.name', 'LIKE', "{$searchWord}%");
+                                            }
                                         }
                                     })
                                     ->orderBy('contract_classes.created_at', 'desc')

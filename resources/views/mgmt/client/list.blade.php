@@ -47,6 +47,7 @@
                         <tr>
                             <th>구분</th>
                             <th>수요처명</th>
+                            {{-- <th>지역구분</th> --}}
                             <th>대표전화</th>
                             <th>대표팩스</th>
                             <th>행정실전화</th>
@@ -59,30 +60,10 @@
                         @foreach($contentslist as $key => $list)
                         <tr>
                             <td>
-                                @switch($list->gubun)
-                                    @case(1)
-                                        초등학교
-                                        @break
-                                    @case(2)
-                                        중학교
-                                        @break
-                                    @case(3)
-                                        고등학교
-                                        @break
-                                    @case(4)
-                                        돌봄
-                                        @break
-                                    @case(5)
-                                        유아
-                                        @break
-                                    @case(6)
-                                        아파트
-                                        @break
-                                    @default
-                                        기타
-                                @endswitch
+                                {{ $list->client_gubun_value}}
                             </td>
                             <td><a href="{{ route ('mgmt.client.read', ['id'=>$list->id, 'perPage'=>$contentslist->perPage(), 'page'=>$contentslist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->name }}</a></td>
+                            {{-- <td>{{ $list->client_loctype_value}}</td> --}}
                             <td>{{ $list->client_tel}}</td>
                             <td>{{ $list->client_fax}}</td>
                             <td>{{ $list->office_tel}}</td>
@@ -96,6 +77,7 @@
                 {{ $contentslist->withQueryString()->links() }}
             </div>
             <div class="row-fluid" style="text-align: right;">
+                <button class="btn btn-primary" type="button" name="exportExcelButton" id="exportExcelButton">엑셀다운로드</button>
                 @if($searchStatus == 0)
                     <button class="btn btn-primary" type="button" name="createButton" id="createButton">등록</button>
                 @endif
@@ -132,7 +114,11 @@
                 location.href='{{ route('mgmt.client.create')}}';
             });
 
-
+            $("#exportExcelButton").click(function(e){
+                $("#searchForm").attr("action", "{{ route('mgmt.client.exportExcel') }}");
+                $("#searchForm").submit();
+                $("#searchForm").attr("action", "{{route('mgmt.client.list') }}");
+            });
 
 
         });

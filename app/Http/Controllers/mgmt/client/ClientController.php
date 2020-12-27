@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\mgmt\client;
 
+use App\Exports\ClientExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\CommonCode;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller{
 
@@ -31,7 +34,15 @@ class ClientController extends Controller{
 
 
         //DB::enableQueryLog();where('users.name','LIKE',"{$searchWord}%");
-        $clients = Client::where('clients.name','LIKE',"{$searchWord}%")
+        $clients = Client::join('common_codes as c', function($join){
+                                    $join->on('c.code_id','=', 'clients.gubun')
+                                        ->where('c.code_group', '=','client_gubun');
+                                    }
+                                )
+                            ->select('clients.*'
+                                    , 'c.code_value as client_gubun_value'
+                                    )
+                           ->where('clients.name','LIKE',"{$searchWord}%")
                            ->orderBy('clients.created_at', 'desc')
                            ->paginate($perPage);
 
@@ -86,8 +97,12 @@ class ClientController extends Controller{
                                          ->where('c.code_group', '=','client_gubun');
                                     }
                                 )
+                            ->select(
+                                  'clients.*',
+                                  'c.code_value as client_gubun_value',
+                                )
                             ->where('clients.id', $id)->get();
-        //dd(DB::getQueryLog());
+    //    dd(DB::getQueryLog());
         $result[0]->id=$id;
         return view('mgmt.client.read', ['client'=>$result[0] , 'pageTitle'=>$this->pageTitle, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
@@ -145,6 +160,7 @@ class ClientController extends Controller{
                     'gubun'=>$client->gubun,
                     'client_tel'=>$client->client_tel,
                     'client_fax'=>$client->client_fax,
+                    'client_loctype'=>$client->client_loctype,
                     'office_tel'=>$client->office_tel,
                     'office_fax'=>$client->office_fax,
                     'address'=>$client->address,
@@ -155,5 +171,15 @@ class ClientController extends Controller{
         //dd(DB::getQueryLog());
         return redirect()->route('mgmt.client.read', ['id'=>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
+
+
+
+    public function exportExcel(Request $request){
+        //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
+        return (new ClientExcelExport)->download('ClientReport.xlsx');
+
+    }
+
+
 
 }

@@ -209,7 +209,7 @@
                             <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
                         @endif
                     @endif
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
+                    {{-- <button class="btn btn-primary" type="button"  id="updateButton">수정</button> --}}
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>

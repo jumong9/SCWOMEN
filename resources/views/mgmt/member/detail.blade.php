@@ -130,7 +130,7 @@
     <!-- Custom scripts for all pages-->
     <script>
         $(document).ready(function() {
-            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
+            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchGrade={{$searchGrade}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
 
             $("#leaderButton").click(function(){

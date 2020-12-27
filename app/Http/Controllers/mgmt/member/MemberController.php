@@ -116,6 +116,7 @@ class MemberController extends Controller{
         DB::enableQueryLog();
 
         $searchType = $request->input('searchType');
+        $searchGrade = $request->input('searchGrade');
         $searchWord = $request->input('searchWord');
         $searchStatus = (null==$request->input('searchStatus') ) ? 99 : $request->input('searchStatus');
         $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
@@ -130,6 +131,7 @@ class MemberController extends Controller{
                         ->where(function($query) use ($request){
                             $searchType = $request->input('searchType');
                             $searchWord = $request->input('searchWord');
+                            $searchGrade = $request->input('searchGrade');
                             $searchStatus = (null==$request->input('searchStatus') ) ? 99 : $request->input('searchStatus');
 
                             if($searchStatus!=99){
@@ -137,12 +139,18 @@ class MemberController extends Controller{
                             }else{
                                 $query ->where('users.status', '>', 0);
                             }
+echo $searchGrade;
+                            if(""!=$searchGrade){
+                                $query ->where('class_category_user.user_grade', "{$searchGrade}");
+                            }
 
                             if(!empty($request->input('searchWord'))){
                                 if('name'==$searchType) {
                                     $query ->where('users.name','LIKE',"{$searchWord}%");
                                 }elseif('group'==$searchType){
                                     $query ->where('users.group', "{$searchWord}");
+                                }elseif('category'==$searchType){
+                                    $query ->where('class_categories.class_name','LIKE', "{$searchWord}%");
                                 }
                             }
 
@@ -151,10 +159,10 @@ class MemberController extends Controller{
                         ->paginate($perPage);
 
 
-     //   dd(DB::getQueryLog());
+ //       dd(DB::getQueryLog());
 
-        $member->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
-        return view('mgmt.member.list', ['userlist'=>$member, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
+        $member->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchGrade' => $searchGrade, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
+        return view('mgmt.member.list', ['userlist'=>$member, 'searchStatus'=>$searchStatus, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
 
     }
 
@@ -166,6 +174,7 @@ class MemberController extends Controller{
     public function detail(Request $request){
 
         $searchType = $request->input('searchType');
+        $searchGrade = $request->input('searchGrade');
         $searchWord = $request->input('searchWord');
         $searchStatus = $request->input('searchStatus');
         $perPage = $request->input('perPage');
@@ -182,7 +191,7 @@ class MemberController extends Controller{
                                             ->get();
         $member[0]->cate_id = $cate_id;
 
-        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory[0], 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory[0], 'perPage' => $perPage, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 
@@ -193,6 +202,7 @@ class MemberController extends Controller{
 
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
+        $searchGrade = $request->input('searchGrade');
         $searchStatus = $request->input('searchStatus');
         $perPage = $request->input('perPage');
         $page = $request->input('page');
@@ -206,7 +216,7 @@ class MemberController extends Controller{
 
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
-        return view('mgmt.member.modify', ['member'=>$member, 'classCategory' => $classCategory, 'classItems'=>$classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        return view('mgmt.member.modify', ['member'=>$member, 'classCategory' => $classCategory, 'classItems'=>$classItems, 'perPage' => $perPage, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 
@@ -220,6 +230,7 @@ class MemberController extends Controller{
 
             $searchType = $request->input('searchType');
             $searchWord = $request->input('searchWord');
+            $searchGrade = $request->input('searchGrade');
             $searchStatus = $request->input('searchStatus');
             $perPage = $request->input('perPage');
             $page = $request->input('page');
@@ -292,7 +303,7 @@ class MemberController extends Controller{
             return view('errors.500');
         }
 
-        return redirect()->route('mgmt.member.list', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
+        return redirect()->route('mgmt.member.list', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchGrade' => $searchGrade, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
 
     }
 

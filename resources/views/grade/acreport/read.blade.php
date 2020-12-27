@@ -213,7 +213,9 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
+                    @if ($contentsList[0]->class_status != '4')
+                        <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
+                    @endif
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>

@@ -27,17 +27,23 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <select class="form-control" name="searchStatus" id="searchStatus">
-                            <option value="99" {{ $searchStatus == 99 ? "selected" : "" }} >전체</option>
+                            <option value="99" {{ $searchStatus == 99 ? "selected" : "" }} >상태</option>
                             {{-- <option value="0" {{ $searchStatus == 0 ? "selected" : "" }} >승인대기</option> --}}
                             <option value="2" {{ $searchStatus == 2 ? "selected" : "" }} >활동중</option>
                             <option value="4" {{ $searchStatus == 4 ? "selected" : "" }} >프리랜서</option>
                             <option value="6" {{ $searchStatus == 6 ? "selected" : "" }} >활동보류</option>
                             <option value="8" {{ $searchStatus == 8 ? "selected" : "" }} >활동중단</option>
                         </select>
+                        <select class="form-control" name="searchGrade" id="searchGrade">
+                            <option value="">등급</option>
+                            <option value="0" {{ $searchGrade == '0' ? "selected" : "" }} >일반강사</option>
+                            <option value="10" {{ $searchGrade == '10' ? "selected" : "" }} >반장강사</option>
+                        </select>
                         <select class="form-control" name="searchType" id="searchType">
                             <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
+                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >강사명</option>
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
+                            <option value="category" {{ $searchType == 'category' ? "selected" : "" }} >강사단명</option>
                         </select>
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
@@ -89,7 +95,7 @@
                                 @endswitch
                             </td>
                             <td>{{ $member->group }}</td>
-                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
+                            <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchGrade'=>$searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
                             <td>{{ $member->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
                             <td>{{ number_format($member->main_count) }}</td>

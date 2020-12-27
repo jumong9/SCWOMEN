@@ -92,11 +92,20 @@
                                     </div>
                                 </div>
                             </td>
-
                             <td></td>
+                            <td></td>
+                            {{-- <th><span class="text-danger">*</span>지역구분</th>
                             <td>
-
-                            </td>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select name="client_loctype" id="client_loctype" class="form-control">
+                                            @foreach($codeLoclist as $code)
+                                            <option value="{{$code->code_id}}">{{$code->code_value}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </td> --}}
                         </tr>
                     </tbody>
                 </table>

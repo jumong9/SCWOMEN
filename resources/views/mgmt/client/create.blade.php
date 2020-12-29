@@ -92,9 +92,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td></td>
-                            <td></td>
-                            {{-- <th><span class="text-danger">*</span>지역구분</th>
+                            <th><span class="text-danger">*</span>지역구분</th>
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -105,7 +103,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </td> --}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

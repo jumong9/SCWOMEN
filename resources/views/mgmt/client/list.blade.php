@@ -47,7 +47,7 @@
                         <tr>
                             <th>구분</th>
                             <th>수요처명</th>
-                            {{-- <th>지역구분</th> --}}
+                            <th>지역구분</th>
                             <th>대표전화</th>
                             <th>대표팩스</th>
                             <th>행정실전화</th>
@@ -63,7 +63,7 @@
                                 {{ $list->client_gubun_value}}
                             </td>
                             <td><a href="{{ route ('mgmt.client.read', ['id'=>$list->id, 'perPage'=>$contentslist->perPage(), 'page'=>$contentslist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->name }}</a></td>
-                            {{-- <td>{{ $list->client_loctype_value}}</td> --}}
+                            <td>{{ $list->client_loctype_value}}</td>
                             <td>{{ $list->client_tel}}</td>
                             <td>{{ $list->client_fax}}</td>
                             <td>{{ $list->office_tel}}</td>

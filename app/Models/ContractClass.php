@@ -13,6 +13,7 @@ class ContractClass extends Model
     protected $fillable = [
         'contract_id',
         'client_id',
+        'class_sub_name',
         'class_day',
         'time_from',
         'time_to',
@@ -24,7 +25,8 @@ class ContractClass extends Model
         'class_order',
         'main_count',
         'sub_count',
-        'class_type'
+        'class_type',
+        'online_type',
     ];
 
 

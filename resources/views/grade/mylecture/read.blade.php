@@ -98,6 +98,7 @@
                                 <th style="width:100px;">활동일자</th>
                                 <th style="width:120px;">시간</th>
                                 <th style="width:160px;">프로그램</th>
+                                <th style="width:160px;">세부프로그램</th>
                                 <th style="width:160px;">교육대상</th>
                                 <th style="width:80px;">인원</th>
                                 <th style="width:80px;">횟수</th>
@@ -106,7 +107,7 @@
                                 <th style="width:80px;">보조강사수</th>
                                 <th style="width:80px;">재료비</th>
                                 <th style="width:100px;">수업방식</th>
-                                <th style="width:100px;">구분</th>
+                                <th style="width:100px;">수업구분</th>
                             </tr>
                         </thead>
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
@@ -123,6 +124,9 @@
                                 </td>
                                 <td>
                                     {{$list->class_name}}
+                                </td>
+                                <td>
+                                    {{$list->class_sub_name}}
                                 </td>
                                 <td>
                                     {{$list->class_target}}

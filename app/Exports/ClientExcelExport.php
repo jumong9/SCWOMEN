@@ -20,11 +20,15 @@ class ClientExcelExport implements FromQuery, WithHeadings
                                     ->where('c.code_group', '=','client_gubun');
                                 }
                             )
-
+                        ->join('common_codes as cc', function($join){
+                                $join->on('cc.code_id','=', 'clients.client_loctype')
+                                    ->where('cc.code_group', '=','client_loctype');
+                                }
+                            )
                         ->select(
                             'c.code_value as client_gubun_value',
                             'clients.name',
-
+                            'cc.code_value as client_loctype_value',
                             'clients.client_tel',
                             'clients.client_fax',
                             'clients.office_tel',
@@ -40,11 +44,13 @@ class ClientExcelExport implements FromQuery, WithHeadings
         return [
                   "구분"
                 , "수요처명"
-
+                , "지역구분"
                 , "대표전화"
                 , "대표팩스"
                 , "행정실전화"
-                , "행정실팩스", "우편번호", "주소"];
+                , "행정실팩스"
+                , "우편번호"
+                , "주소"];
     }
 
 

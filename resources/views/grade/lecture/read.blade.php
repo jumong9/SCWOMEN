@@ -86,8 +86,9 @@
                             <tr>
                                 <th style="width:100px;">배정상태</th>
                                 <th style="width:100px;">활동일자</th>
-                                <th style="width:120px;">시간</th>
+                                <th style="width:100px;">시간</th>
                                 <th style="width:160px;">프로그램</th>
+                                <th style="width:140px;">세부프로그램</th>
                                 <th style="width:160px;">교육대상</th>
                                 <th style="width:80px;">인원</th>
                                 <th style="width:80px;">횟수</th>
@@ -95,6 +96,7 @@
                                 <th style="width:80px;">주강사수</th>
                                 <th style="width:80px;">보조강사수</th>
                                 <th style="width:100px;">수업방식</th>
+                                <th style="width:100px;">수업구분</th>
                             </tr>
                         </thead>
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
@@ -111,6 +113,9 @@
                                 </td>
                                 <td>
                                     {{$list->class_name}}
+                                </td>
+                                <td>
+                                    {{$list->class_sub_name}}
                                 </td>
                                 <td>
                                     {{$list->class_target}}
@@ -134,6 +139,11 @@
                                     @if($list->class_type == 0 ) 오프라인
                                     @elseif($list->class_type == 1) 온라인 실시간
                                     @else 온라인 동영상
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($list->class_type == 2 )
+                                        {{$list->online_type == 0 ? '최초' : '재방'}}
                                     @endif
                                 </td>
                             </tr>

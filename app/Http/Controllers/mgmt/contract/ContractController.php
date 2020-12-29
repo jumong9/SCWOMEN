@@ -81,6 +81,7 @@ class ContractController extends Controller{
             $inputClass->time_from              = $class['time_from'];
             $inputClass->time_to                = $class['time_to'];
             $inputClass->class_category_id      = $class['class_category_id'];
+            $inputClass->class_sub_name         = $class['class_sub_name'];
             $inputClass->class_target           = $class['class_target'];
             $inputClass->class_number           = $class['class_number'];
             $inputClass->class_count            = $class['class_count'];
@@ -88,6 +89,7 @@ class ContractController extends Controller{
             $inputClass->main_count             = $class['main_count'];
             $inputClass->sub_count              = $class['sub_count'];
             $inputClass->class_type             = $class['class_type'];
+            $inputClass->online_type            = $class['online_type'];
             $inputClass->main_count             = $class['main_count'];
 
             $inputClass->save();
@@ -135,6 +137,8 @@ class ContractController extends Controller{
                                             , 'contract_classes.time_from'
                                             , 'contract_classes.time_to'
                                             , 'contract_classes.class_target'
+                                            , 'contract_classes.class_sub_name'
+                                            , 'contract_classes.online_type'
                                             , 'e.class_name'
                                             , 'd.name as user_name'
                                             , 'c.main_yn'
@@ -266,6 +270,7 @@ class ContractController extends Controller{
             $inputClass->time_from              = $class['time_from'];
             $inputClass->time_to                = $class['time_to'];
             $inputClass->class_category_id      = $class['class_category_id'];
+            $inputClass->class_sub_name         = $class['class_sub_name'];
             $inputClass->class_target           = $class['class_target'];
             $inputClass->class_number           = $class['class_number'];
             $inputClass->class_count            = $class['class_count'];
@@ -273,6 +278,7 @@ class ContractController extends Controller{
             $inputClass->main_count             = $class['main_count'];
             $inputClass->sub_count              = $class['sub_count'];
             $inputClass->class_type             = $class['class_type'];
+            $inputClass->online_type            = $class['online_type'];
             $inputClass->main_count             = $class['main_count'];
             if('I' == $class['action_type']){
                 $inputClass->save();

@@ -42,7 +42,7 @@
                                     <div class="col-md-6">
                                         <select name="gubun" id="gubun" class="form-control">
                                             @foreach($commonCode as $code)
-                                            <option value="{{$code->code_id}}" {{ $client->code_id == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
+                                            <option value="{{$code->code_id}}" {{ $client->gubun == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -98,9 +98,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td></td>
-                            <td></td>
-                            {{-- <th><span class="text-danger">*</span>지역구분</th>
+                            <th><span class="text-danger">*</span>지역구분</th>
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -111,7 +109,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </td> --}}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

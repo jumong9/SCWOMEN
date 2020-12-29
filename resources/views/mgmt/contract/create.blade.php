@@ -171,34 +171,36 @@
                         <thead class="thead-light">
                             <tr>
                                 <th style="width:100px;"><span class="text-danger">*</span>활동일자</th>
-                                <th style="width:120px;"><span class="text-danger">*</span>시간</th>
+                                <th style="width:100px;"><span class="text-danger">*</span>시간</th>
                                 <th style="width:160px;"><span class="text-danger">*</span>프로그램</th>
+                                <th style="width:120px;"><span class="text-danger"></span>세부프로그램</th>
                                 <th style="width:160px;"><span class="text-danger">*</span>교육대상</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>인원</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>횟수</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>차수</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>주강사수</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>보조강사수</th>
-                                <th style="width:100px;"><span class="text-danger">*</span>수업방식</th>
-                                <th style="width:100px;"></th>
+                                <th style="width:40px;"><span class="text-danger">*</span>인원</th>
+                                <th style="width:40px;"><span class="text-danger">*</span>횟수</th>
+                                <th style="width:40px;"><span class="text-danger">*</span>차수</th>
+                                <th style="width:40px;"><span class="text-danger">*</span>주강사</th>
+                                <th style="width:40px;"><span class="text-danger">*</span>보조</th>
+                                <th style="width:120px;"><span class="text-danger">*</span>수업방식</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>수업구분</th>
+                                <th style="width:50px;"></th>
                             </tr>
                         </thead>
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-10 input-group-sm">
+                                        <div class="col-md-11 input-group-sm">
                                             <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$today}}" required >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-4 input-group-sm" style="padding-right: 2px;">
-                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value=""  >
+                                        <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="10:00"  >
                                         </div>
-                                        <div class="col-md-4 input-group-sm" style="padding-left: 2px;">
-                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="" >
+                                        <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="11:00" >
                                         </div>
                                     </div>
 
@@ -217,41 +219,48 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-12 input-group-sm">
+                                            <input type="text" name="class_sub_name" id="class_sub_name" class="form-control" value="">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
                                             <input id="class_target" type="text" class="form-control @error('class_target') is-invalid @enderror" name="class_target" value=""  >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-7 input-group-sm">
+                                        <div class="col-md-10 input-group-sm">
                                             <input id="class_number" type="number" class="form-control @error('class_number') is-invalid @enderror" name="class_number" value=""  >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-7 input-group-sm">
+                                        <div class="col-md-10 input-group-sm">
                                             <input id="class_count" type="number" class="form-control @error('class_count') is-invalid @enderror" name="class_count" value="1" >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-7 input-group-sm">
+                                        <div class="col-md-10 input-group-sm">
                                             <input id="class_order" type="number" class="form-control @error('class_order') is-invalid @enderror" name="class_order" value="1" >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-7 input-group-sm">
+                                        <div class="col-md-10 input-group-sm">
                                             <input id="main_count" type="number" class="form-control @error('main_count') is-invalid @enderror" name="main_count" value="1" >
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="row">
-                                        <div class="col-md-7 input-group-sm">
+                                        <div class="col-md-10 input-group-sm">
                                             <input id="sub_count" type="number" class="form-control @error('sub_count') is-invalid @enderror" name="sub_count" value="0" >
                                         </div>
                                     </div>
@@ -263,6 +272,16 @@
                                                 <option value="0">오프라인</option>
                                                 <option value="1">온라인 실시간</option>
                                                 <option value="2">온라인 동영상</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <select name="online_type" id="online_type" class="form-control " style="display: none">
+                                                <option value="0">최초</option>
+                                                <option value="1">재방</option>
                                             </select>
                                         </div>
                                     </div>
@@ -298,27 +317,32 @@
             data-time_to="${time_to}"
             data-class_day="${class_day}"
             data-class_category_id="${class_category_id}"
+            data-class_sub_name="${class_sub_name}"
             data-class_target="${class_target}"
             data-class_number="${class_number}"
             data-class_count="${class_count}"
             data-class_order="${class_order}"
             data-main_count="${main_count}"
             data-sub_count="${sub_count}"
-            data-class_type="${class_type}"  >
+            data-class_type="${class_type}"
+            data-class_type="${online_type}"  >
 
             <td style="width:100px;">${class_day}</td>
-            <td style="width:120px;">${time_from}-${time_to}</td>
+            <td style="width:100px;">${time_from}-${time_to}</td>
             <td style="width:160px;">${class_category_text}</td>
+            <td style="width:120px;">${class_sub_name}</td>
             <td style="width:160px;">${class_target}</td>
-            <td style="width:80px;">${class_number}</td>
-            <td style="width:80px;">${class_count}</td>
-            <td style="width:80px;">${class_order}</td>
-            <td style="width:80px;">${main_count}</td>
-            <td style="width:80px;">${sub_count}</td>
-            <td style="width:100px;">${class_type_text}</td>
-            <td style="width:100px;"><button class="btn-sm btn-primary delRow" type="button">삭제</button></td>
+            <td style="width:40px;">${class_number}</td>
+            <td style="width:40px;">${class_count}</td>
+            <td style="width:40px;">${class_order}</td>
+            <td style="width:40px;">${main_count}</td>
+            <td style="width:40px;">${sub_count}</td>
+            <td style="width:120px;">${class_type_text}</td>
+            <td style="width:120px;">${online_type_text}</td>
+            <td style="width:50px;"><button class="btn-sm btn-primary delRow" type="button">삭제</button></td>
         </tr>
     </script>
+
 
     <!-- Custom scripts for all pages-->
     <script>
@@ -334,7 +358,13 @@
                 location.href='{{ route('mgmt.client.list')}}' ;
             });
 
-
+            $("#class_type").change(function(){
+                if($("#class_type option:selected","#classList").val()==2){
+                    $("#online_type","#classList").show();
+                }else{
+                    $("#online_type","#classList").hide();
+                }
+            });
 
             $("#addClass").click(function(){
 
@@ -343,6 +373,7 @@
                 var _time_to            =$("#time_to","#classList").val();
                 var _class_category_id   =$("#class_category_id option:selected","#classList").val();
                 var _class_category_text=$("#class_category_id option:selected","#classList").text();
+                var _class_sub_name     =$("#class_sub_name","#classList").val();
                 var _class_target       =$("#class_target","#classList").val();
                 var _class_number       =$("#class_number","#classList").val();
                 var _class_count        =$("#class_count","#classList").val();
@@ -352,13 +383,20 @@
                 var _class_type         =$("#class_type option:selected","#classList").val();
                 var _class_type_text    =$("#class_type option:selected","#classList").text();
 
+                var _online_type         =$("#online_type option:selected","#classList").val();
+                var _online_type_text    =$("#online_type option:selected","#classList").text();
+                if(_class_type!=2){
+                    _online_type_text ="";
+                }
+
                 var defaultItem = {
 					class_day           : _class_day
 					,time_from          :_time_from
                     ,time_to            :_time_to
 					,class_category_id  :_class_category_id
                     ,class_category_text:_class_category_text
-					,class_target       :_class_target
+					,class_sub_name     :_class_sub_name
+                    ,class_target       :_class_target
                     ,class_number       :_class_number
                     ,class_count        :_class_count
                     ,class_order        :_class_order
@@ -366,6 +404,8 @@
                     ,sub_count          :_sub_count
                     ,class_type         :_class_type
                     ,class_type_text    :_class_type_text
+                    ,online_type        :_online_type
+                    ,online_type_text   :_online_type_text
 			    }
 
                 $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))

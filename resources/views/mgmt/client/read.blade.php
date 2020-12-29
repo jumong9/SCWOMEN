@@ -55,10 +55,8 @@
                             <td>
                                 {{ $client->zipcode }} {{ $client->address }}
                             </td>
-                            {{-- <th>지역구분</th>
-                            <td>{{ $client->client_loctype_value }}</td> --}}
-                            <td></td>
-                            <td></td>
+                            <th>지역구분</th>
+                            <td>{{ $client->client_loctype_value }}</td>
                         </tr>
                     </tbody>
                 </table>

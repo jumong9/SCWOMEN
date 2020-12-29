@@ -39,8 +39,14 @@ class ClientController extends Controller{
                                         ->where('c.code_group', '=','client_gubun');
                                     }
                                 )
+                            ->join('common_codes as cc', function($join){
+                                $join->on('cc.code_id','=', 'clients.client_loctype')
+                                    ->where('cc.code_group', '=','client_loctype');
+                                }
+                            )
                             ->select('clients.*'
                                     , 'c.code_value as client_gubun_value'
+                                    , 'cc.code_value as client_loctype_value'
                                     )
                            ->where('clients.name','LIKE',"{$searchWord}%")
                            ->orderBy('clients.created_at', 'desc')
@@ -63,8 +69,9 @@ class ClientController extends Controller{
         //                             ->get();
 
         $codelist = CommonCode::getCommonCode('client_gubun');
+        $codeLoclist = CommonCode::getCommonCode('client_loctype');
         //dd(DB::getQueryLog());
-        return view('mgmt.client.create', [ 'commonCode'=> $codelist, 'pageTitle'=>$this->pageTitle ]);
+        return view('mgmt.client.create', [ 'commonCode'=> $codelist, 'codeLoclist' =>$codeLoclist,'pageTitle'=>$this->pageTitle ]);
     }
 
     /**
@@ -97,9 +104,15 @@ class ClientController extends Controller{
                                          ->where('c.code_group', '=','client_gubun');
                                     }
                                 )
+                            ->join('common_codes as cc', function($join){
+                                    $join->on('cc.code_id','=', 'clients.client_loctype')
+                                        ->where('cc.code_group', '=','client_loctype');
+                                    }
+                                )
                             ->select(
                                   'clients.*',
                                   'c.code_value as client_gubun_value',
+                                  'cc.code_value as client_loctype_value'
                                 )
                             ->where('clients.id', $id)->get();
     //    dd(DB::getQueryLog());
@@ -123,18 +136,13 @@ class ClientController extends Controller{
 
 
         $codelist = CommonCode::getCommonCode('client_gubun');
-
+        $codeLoclist = CommonCode::getCommonCode('client_loctype');
         $id = $request->input('id');
-        $result = $client::join('common_codes as c', function($join){
-                                    $join->on('c.code_id','=', 'clients.gubun')
-                                         ->where('c.code_group', '=','client_gubun');
-                                    }
-                                )
-                            ->where('clients.id', $id)->get();
+        $result = $client::where('clients.id', $id)->get();
         //dd(DB::getQueryLog());
         $result[0]->id=$id;
 
-        return view('mgmt.client.update', ['client'=>$result[0], 'pageTitle'=>$this->pageTitle, 'commonCode'=> $codelist, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.client.update', ['client'=>$result[0], 'pageTitle'=>$this->pageTitle, 'commonCode'=> $codelist, 'codeLoclist' =>$codeLoclist, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
 
 

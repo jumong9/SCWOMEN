@@ -139,6 +139,7 @@ class ContractController extends Controller{
                                             , 'contract_classes.class_target'
                                             , 'contract_classes.class_sub_name'
                                             , 'contract_classes.online_type'
+                                            , 'contract_classes.id'
                                             , 'e.class_name'
                                             , 'd.name as user_name'
                                             , 'c.main_yn'

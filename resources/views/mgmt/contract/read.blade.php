@@ -229,7 +229,7 @@
                                     {{ $list->class_day }}
                                 </td>
                                 <td>
-                                    {{$list->time_from}} - {{$list->time_to}}
+                                    <a href="{{ route ('mgmt.lecture.read', ['id'=>$list->id]) }}">{{$list->time_from}} - {{$list->time_to}}</a>
                                 </td>
                                 <td>
                                     {{$list->class_name}}

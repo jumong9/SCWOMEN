@@ -405,6 +405,13 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //오픈 강좌  목록
+    Route::match(['get','post'],'grade/openlecture/list',[
+        'as' => 'grade.openlecture.list',
+        'uses' => 'App\Http\Controllers\grade\openlecture\OpenLectureController@list'
+    ]);
+
+
 
     //내 강좌 배정 목록
     Route::match(['get','post'],'grade/mylecture/list',[

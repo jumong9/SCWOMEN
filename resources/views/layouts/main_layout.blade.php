@@ -87,6 +87,9 @@
                         <a class="nav-link" href="{{ route('grade.lecture.list') }}">강사배정관리</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.openlecture.list') }}">오픈강좌</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
                     </li>
                     <li class="nav-item">
@@ -98,6 +101,9 @@
 
                 @else
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('grade.openlecture.list') }}">오픈강좌</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('grade.mylecture.list') }}">나의강좌관리</a>
                     </li>

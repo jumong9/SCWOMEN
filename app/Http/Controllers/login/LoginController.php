@@ -12,7 +12,7 @@ class LoginController extends Controller{
     //로그인폼
     public function getLogin(){
         if(Auth::check()){
-            return redirect('home');
+            return redirect()->route('common.board.list');
         }
         return view('/login/login');
     }

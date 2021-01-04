@@ -26,7 +26,8 @@ Route::middleware(['auth'])->group(function(){
 
 
 //외부 인덱스
-Route::get('/', function () {return view('welcome');});
+//Route::get('/', function () {return view('welcome');});
+Route::get('/', 'App\Http\Controllers\login\LoginController@getLogin' );
 
 
 //로그인폼

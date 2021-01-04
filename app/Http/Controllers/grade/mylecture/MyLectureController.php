@@ -252,21 +252,31 @@ class MyLectureController extends Controller{
                 $main_yn = $user->main_yn;   // 0:sub, 1:main
 
                 $lector_cost =0;
+                $lector_main_count=1;
+                $lector_main_cost =0;
+                $lector_extra_count=0;
+                $lector_extra_cost=0;
 
                 if($main_yn){                                       //주강사
 
                     if($class_type < 2){                            //오프라인, 온라인실시간
 
                         if($main_count >= 10){                      //주강사 10회 초과시
-                            $lector_cost = 50000;
+                            $lector_main_cost = 50000;
+                            $lector_cost = $lector_main_cost;
                             if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                $lector_cost += (25000*($class_order-1));
+                                $lector_extra_count = $class_order-1;
+                                $lector_extra_cost=(25000*$lector_extra_count);
+                                $lector_cost += $lector_extra_cost;
                             }
 
                         }else{
-                            $lector_cost = 30000;
+                            $lector_main_cost = 30000;
+                            $lector_cost = $lector_main_cost;
                             if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                $lector_cost += (10000*($class_order-1));
+                                $lector_extra_count = $class_order-1;
+                                $lector_extra_cost=(15000*$lector_extra_count);
+                                $lector_cost += $lector_extra_cost;
                             }
                         }
 
@@ -275,29 +285,41 @@ class MyLectureController extends Controller{
                         if(!$online_type){                          //최초방송:0, 재방:1
 
                             if($main_count >= 10){                      //주강사 10회 초과시
-                                $lector_cost = 50000;
+                                $lector_main_cost = 50000;
+                                $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                    $lector_cost += (25000*($class_order-1));
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(25000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
                                 }
 
                             }else{                                      //10회 이하
-                                $lector_cost = 30000;
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                    $lector_cost += (10000*($class_order-1));
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(10000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
                                 }
                             }
 
                         } else {                                        //재방
 
                             if($main_count >= 10){                      //주강사 10회 초과시
-                                $lector_cost = 30000;
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                    $lector_cost += (30000*($class_order-1));
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(30000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
                                 }
                             }else{                                      //10회 이하
-                                $lector_cost = 30000;
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
-                                    $lector_cost += (10000*($class_order-1));
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(10000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
                                 }
                             }
 
@@ -308,12 +330,16 @@ class MyLectureController extends Controller{
                 } else {                                                //보조강사
 
                     if($class_type < 2){                                //오프라인, 온라인실시간
-                        $lector_cost = 20000;
+                        $lector_main_cost = 20000;
+                        $lector_cost = $lector_main_cost;
                         if($class_order > 1){                           //추가시간 기본1보다 클경우에만 적용
-                            $lector_cost += 10000;
+                            $lector_extra_count = $class_order-1;
+                            $lector_extra_cost=(10000*$lector_extra_count);
+                            $lector_cost += $lector_extra_cost;
                         }
                     } else {                                            //온라인동영상
-                        $lector_cost = 20000;
+                        $lector_main_cost = 20000;
+                        $lector_cost = $lector_main_cost;
                     }
                 }
 
@@ -337,6 +363,10 @@ class MyLectureController extends Controller{
                                 'lector_cost' => $lector_cost,
                                 'main_count'  => $main_count,
                                 'sub_count'   => $sub_count,
+                                'lector_main_count' => $lector_main_count,
+                                'lector_main_cost' => $lector_main_cost,
+                                'lector_extra_count' => $lector_extra_count,
+                                'lector_extra_cost' => $lector_extra_cost,
                                 ]);
 
             }

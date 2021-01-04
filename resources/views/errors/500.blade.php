@@ -113,7 +113,7 @@ body {
     </style>
 </head>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-<div class="page-404">
+<div class="page-500">
     <div class="outer">
         <div class="middle">
             <div class="inner">

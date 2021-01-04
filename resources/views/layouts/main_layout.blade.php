@@ -77,6 +77,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="{{ route('mgmt.payreport.list') }}">강시비 지급대상</a>
                                 <a class="dropdown-item" href="{{ route('mgmt.payment.list') }}">강사비 지급관리</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.paycalculate.list') }}">강사비 정산</a>
                             </div>
                         </div>
                     </li>

@@ -15,6 +15,11 @@ class ClassLector extends Model
         'main_yn',
         'main_count',
         'sub_count',
+        'lector_cost',
+        'lector_main_count',
+        'lectro_main_cost',
+        'lector_extra_count',
+        'lector_extra_cost',
     ];
 
 }

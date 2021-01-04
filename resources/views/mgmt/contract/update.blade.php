@@ -334,7 +334,7 @@
             data-class_type="${class_type}"
             data-action_type="${action_type}"
             data-class_type="${class_type}"
-            data-class_type="${online_type}"   >
+            data-online_type="${online_type}"   >
 
             <td style="width:100px;">${class_day}</td>
             <td style="width:100px;">${time_from}-${time_to}</td>
@@ -460,7 +460,7 @@
                     ,class_type         : '{{$item->class_type}}'
                     ,class_type_text    :  @if ($item->class_type==0) '오프라인' @elseif($item->class_type==1) '온라인 실시간' @else '온라인 동영상' @endif
                     ,online_type        : '{{$item->online_type}}'
-                    ,online_type_text   :  @if ($item->class_type==2) @if ($item->online_type==0) '최초' @else '재방' @endif @endif
+                    ,online_type_text   :  @if ($item->class_type==2) @if ($item->online_type==0) '최초' @else '재방' @endif @else '' @endif
                     ,action_type        : 'U'
 			    }
 

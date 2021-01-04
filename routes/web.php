@@ -305,6 +305,25 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\payreport\PayReportController@exportExcel'
     ]);
 
+    //강사비 정산
+    Route::match(['get','post'],'mgmt/paycalculate/list',[
+        'as' => 'mgmt.paycalculate.list',
+        'uses' => 'App\Http\Controllers\mgmt\paycalculate\PayCalculateController@list'
+    ]);
+
+    //강사비 정산처리
+    Route::match(['get','post'],'mgmt/paycalculate/createDo',[
+        'as' => 'mgmt.paycalculate.createDo',
+        'uses' => 'App\Http\Controllers\mgmt\paycalculate\PayCalculateController@createDo'
+    ]);
+
+    //강사비 정산 엑셀출력
+    Route::match(['get','post'],'mgmt/paycalculate/exportExcel',[
+        'as' => 'mgmt.paycalculate.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\paycalculate\PayCalculateController@exportExcel'
+    ]);
+
+
 
 });
 

@@ -119,6 +119,10 @@ class ContractController extends Controller{
         $client_id = $contract[0]->client_id;
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
+                                    ->select('contract_classes.*'
+                                            , 'class_categories.class_gubun'
+                                            , 'class_categories.class_name'
+                                            )
                                     ->where('contract_id', $id)->get();
 
         $client = new Client();
@@ -284,7 +288,11 @@ class ContractController extends Controller{
             if('I' == $class['action_type']){
                 $inputClass->save();
             }else if('D' == $class['action_type']){
+
                 $inputClass->id                 = $class['class_id'];
+                ClassLector::where('contract_class_id', $inputClass->id)
+                            ->delete();
+
                 $inputClass->where('id', $inputClass->id )
                            ->delete();
             }

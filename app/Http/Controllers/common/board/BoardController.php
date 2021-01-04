@@ -147,7 +147,7 @@ class BoardController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            return view('errors.505');
+            return view('errors.500');
         }
 
         return redirect()->route('common.board.read', ['id'=>$item_id, 'board_id'=>$board_id, 'pageTitle'=>$this->pageTitle, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page] );
@@ -296,7 +296,7 @@ class BoardController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            return view('errors.505');
+            return view('errors.500');
         }
 
         return redirect()->route('common.board.read', ['id'=>$id, 'board_id'=>$board_id, 'pageTitle'=>$this->pageTitle, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page] );
@@ -336,7 +336,7 @@ class BoardController extends Controller
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            return view('errors.505');
+            return view('errors.500');
         }
 
 

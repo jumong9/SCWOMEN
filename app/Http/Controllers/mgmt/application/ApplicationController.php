@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -128,46 +129,57 @@ class ApplicationController extends Controller{
         $joinday = $request->input('joinday');
         $stopday = $request->input('stopday');
 
-        $user->fill($request->input());
-        $user->where('id', $id)
-             ->update([
-                        'name' => $name,
-                        'email' => $email,
-                        'mobile' => $mobile,
-                        'gubun' =>  $gubun,
-                        'status' => $status,
-                        'group' => $group,
-                        'address' => $address,
-                        'birthday' => $birthday,
-                        'joinday' => $joinday,
-                        'stopday' => $stopday
-                        ]);
 
-        //기존 클래스 조회
-        $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
+        try {
+            DB::beginTransaction();
 
-        //기존 클래스 정보 삭제
-        ClassCategoryUser::where('user_id',$id)->delete();
+            $user->fill($request->input());
+            $user->where('id', $id)
+                ->update([
+                            'name' => $name,
+                            'email' => $email,
+                            'mobile' => $mobile,
+                            'gubun' =>  $gubun,
+                            'status' => $status,
+                            'group' => $group,
+                            'address' => $address,
+                            'birthday' => $birthday,
+                            'joinday' => $joinday,
+                            'stopday' => $stopday
+                            ]);
 
-        //신규 클래스 등록
-        $classCategory = $request->input('class_category_id');
-        foreach($classCategory as $cate){
-            $classUser = new ClassCategoryUser();
-            $classUser->user_id = $id;
-            $classUser->class_category_id = $cate;
+            //기존 클래스 조회
+            $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
 
-            $classUser->save();
+            //기존 클래스 정보 삭제
+            ClassCategoryUser::where('user_id',$id)->delete();
 
-        }
+            //신규 클래스 등록
+            $classCategory = $request->input('class_category_id');
+            foreach($classCategory as $cate){
+                $classUser = new ClassCategoryUser();
+                $classUser->user_id = $id;
+                $classUser->class_category_id = $cate;
 
-        //기존 클래스 존재시 업데이트(주,보조강사 횟수)
-        foreach($oldClassCategory as $cate){
-            $cate->where('user_id', $cate->user_id)
-                 ->where('class_category_id', $cate->class_category_id)
-                 ->update([
-                            'main_count' => $cate->main_count,
-                            'sub_count' =>  $cate->sub_count
-                        ]);
+                $classUser->save();
+
+            }
+
+            //기존 클래스 존재시 업데이트(주,보조강사 횟수)
+            foreach($oldClassCategory as $cate){
+                $cate->where('user_id', $cate->user_id)
+                    ->where('class_category_id', $cate->class_category_id)
+                    ->update([
+                                'main_count' => $cate->main_count,
+                                'sub_count' =>  $cate->sub_count
+                            ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return view('errors.500');
         }
 
         return redirect()->route('mgmt.application.read', ['id' =>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
@@ -185,14 +197,25 @@ class ApplicationController extends Controller{
          $items = explode(',',$ids);
 
          $user = new User;
-         foreach($items  as $id){
-              $user->where('id', $id)
-                   ->update([
-                         'status' => 2,
-                         'joinday' => date('Y-m-d')
-                         ]);
-         }
-      //   dd(DB::getQueryLog());
+
+         try {
+            DB::beginTransaction();
+
+            foreach($items  as $id){
+                $user->where('id', $id)
+                    ->update([
+                            'status' => 2,
+                            'joinday' => date('Y-m-d')
+                            ]);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return view('errors.500');
+        }
+        //   dd(DB::getQueryLog());
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
 
@@ -205,9 +228,20 @@ class ApplicationController extends Controller{
         $items = explode(',',$ids);
 
         $user = new User;
-        foreach($items  as $id){
-           ClassCategoryUser::where('user_id',$id)->delete();
-           User::where('id', $id)->delete();
+
+        try {
+            DB::beginTransaction();
+
+            foreach($items  as $id){
+            ClassCategoryUser::where('user_id',$id)->delete();
+            User::where('id', $id)->delete();
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return view('errors.500');
         }
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
     }

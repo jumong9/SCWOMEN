@@ -33,7 +33,7 @@ class PaymentController extends Controller{
             $searcToDate = $dayCount->format( 'Y-m-t' );
         }
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $classList = ContractClass::join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
                                     ->join('class_lectors as c', 'c.contract_class_id', '=','contract_classes.id')

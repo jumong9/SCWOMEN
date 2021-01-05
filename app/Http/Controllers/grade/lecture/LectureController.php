@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -178,26 +179,34 @@ class LectureController extends Controller{
         $sub_user_id = $request->input('sub_user_id');
         $contract_class_id = $request->input('contract_class_id');
 
-        ClassLector::where('contract_class_id',$contract_class_id)
-                    ->delete();
+        try {
+            DB::beginTransaction();
 
-        $mainUser = new ClassLector();
-        $mainUser->contract_class_id = $contract_class_id;
-        $mainUser->main_yn = 1;
-        $mainUser->user_id = $main_user_id;
+            ClassLector::where('contract_class_id',$contract_class_id)
+                        ->delete();
 
-        $mainUser->save();
+            $mainUser = new ClassLector();
+            $mainUser->contract_class_id = $contract_class_id;
+            $mainUser->main_yn = 1;
+            $mainUser->user_id = $main_user_id;
 
-        if(!empty($sub_user_id)){
-            foreach($sub_user_id as $sub){
-                $subUser = new ClassLector();
-                $subUser->contract_class_id = $contract_class_id;
-                $subUser->main_yn = 0;
-                $subUser->user_id = $sub;
-                $subUser->save();
+            $mainUser->save();
+
+            if(!empty($sub_user_id)){
+                foreach($sub_user_id as $sub){
+                    $subUser = new ClassLector();
+                    $subUser->contract_class_id = $contract_class_id;
+                    $subUser->main_yn = 0;
+                    $subUser->user_id = $sub;
+                    $subUser->save();
+                }
             }
-        }
 
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
@@ -210,35 +219,42 @@ class LectureController extends Controller{
         $sub_user_id = $request->input('sub_user_id');
         $contract_class_id = $request->input('contract_class_id');
 
+        try {
+            DB::beginTransaction();
 
-        $list_class = explode(",", $contract_class_id);
-        foreach($list_class as $class_id){
+            $list_class = explode(",", $contract_class_id);
+            foreach($list_class as $class_id){
 
-            ClassLector::where('contract_class_id',$class_id)
-                        ->delete();
+                ClassLector::where('contract_class_id',$class_id)
+                            ->delete();
 
-            $mainUser = new ClassLector();
-            $mainUser->contract_class_id = $class_id;
-            $mainUser->main_yn = 1;
-            $mainUser->user_id = $main_user_id;
-            $mainUser->save();
+                $mainUser = new ClassLector();
+                $mainUser->contract_class_id = $class_id;
+                $mainUser->main_yn = 1;
+                $mainUser->user_id = $main_user_id;
+                $mainUser->save();
 
-            if(!empty($sub_user_id)){
-                foreach($sub_user_id as $sub){
-                    $subUser = new ClassLector();
-                    $subUser->contract_class_id = $class_id;
-                    $subUser->main_yn = 0;
-                    $subUser->user_id = $sub;
-                    $subUser->save();
+                if(!empty($sub_user_id)){
+                    foreach($sub_user_id as $sub){
+                        $subUser = new ClassLector();
+                        $subUser->contract_class_id = $class_id;
+                        $subUser->main_yn = 0;
+                        $subUser->user_id = $sub;
+                        $subUser->save();
+                    }
                 }
+
+                ContractClass::where('id',$class_id)
+                        ->update([
+                            'lector_apply_yn'=>'1'
+                        ]);
             }
 
-            ContractClass::where('id',$class_id)
-                    ->update([
-                        'lector_apply_yn'=>'1'
-                    ]);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
         }
-
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 

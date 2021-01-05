@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\CommonCode;
 use App\Models\ContractClass;
 use App\Models\Contracts;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,53 +48,62 @@ class ContractController extends Controller{
         $classJson = json_decode($classTargetList, true);
         $client_id = $request->input('client_id');
 
-        $client_info = Client::where('id', $client_id)->first();
+        try {
+            DB::beginTransaction();
 
-        $contrats_arr = [
-            "client_id"           =>  $client_id,
-            "client_name"         =>  $client_info->name,
-            "name"                =>  $request->input('name'),
-            "email"               =>  $request->input('email'),
-            "phone"               =>  $request->input('phone'),
-            "phone2"              =>  $request->input('phone2'),
-            "class_cost"          =>  $request->input('class_cost'),
-            "class_total_cost"    =>  $request->input('class_total_cost'),
-            "material_cost"       =>  $request->input('material_cost'),
-            "material_total_cost" =>  $request->input('material_total_cost'),
-            "total_cost"          =>  $request->input('total_cost'),
-            "paid_yn"             =>  $request->input('paid_yn'),
-            "status"              =>  $request->input('status'),
-            "comments"            =>  $request->input('comments'),
-        ];
+            $client_info = Client::where('id', $client_id)->first();
 
-        //contract 정보 생성
-        $contract_id = Contracts::create($contrats_arr)->id;
+            $contrats_arr = [
+                "client_id"           =>  $client_id,
+                "client_name"         =>  $client_info->name,
+                "name"                =>  $request->input('name'),
+                "email"               =>  $request->input('email'),
+                "phone"               =>  $request->input('phone'),
+                "phone2"              =>  $request->input('phone2'),
+                "class_cost"          =>  $request->input('class_cost'),
+                "class_total_cost"    =>  $request->input('class_total_cost'),
+                "material_cost"       =>  $request->input('material_cost'),
+                "material_total_cost" =>  $request->input('material_total_cost'),
+                "total_cost"          =>  $request->input('total_cost'),
+                "paid_yn"             =>  $request->input('paid_yn'),
+                "status"              =>  $request->input('status'),
+                "comments"            =>  $request->input('comments'),
+            ];
+
+            //contract 정보 생성
+            $contract_id = Contracts::create($contrats_arr)->id;
 
 
-        //contract class 정보 생성
-        foreach($classJson as $class){
+            //contract class 정보 생성
+            foreach($classJson as $class){
 
-            $inputClass = new ContractClass();
+                $inputClass = new ContractClass();
 
-            $inputClass->contract_id            = $contract_id;
-            $inputClass->client_id              = $client_id;
-            $inputClass->class_day              = $class['class_day'];
-            $inputClass->time_from              = $class['time_from'];
-            $inputClass->time_to                = $class['time_to'];
-            $inputClass->class_category_id      = $class['class_category_id'];
-            $inputClass->class_sub_name         = $class['class_sub_name'];
-            $inputClass->class_target           = $class['class_target'];
-            $inputClass->class_number           = $class['class_number'];
-            $inputClass->class_count            = $class['class_count'];
-            $inputClass->class_order            = $class['class_order'];
-            $inputClass->main_count             = $class['main_count'];
-            $inputClass->sub_count              = $class['sub_count'];
-            $inputClass->class_type             = $class['class_type'];
-            $inputClass->online_type            = $class['online_type'];
-            $inputClass->main_count             = $class['main_count'];
+                $inputClass->contract_id            = $contract_id;
+                $inputClass->client_id              = $client_id;
+                $inputClass->class_day              = $class['class_day'];
+                $inputClass->time_from              = $class['time_from'];
+                $inputClass->time_to                = $class['time_to'];
+                $inputClass->class_category_id      = $class['class_category_id'];
+                $inputClass->class_sub_name         = $class['class_sub_name'];
+                $inputClass->class_target           = $class['class_target'];
+                $inputClass->class_number           = $class['class_number'];
+                $inputClass->class_count            = $class['class_count'];
+                $inputClass->class_order            = $class['class_order'];
+                $inputClass->main_count             = $class['main_count'];
+                $inputClass->sub_count              = $class['sub_count'];
+                $inputClass->class_type             = $class['class_type'];
+                $inputClass->online_type            = $class['online_type'];
+                $inputClass->main_count             = $class['main_count'];
 
-            $inputClass->save();
+                $inputClass->save();
 
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
         }
 
 
@@ -247,59 +257,66 @@ class ContractController extends Controller{
 
         $contract->fill($request->input());
 
-        $contract->where('id', $id)
-                 ->update([
-                    'client_id'                 =>  $contract->client_id,
-                    'name'                      =>  $contract->name,
-                    'email'                     =>  $contract->email,
-                    'phone'                     =>  $contract->phone,
-                    'phone2'                    =>  $contract->phone2,
-                    'class_cost'                =>  $contract->class_cost,
-                    'class_total_cost'          =>  $contract->class_total_cost,
-                    'material_cost'             =>  $contract->material_cost,
-                    'material_total_cost'       =>  $contract->material_total_cost,
-                    'total_cost'                =>  $contract->total_cost,
-                    'paid_yn'                   =>  $contract->paid_yn,
-                    'status'                    =>  $contract->status,
-                    'comments'                  =>  $contract->comments,
-                ]);
+        try {
+            DB::beginTransaction();
 
-        //contract class 정보 생성
-        foreach($classJson as $class){
+            $contract->where('id', $id)
+                    ->update([
+                        'client_id'                 =>  $contract->client_id,
+                        'name'                      =>  $contract->name,
+                        'email'                     =>  $contract->email,
+                        'phone'                     =>  $contract->phone,
+                        'phone2'                    =>  $contract->phone2,
+                        'class_cost'                =>  $contract->class_cost,
+                        'class_total_cost'          =>  $contract->class_total_cost,
+                        'material_cost'             =>  $contract->material_cost,
+                        'material_total_cost'       =>  $contract->material_total_cost,
+                        'total_cost'                =>  $contract->total_cost,
+                        'paid_yn'                   =>  $contract->paid_yn,
+                        'status'                    =>  $contract->status,
+                        'comments'                  =>  $contract->comments,
+                    ]);
 
-            $inputClass = new ContractClass();
+            //contract class 정보 생성
+            foreach($classJson as $class){
 
-            $inputClass->contract_id            = $id;
-            $inputClass->client_id              = $client_id;
-            $inputClass->class_day              = $class['class_day'];
-            $inputClass->time_from              = $class['time_from'];
-            $inputClass->time_to                = $class['time_to'];
-            $inputClass->class_category_id      = $class['class_category_id'];
-            $inputClass->class_sub_name         = $class['class_sub_name'];
-            $inputClass->class_target           = $class['class_target'];
-            $inputClass->class_number           = $class['class_number'];
-            $inputClass->class_count            = $class['class_count'];
-            $inputClass->class_order            = $class['class_order'];
-            $inputClass->main_count             = $class['main_count'];
-            $inputClass->sub_count              = $class['sub_count'];
-            $inputClass->class_type             = $class['class_type'];
-            $inputClass->online_type            = $class['online_type'];
-            $inputClass->main_count             = $class['main_count'];
-            if('I' == $class['action_type']){
-                $inputClass->save();
-            }else if('D' == $class['action_type']){
+                $inputClass = new ContractClass();
 
-                $inputClass->id                 = $class['class_id'];
-                ClassLector::where('contract_class_id', $inputClass->id)
+                $inputClass->contract_id            = $id;
+                $inputClass->client_id              = $client_id;
+                $inputClass->class_day              = $class['class_day'];
+                $inputClass->time_from              = $class['time_from'];
+                $inputClass->time_to                = $class['time_to'];
+                $inputClass->class_category_id      = $class['class_category_id'];
+                $inputClass->class_sub_name         = $class['class_sub_name'];
+                $inputClass->class_target           = $class['class_target'];
+                $inputClass->class_number           = $class['class_number'];
+                $inputClass->class_count            = $class['class_count'];
+                $inputClass->class_order            = $class['class_order'];
+                $inputClass->main_count             = $class['main_count'];
+                $inputClass->sub_count              = $class['sub_count'];
+                $inputClass->class_type             = $class['class_type'];
+                $inputClass->online_type            = $class['online_type'];
+                $inputClass->main_count             = $class['main_count'];
+                if('I' == $class['action_type']){
+                    $inputClass->save();
+                }else if('D' == $class['action_type']){
+
+                    $inputClass->id                 = $class['class_id'];
+                    ClassLector::where('contract_class_id', $inputClass->id)
+                                ->delete();
+
+                    $inputClass->where('id', $inputClass->id )
                             ->delete();
+                }
 
-                $inputClass->where('id', $inputClass->id )
-                           ->delete();
             }
 
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
         }
-  //      dd(DB::getQueryLog());
-
         return redirect()->route('mgmt.contract.read', ['id' =>$id , 'client_id' =>$client_id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]) ;
     }
 

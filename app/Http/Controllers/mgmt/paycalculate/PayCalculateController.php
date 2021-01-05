@@ -37,7 +37,7 @@ class PayCalculateController extends Controller
             $searchFromMonth = date("Y-m", $prevMonth);
         }
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $classList = ClassCalculate::where('calcu_month', $searchFromMonth)
                                      ->where(function ($query) use ($searchWord){
@@ -62,7 +62,7 @@ class PayCalculateController extends Controller
 
 
     public function createDo(Request $request){
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         $searchFromMonth = $request->input('searchFromMonth');
         $searchFromDate = "";
         $searchToDate = "";

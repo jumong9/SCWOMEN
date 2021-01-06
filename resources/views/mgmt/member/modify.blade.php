@@ -86,7 +86,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="group" type="text" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ $member[0]->group }}" required >
+                                        <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ $member[0]->group }}" required >
                                     </div>
                                 </div>
                             </td>

@@ -89,7 +89,7 @@
                         <div class="form-group row">
                             <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('강사단기수') }}</label>
                             <div class="col-md-6">
-                                <input id="group" type="text" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ old('group') }}" required autocomplete="group" >
+                                <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ old('group') }}" required autocomplete="group" >
 
                                 @error('group')
                                     <span class="invalid-feedback" role="alert">

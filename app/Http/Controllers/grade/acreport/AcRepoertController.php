@@ -52,6 +52,7 @@ class AcRepoertController extends Controller{
                                     )
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
+                                    ->where('f.user_id', $user_id)
                                     ->where('d.client_name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.class_day', 'desc')
                                     ->orderBy('contract_classes.created_at', 'desc')

@@ -360,26 +360,35 @@ class MemberController extends Controller{
          $grade = $request->input('grade');
          $cate_id = $request->input('cate_id');
 
-         ClassCategoryUser::where('class_category_id', $cate_id)
-                            ->where('user_id', $user_id)
-                            ->update([
-                                'user_grade'=>$grade
-                            ]);
-      //   dd(DB::getQueryLog());
+         try {
+            DB::beginTransaction();
+
+            ClassCategoryUser::where('class_category_id', $cate_id)
+                                ->where('user_id', $user_id)
+                                ->update([
+                                    'user_grade'=>$grade
+                                ]);
+        //   dd(DB::getQueryLog());
 
 
-         $userInfo = ClassCategoryUser::where('user_id', $user_id)
-                        ->where('user_grade',10)
-                        ->get();
+            $userInfo = ClassCategoryUser::where('user_id', $user_id)
+                            ->where('user_grade',10)
+                            ->get();
 
-         $user_grade = 0;
-         if($userInfo->count()>0){
-            $user_grade = 10;
-         }
-         User::where('id', $user_id)
-             ->update([
-                 'grade'=>$user_grade]
-             );
+            $user_grade = 0;
+            if($userInfo->count()>0){
+                $user_grade = 10;
+            }
+            User::where('id', $user_id)
+                ->update([
+                    'grade'=>$user_grade]
+                );
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
 
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }

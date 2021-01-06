@@ -198,9 +198,9 @@ class PayCalculateController extends Controller
                     $sumCalcu->calcu_cost = $key->tot_cost;
                 }
 
-                $last_cost = substr($key->calcu_cost,-1);
-                if( $last_cost<= 5){
-                    $sumCalcu->calcu_cost = $key->calcu_cost + 10 - $last_cost;
+                $last_cost = substr($sumCalcu->calcu_cost,-1);
+                if( $last_cost != 0){
+                    $sumCalcu->calcu_cost = $sumCalcu->calcu_cost + 10 - $last_cost;
                     $sumCalcu->r_tax -= $last_cost;
                 }
 

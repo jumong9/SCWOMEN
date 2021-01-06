@@ -332,6 +332,17 @@ DB::enableQueryLog();
         $contract_id = $request->input('contract_id');
         $status_code = $request->input('status_code');
 
+
+        if(4==$status_code){
+            $con = ContractClass::where('contract_id',$contract_id)
+                                ->where('lector_apply_yn',0)
+                                ->get();
+
+            if(!empty($con) && $con->count()>0){
+                return response()->json(['msg'=>'강사 배정중입니다. 강사배정 완료 후 다시 시도해 주세요.']);
+            }
+        }
+
         Contracts::where('id',$contract_id)
                    ->update([
                         'status'=> $status_code

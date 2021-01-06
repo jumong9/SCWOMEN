@@ -209,7 +209,7 @@
                         @if($contentsList[0]->class_status == 1)
                             <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
                         @endif
-                        @if($contentsList[0]->class_status == 0)
+                        @if($contract->status == 6 && $contentsList[0]->class_status == 0)
                             <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
                         @endif
                     @endif

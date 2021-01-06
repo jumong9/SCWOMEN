@@ -50,7 +50,13 @@
                                 </div>
                             </div>
                         </div> --}}
-
+                        @if(session()->has('message'))
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                {{ session()->get('message') }}
+                            </div>
+                        </div>
+                        @endif
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

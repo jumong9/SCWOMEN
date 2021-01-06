@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
+//=================샘플 코드======================
+
 class Member2Controller extends Controller{
 
     public function index(Request $request){

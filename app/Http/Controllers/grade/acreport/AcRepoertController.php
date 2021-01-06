@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
 use App\Models\UserFile;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -51,6 +52,7 @@ class AcRepoertController extends Controller{
                                     )
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
+                                    ->where('f.user_id', $user_id)
                                     ->where('d.client_name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.class_day', 'desc')
                                     ->orderBy('contract_classes.created_at', 'desc')
@@ -144,44 +146,51 @@ class AcRepoertController extends Controller{
         $file_mime = $file->getMimeType();
         $random_file_name = UserFile::getFileId();
 
+        try {
+            DB::beginTransaction();
 
-        //Move Uploaded File
-        $destinationPath = $this->filePath;
-        $file->move($destinationPath, $random_file_name);
+            //Move Uploaded File
+            $destinationPath = $this->filePath;
+            $file->move($destinationPath, $random_file_name);
 
-        $file_arr = [
-            "file_name"             =>  $random_file_name,
-            "file_path"             =>  $destinationPath,
-            "file_real_name"        =>  $file_real_name,
-            "file_extension"        =>  $file_extension,
-            "file_size"             =>  $file_size,
-            "file_mime"             =>  $file_mime,
-            "user_id"               =>  $user_id,
-        ];
-        $file_id = UserFile::create($file_arr)->id;
+            $file_arr = [
+                "file_name"             =>  $random_file_name,
+                "file_path"             =>  $destinationPath,
+                "file_real_name"        =>  $file_real_name,
+                "file_extension"        =>  $file_extension,
+                "file_size"             =>  $file_size,
+                "file_mime"             =>  $file_mime,
+                "user_id"               =>  $user_id,
+            ];
+            $file_id = UserFile::create($file_arr)->id;
 
-        $class_id = $request->input('contract_class_id');
-        $classReport = new ClassReport();
-        $classReport->contract_class_id = $class_id;
-        $classReport->user_id = $user_id;
-        $classReport->class_category_id = $request->input('class_category_id');
-        $classReport->class_day = $request->input('class_day');
-        $classReport->time_from = $request->input('time_from');
-        $classReport->time_to = $request->input('time_to');
-        $classReport->class_place = $request->input('class_place');
-        $classReport->class_contents = $request->input('class_contents');
-        $classReport->class_rating = $request->input('class_rating');
-        $classReport->file_id = $file_id;
-        $classReport->created_id = $user_id;
-        $classReport->created_name = $user_name;
-        $classReport->updated_id = $user_id;
-        $classReport->updated_name = $user_name;
-        $classReport->save();
+            $class_id = $request->input('contract_class_id');
+            $classReport = new ClassReport();
+            $classReport->contract_class_id = $class_id;
+            $classReport->user_id = $user_id;
+            $classReport->class_category_id = $request->input('class_category_id');
+            $classReport->class_day = $request->input('class_day');
+            $classReport->time_from = $request->input('time_from');
+            $classReport->time_to = $request->input('time_to');
+            $classReport->class_place = $request->input('class_place');
+            $classReport->class_contents = $request->input('class_contents');
+            $classReport->class_rating = $request->input('class_rating');
+            $classReport->file_id = $file_id;
+            $classReport->created_id = $user_id;
+            $classReport->created_name = $user_name;
+            $classReport->updated_id = $user_id;
+            $classReport->updated_name = $user_name;
+            $classReport->save();
 
-        ContractClass::where('id',$class_id)
-                        ->update([
-                            'class_status'=> 2,
-                        ]);
+            ContractClass::where('id',$class_id)
+                            ->update([
+                                'class_status'=> 2,
+                            ]);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
 
         return redirect()->route('grade.acreport.read', ['pageTitle'=>$this->pageTitle,'id' =>$class_id ]) ;
     }
@@ -325,52 +334,62 @@ class AcRepoertController extends Controller{
         $old_file_id = $request->input('old_file_id');
         $old_file_name = $request->input('old_file_name');
 
-        $file = $request->file('upload_file');
-        if(!empty($file)){                                      //새로운 파일 업로드
 
-            $file_real_name = $file->getClientOriginalName();
-            $file_extension = $file->getClientOriginalExtension();
-            $file_size = $file->getSize();
-            $file_mime = $file->getMimeType();
-            $random_file_name = UserFile::getFileId();
+        try {
+            DB::beginTransaction();
+
+            $file = $request->file('upload_file');
+            if(!empty($file)){                                      //새로운 파일 업로드
+
+                $file_real_name = $file->getClientOriginalName();
+                $file_extension = $file->getClientOriginalExtension();
+                $file_size = $file->getSize();
+                $file_mime = $file->getMimeType();
+                $random_file_name = UserFile::getFileId();
 
 
-            //Move Uploaded File
-            $destinationPath = $this->filePath;
-            $file->move($destinationPath, $random_file_name);
+                //Move Uploaded File
+                $destinationPath = $this->filePath;
+                $file->move($destinationPath, $random_file_name);
 
-            $file_arr = [
-                "file_name"             =>  $random_file_name,
-                "file_path"             =>  $destinationPath,
-                "file_real_name"        =>  $file_real_name,
-                "file_extension"        =>  $file_extension,
-                "file_size"             =>  $file_size,
-                "file_mime"             =>  $file_mime,
-                "user_id"               =>  $user_id,
-            ];
-            $file_id = UserFile::create($file_arr)->id;
+                $file_arr = [
+                    "file_name"             =>  $random_file_name,
+                    "file_path"             =>  $destinationPath,
+                    "file_real_name"        =>  $file_real_name,
+                    "file_extension"        =>  $file_extension,
+                    "file_size"             =>  $file_size,
+                    "file_mime"             =>  $file_mime,
+                    "user_id"               =>  $user_id,
+                ];
+                $file_id = UserFile::create($file_arr)->id;
 
-            //기존파일 삭제
-            //$file->delete($destinationPath, $old_file_name);
-            Storage::delete($destinationPath.'/'.$old_file_name);
-            UserFile::where('id',$old_file_id)->delete();
+                //기존파일 삭제
+                //$file->delete($destinationPath, $old_file_name);
+                Storage::delete($destinationPath.'/'.$old_file_name);
+                UserFile::where('id',$old_file_id)->delete();
+            }
+
+            $report_id = $request->input('report_id');
+            $class_id = $request->input('contract_class_id');
+
+
+            ClassReport::where('id',$report_id)
+                            ->update([
+                                'time_from'=> $request->input('time_from'),
+                                'time_to'=> $request->input('time_to'),
+                                'class_place'=> $request->input('class_place'),
+                                'class_contents'=> $request->input('class_contents'),
+                                'class_rating'=> $request->input('class_rating'),
+                                'file_id'=> $file_id,
+                                'updated_id'=> $user_id,
+                                'updated_name'=> $user_name,
+                            ]);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
         }
-
-        $report_id = $request->input('report_id');
-        $class_id = $request->input('contract_class_id');
-
-
-        ClassReport::where('id',$report_id)
-                        ->update([
-                            'time_from'=> $request->input('time_from'),
-                            'time_to'=> $request->input('time_to'),
-                            'class_place'=> $request->input('class_place'),
-                            'class_contents'=> $request->input('class_contents'),
-                            'class_rating'=> $request->input('class_rating'),
-                            'file_id'=> $file_id,
-                            'updated_id'=> $user_id,
-                            'updated_name'=> $user_name,
-                        ]);
 
         return redirect()->route('grade.acreport.read', ['pageTitle'=>$this->pageTitle,'id' =>$class_id ]) ;
     }

@@ -13,7 +13,7 @@ class AdminController extends BaseController{
         //dd("grade=". Auth::user()->grade);
         if(90 > Auth::user()->grade){
             //dd(1);
-            return redirect('memo')->send();
+            return redirect('/')->send();
         }
     }
 

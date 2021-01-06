@@ -113,7 +113,7 @@ class MemberController extends Controller{
      */
     public function list(Request $request){
 
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
 
         $searchType = $request->input('searchType');
         $searchGrade = $request->input('searchGrade');
@@ -139,7 +139,7 @@ class MemberController extends Controller{
                             }else{
                                 $query ->where('users.status', '>', 0);
                             }
-echo $searchGrade;
+
                             if(""!=$searchGrade){
                                 $query ->where('class_category_user.user_grade', "{$searchGrade}");
                             }
@@ -234,7 +234,6 @@ echo $searchGrade;
             $searchStatus = $request->input('searchStatus');
             $perPage = $request->input('perPage');
             $page = $request->input('page');
-
 
             $user = new User;
 
@@ -334,14 +333,23 @@ echo $searchGrade;
      * 사용자 삭제처리
      */
     public function deleteUser(Request $request){
-         $ids = $request->input('checkedItemId');
-         $items = explode(',',$ids);
+        $ids = $request->input('checkedItemId');
+        $items = explode(',',$ids);
 
-         $user = new User;
-         foreach($items  as $id){
-            ClassCategoryUser::where('user_id',$id)->delete();
-            User::where('id', $id)->delete();
-         }
+        try {
+            DB::beginTransaction();
+
+            $user = new User;
+            foreach($items  as $id){
+                ClassCategoryUser::where('user_id',$id)->delete();
+                User::where('id', $id)->delete();
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
 
@@ -358,6 +366,21 @@ echo $searchGrade;
                                 'user_grade'=>$grade
                             ]);
       //   dd(DB::getQueryLog());
+
+
+         $userInfo = ClassCategoryUser::where('user_id', $user_id)
+                        ->where('user_grade',10)
+                        ->get();
+
+         $user_grade = 0;
+         if($userInfo->count()>0){
+            $user_grade = 10;
+         }
+         User::where('id', $user_id)
+             ->update([
+                 'grade'=>$user_grade]
+             );
+
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
 

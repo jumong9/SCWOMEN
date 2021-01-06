@@ -39,7 +39,7 @@ class OpenLectureController extends Controller
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             )
-                                    ->where('contracts.status','=',1)
+                                    ->where('contracts.status','=',2)
                                     ->where('c.user_id', $user_id)
                                     ->where('b.name','LIKE',"{$searchWord}%")
                                     ->orderBy('contract_classes.created_at', 'desc')
@@ -48,7 +48,7 @@ class OpenLectureController extends Controller
 
         $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
-//       dd(DB::getQueryLog());
+  //     dd(DB::getQueryLog());
         return view('grade.openlecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
 
     }

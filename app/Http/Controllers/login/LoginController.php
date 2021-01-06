@@ -32,7 +32,7 @@ class LoginController extends Controller{
         //미승인 사용자 로그아웃 처리
         if(0 == Auth::user()->status){
             Auth::logout();
-            return redirect('/');
+            return redirect('/')->with('message', '승인 처리중 입니다. 관리자 승인후 로그인이 가능합니다.');
         }
 
         //관리자 메인페이지

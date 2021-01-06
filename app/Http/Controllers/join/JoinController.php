@@ -5,7 +5,9 @@ namespace App\Http\Controllers\join;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\ClassCategory;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -49,14 +51,22 @@ class JoinController extends Controller{
             return back()->withErrors($validator)->withInput();
         }
 
-        $user = new User;
-        $user->fill($request->input());
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
+        try {
+            DB::beginTransaction();
+            $user = new User;
+            $user->fill($request->input());
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
 
-        $class_category_id = $request->input('class_category_id');
+            $class_category_id = $request->input('class_category_id');
 
-        $user->classCategories()->attach($class_category_id);
+            $user->classCategories()->attach($class_category_id);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
 
         return redirect()->route('auth.login');
     }

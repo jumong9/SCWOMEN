@@ -366,6 +366,21 @@ class MemberController extends Controller{
                                 'user_grade'=>$grade
                             ]);
       //   dd(DB::getQueryLog());
+
+
+         $userInfo = ClassCategoryUser::where('user_id', $user_id)
+                        ->where('user_grade',10)
+                        ->get();
+
+         $user_grade = 0;
+         if($userInfo->count()>0){
+            $user_grade = 10;
+         }
+         User::where('id', $user_id)
+             ->update([
+                 'grade'=>$user_grade]
+             );
+
          return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
      }
 

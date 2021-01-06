@@ -43,13 +43,13 @@ class ContractController extends Controller{
 
 
     public function createDo(Request $request){
-
+        DB::enableQueryLog();
         $classTargetList = $request->get('classTargetList');
         $classJson = json_decode($classTargetList, true);
         $client_id = $request->input('client_id');
 
         try {
-            DB::beginTransaction();
+        //    DB::beginTransaction();
 
             $client_info = Client::where('id', $client_id)->first();
 
@@ -99,7 +99,7 @@ class ContractController extends Controller{
                 $inputClass->save();
 
             }
-
+        //    dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -112,7 +112,7 @@ class ContractController extends Controller{
 
 
     public function read(Request $request){
-//DB::enableQueryLog();
+DB::enableQueryLog();
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
         $searchStatus = $request->input('searchStatus');
@@ -216,7 +216,7 @@ class ContractController extends Controller{
                                     }
                                 )->where('contracts.id',$id)->get();
         $contract[0]->id=$id;
- //       dd(DB::getQueryLog());
+
         $client_id = $contract[0]->client_id;
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
@@ -230,12 +230,16 @@ class ContractController extends Controller{
                                         ->where('c.code_group', '=','client_gubun');
                                 }
                             )
+                            ->select('clients.*', 'c.code_value')
                             ->where('clients.id', $client_id)->get();
+
+
         $codelist = CommonCode::getCommonCode('contract_status');
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
         $today = date("Y-m-d", time());
-
+        //echo($result[0]->id);
+        //dd(DB::getQueryLog());
         return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus,  'today'=>$today]);
     }
 

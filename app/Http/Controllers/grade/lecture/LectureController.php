@@ -127,7 +127,9 @@ class LectureController extends Controller{
                                      'users.group as group',
                                      'b.main_count',
                                      'b.sub_count',
-                                     'c.id as class_id')
+                                     'c.id as class_id',
+                                     'c.main_count as class_main_count',
+                                     'c.sub_count as class_sub_count')
                             ->whereIn('users.status', [2,4])
                             ->where('c.id' , $id)
                             ->orderBy('users.group', 'desc')

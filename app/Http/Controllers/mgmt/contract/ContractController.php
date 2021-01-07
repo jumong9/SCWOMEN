@@ -133,7 +133,10 @@ DB::enableQueryLog();
                                             , 'class_categories.class_gubun'
                                             , 'class_categories.class_name'
                                             )
-                                    ->where('contract_id', $id)->get();
+                                    ->where('contract_id', $id)
+                                    ->orderBy('contract_classes.class_day', 'asc')
+                                    ->orderBy('contract_classes.time_from', 'asc')
+                                    ->get();
 
         $client = new Client();
         $result = $client::join('common_codes as c', function($join){
@@ -161,8 +164,8 @@ DB::enableQueryLog();
                                             , 'c.sub_count')
                                    ->where('contract_classes.contract_id', $id)
                                    ->orderBy('contract_classes.class_day', 'asc')
-                                   ->orderBy('contract_classes.class_category_id', 'asc')
                                    ->orderBy('contract_classes.time_from', 'asc')
+                                   ->orderBy('contract_classes.class_category_id', 'asc')
                                    ->orderBy('c.main_yn', 'desc')
                                    ->get();
 

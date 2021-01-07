@@ -355,7 +355,7 @@ class MemberController extends Controller{
 
 
      public function updateClassCategory(Request $request){
-        // DB::enableQueryLog();
+         DB::enableQueryLog();
          $user_id = $request->input('checkedItemId');
          $grade = $request->input('grade');
          $cate_id = $request->input('cate_id');
@@ -368,7 +368,7 @@ class MemberController extends Controller{
                                 ->update([
                                     'user_grade'=>$grade
                                 ]);
-        //   dd(DB::getQueryLog());
+
 
 
             $userInfo = ClassCategoryUser::where('user_id', $user_id)
@@ -383,7 +383,7 @@ class MemberController extends Controller{
                 ->update([
                     'grade'=>$user_grade]
                 );
-
+ //   dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

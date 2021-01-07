@@ -81,7 +81,7 @@
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
                             <td>{{ $list->main_count}}</td>
-                            <td>{{ number_format($list->sub_sount)}}</td>
+                            <td>{{ $list->sub_count}}</td>
                             <td>{{ $list->lector_apply_yn == 0 ? '배정중' : '배정완료' }}</td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
                         @endforeach

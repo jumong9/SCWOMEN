@@ -73,7 +73,7 @@
                                     <input type="checkbox" name="id" id="id" value="{{ $list->id }}" data-class_id={{ $list->class_category_id }}>
                                 @endif
                             </td>
-                            <td>{{ $list->contract_id}}</td>
+                            <td><a href="{{ route ('mgmt.contract.read', ['id'=>$list->contract_id, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->contract_id}}</a></td>
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
@@ -83,7 +83,7 @@
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
                             <td>{{ $list->main_count}}</td>
-                            <td>{{ number_format($list->sub_sount)}}</td>
+                            <td>{{ $list->sub_count}}</td>
                             <td>{{ $list->lector_apply_yn == 0 ? '배정중' : '배정완료' }}</td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
                         @endforeach

@@ -232,7 +232,12 @@
                                 <td colspan="3">
                                     <div class="row">
                                         <div class="col-md-10">
-                                            <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                            <input type="file" class="form-control-file" id="upload_file" name="upload_file" required>
+                                            @error('upload_file')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </td>
@@ -241,6 +246,15 @@
                     </table>
                 </div>
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="row-fluid" style="text-align: right;">
                     <button class="btn btn-primary" type="submit"  id="createButton">저장</button>
                     <button class="btn btn-primary" type="button"  id="calcelButton">취소</button>

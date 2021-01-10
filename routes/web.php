@@ -248,6 +248,13 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@updateContractStatus'
     ]);
 
+    //계약관리 수정
+    Route::match(['get','post'],'mgmt/contract/deleteDo',[
+        'as' => 'mgmt.contract.deleteDo',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@deleteDo'
+    ]);
+
+
 
     //강좌 배정 목록
     Route::match(['get','post'],'mgmt/lecture/list',[
@@ -462,6 +469,13 @@ Route::middleware(['auth'])->group(function(){
         'as' => 'grade.mylecture.updateClassStatus',
         'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@updateClassStatus'
     ]);
+
+    //내 강좌 상태 수정
+    Route::match(['get','post'],'grade/mylecture/updateClassReset',[
+        'as' => 'grade.mylecture.updateClassReset',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@updateClassReset'
+    ]);
+
 
 
     //내 강좌 지급요청

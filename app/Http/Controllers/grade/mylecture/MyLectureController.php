@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\ClassLector;
+use App\Models\ClassReport;
 use App\Models\Client;
 use App\Models\ContractClass;
 use App\Models\Contracts;
+use App\Models\UserFile;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class MyLectureController extends Controller{
 
@@ -129,8 +133,18 @@ class MyLectureController extends Controller{
             $mainYn =1;
         }
 
+
+        $today = strtotime(date('Y-m-d'));
+        $target = strtotime($classList[0]->class_day);
+
+        $timeDiff = 0;
+        if($today >= $target) {
+            $timeDiff = 1;
+        }
+
+
 //dd(DB::getQueryLog());
-        return view('grade.mylecture.read', ['pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }
 
@@ -221,6 +235,74 @@ class MyLectureController extends Controller{
     }
 
 
+    public function updateClassReset(Request $request){
+
+        $id = $request->input('id');
+        $class_status = $request->input('class_status');
+
+        try {
+            DB::beginTransaction();
+
+            ContractClass::where('id',$id)
+                         ->update([
+                                'class_status'=>$class_status
+                            ]);
+
+            $contractClass = ContractClass::where('id',$id)->get();
+            $class_category_id = $contractClass[0]->class_category_id;
+
+            $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
+            foreach($classLectorsList as $user){
+                $main_yn = $user->main_yn;   // 0:sub, 1:main
+                if($main_yn){
+                    ClassCategoryUser::where('class_category_id', $class_category_id)
+                                     ->where('user_id', $user->user_id)
+                                     ->decrement('main_count', 1);
+
+                }else{
+                    ClassCategoryUser::where('class_category_id', $class_category_id)
+                                     ->where('user_id', $user->user_id)
+                                     ->decrement('sub_count', 1);
+                }
+
+                ClassLector::where('contract_class_id', $id)
+                            ->where('user_id', $user->user_id)
+                            ->update([
+                                'lector_cost' => '0',
+                                'main_count'  => '0',
+                                'sub_count'   => '0',
+                                'lector_main_count' => '0',
+                                'lector_main_cost' => '0',
+                                'lector_extra_count' => '0',
+                                'lector_extra_cost' => '0',
+                                ]);
+
+            }
+
+            $report = ClassReport::where('contract_class_id', $id)->first();
+            if(!empty($report) && !empty($report->id)){
+
+                $fileInfo = UserFile::where('id', $report->file_id)->first();
+                if(!empty($fileInfo) && !empty($fileInfo->file_name)){
+                    Storage::delete($fileInfo->file_path.'/'.$fileInfo->file_name);
+                    UserFile::where('id',$report->file_id)->delete();
+                }
+
+                ClassReport::where('contract_class_id', $id)->delete();
+            }
+
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg'=>'처리중 오류가 발생 하였습니다. 잠시후 다시 시도해 주세요.']);
+        }
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
+
     public function updateClassStatus(Request $request){
 
         try {
@@ -244,7 +326,7 @@ class MyLectureController extends Controller{
             foreach($classLectorsList as $user){
 
                 $classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
-                                                ->where('user_id', $user->user_id)->get();
+                                                  ->where('user_id', $user->user_id)->get();
 
                 $main_count = $classCateUser[0]->main_count;
                 $sub_count = $classCateUser[0]->sub_count;

@@ -130,9 +130,9 @@ class AcRepoertController extends Controller{
 
     public function createDo(Request $request){
 
-        // $request->validate([
-        //     'upload_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        // ]);
+        $request->validate([
+             'upload_file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+         ]);
 
         $file = $request->file('upload_file');
 

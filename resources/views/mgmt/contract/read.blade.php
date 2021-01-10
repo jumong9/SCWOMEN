@@ -201,6 +201,7 @@
                         <button class="btn btn-primary" type="button"  data-status='6' id="updateStatusButton">최종확정</button>
                     @endif
                     <button class="btn btn-primary" type="button"  id="updateButton">수정</button>
+                    <button class="btn btn-primary" type="button"  id="deleteButton">계약삭제</button>
                     <button class="btn btn-primary" type="button"  id="listButton">목록</button>
                 </div>
             </div>
@@ -281,6 +282,27 @@
 
             $("#updateButton").click(function(){
                 location.href='{{ route('mgmt.contract.update')}}' + params +"&id={{$contract->id}}";
+            });
+
+
+            $("#deleteButton").click(function(){
+                if(confirm('정말 삭제 하시겠습니까?')){
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('mgmt.contract.deleteDo') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'contract_id' : '{{ $contract->id }}',
+                        },
+                        success : function(data){
+                            alert(data.msg);
+                            location.href='{{ route('mgmt.contract.list')}}' + params ;
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    });
+                }
             });
 
             $("#updateStatusButton").click(function(){

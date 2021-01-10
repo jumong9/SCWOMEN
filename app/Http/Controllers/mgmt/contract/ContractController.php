@@ -328,6 +328,36 @@ DB::enableQueryLog();
     }
 
 
+    public function deleteDo(Request $request){
+
+        $contract_id = $request->input('contract_id');
+
+        try {
+            DB::beginTransaction();
+
+            $classList = ContractClass::where('contract_id', $contract_id)
+                                        ->get();
+
+            foreach($classList as $key){
+                ClassLector::where('contract_class_id', $key->id)
+                            ->delete();
+            }
+
+            ContractClass::where('contract_id', $contract_id)
+                         ->delete();
+
+            Contracts::where('id', $contract_id)
+                     ->delete();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return view('errors.500');
+        }
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
 
     public function updateContractStatus(Request $request){
 

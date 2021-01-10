@@ -205,12 +205,15 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    @if($mainYn)
+                    @if($mainYn && $timeDiff)
                         @if($contentsList[0]->class_status == 1)
                             <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
                         @endif
                         @if($contract->status == 6 && $contentsList[0]->class_status == 0)
-                            <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>수업완료</button>
+                            <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>교육완료</button>
+                        @endif
+                        @if($contentsList[0]->class_status == 1 || $contentsList[0]->class_status == 2)
+                            <button class="btn btn-primary" type="button"  id="resetButton" data-status='0'>교육완료취소</button>
                         @endif
                     @endif
                     {{-- <button class="btn btn-primary" type="button"  id="updateButton">수정</button> --}}
@@ -259,6 +262,29 @@
                     });
                 }
             });
+
+            $("#resetButton").click(function(){
+                if(confirm( $(this).text() + ' 처리 하시겠습니까?')){
+                    var status_code = $(this).data('status');
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('grade.mylecture.updateClassReset') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'id' : '{{ $contract->id }}',
+                            'class_status' : status_code,
+                        },
+                        success : function(data){
+                            alert(data.msg);
+                            location.reload();
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    });
+                }
+            });
+
 
             $("#reportButton").click(function(){
                 location.href='{{ route('grade.acreport.create')}}' + "?id={{$contract->id}}";

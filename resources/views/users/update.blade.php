@@ -60,6 +60,15 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="birthday" class="col-md-4 col-form-label text-md-right">{{ __('강사단명') }}</label>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="@foreach($classList as $category){{ $category->class_name }}@if(!$loop->last), @endif @endforeach" readonly >
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group row">
                             <label for="zipcode" class="col-md-4 col-form-label text-md-right">{{ __('우편번호') }}</label>
                             <div class="col-md-3">
                                 <input id="zipcode" type="text" class="form-control postcodify_postcode5 @error('zipcode') is-invalid @enderror" name="zipcode" value="{{ $userInfo->zipcode }}" autocomplete="zipcode" >

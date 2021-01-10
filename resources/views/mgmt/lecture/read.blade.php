@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    <button class="btn btn-primary" type="button"  id="openPopup">강사매칭</button>
+                    <button class="btn btn-primary" type="button"  id="openPopup">강사배정</button>
                     @if($contentsList[0]->lector_apply_yn == 0)
                         <button class="btn btn-primary" type="button"  id="applyButton">배정완료</button>
                     @endif

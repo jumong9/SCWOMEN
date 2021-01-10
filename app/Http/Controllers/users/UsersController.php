@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\users;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassCategoryUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,12 @@ class UsersController extends Controller
 
     public function update(){
         $user = Auth::user();
-        return view('users.update', ['userInfo'=>$user]);
+        $classList = ClassCategoryUser::join('class_categories as c', 'c.id', '=', 'class_category_user.class_category_id' )
+                                      ->where('user_id', $user->id)
+                                      ->select('c.class_name')
+                                      ->get();
+
+        return view('users.update', ['userInfo'=>$user, 'classList'=>$classList]);
     }
 
     public function updateDo(Request $request){

@@ -42,7 +42,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-9">
-                                            <textarea class="form-control" id="board_contents" name="board_contents" rows="9" required>{{ $boardInfo->board_contents }}</textarea>
+                                            <textarea class="form-control" id="board_contents" name="board_contents" rows="17" required>{{ $boardInfo->board_contents }}</textarea>
                                         </div>
                                     </div>
                                 </td>

@@ -29,14 +29,23 @@
                                     {!! nl2br($boardInfo->board_contents) !!}
                                 </td>
                             </tr>
+                            @if (!empty($fileInfo))
                             <tr>
                                 <th>첨부파일</th>
                                 <td colspan="3">
-                                    @if (!empty($fileInfo))
+
                                         <a href="{{ route('common.file.fileDown')}}?file_id={{$fileInfo->file_name}}">{{ $fileInfo->file_real_name }}</a>
-                                    @endif
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            @endif
+                            @if (!empty($fileInfo2))
+                            <tr>
+                                <th>첨부파일</th>
+                                <td colspan="3">
+                                        <a href="{{ route('common.file.fileDown')}}?file_id={{$fileInfo2->file_name}}">{{ $fileInfo2->file_real_name }}</a>
+                                    </td>
+                                </tr>
+                            @endif
                             <tr>
                                 <th>등록일</th>
                                 <td>

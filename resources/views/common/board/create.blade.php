@@ -27,6 +27,17 @@
                         </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
+                                <th><span class="text-danger"></span>중요공지</th>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-5 form-check pl-3 pr-3">
+                                            <input id="important_yn" type="checkbox" class="@error('important_yn') is-invalid @enderror" name="important_yn" value="1" >
+                                            <label class="form-check-label" for="important_yn"> 상단고정 </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th><span class="text-danger">*</span>제목</th>
                                 <td>
                                     <div class="row">
@@ -52,6 +63,16 @@
                                     <div class="row">
                                         <div class="col-md-9">
                                             <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <input type="file" class="form-control-file" id="upload_file2" name="upload_file2">
                                         </div>
                                     </div>
                                 </td>

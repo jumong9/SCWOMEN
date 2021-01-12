@@ -28,6 +28,17 @@
                         </colgroup>
                         <tbody class="thead-light " style="border-bottom: 1px solid #dee2e6;">
                             <tr>
+                                <th><span class="text-danger"></span>중요공지</th>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-5 form-check pl-3 pr-3">
+                                            <input id="important_yn" type="checkbox" class="@error('important_yn') is-invalid @enderror" name="important_yn" value="1" @if($boardInfo->important_yn == '1') checked @endif>
+                                            <label class="form-check-label" for="important_yn"> 상단고정 </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th><span class="text-danger">*</span>제목</th>
                                 <td>
                                     <div class="row">
@@ -60,6 +71,23 @@
                                                 <input type="hidden" name="old_file_name" value="{{ $fileInfo->file_name }}">
                                             @endif
                                             <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>첨부파일</th>
+                                <td colspan="3">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            @if (!empty($fileInfo2))
+                                                {{ $fileInfo2->file_real_name }}
+                                                <input type="checkbox" name="delete_old_file2" value="Y" id="delete_old_file2" class="">
+                                                <label class="form-check-label" for="delete_old_file2">파일삭제</label>
+                                                <input type="hidden" name="old_file_id2" value="{{ $fileInfo2->id }}">
+                                                <input type="hidden" name="old_file_name2" value="{{ $fileInfo2->file_name }}">
+                                            @endif
+                                            <input type="file" class="form-control-file" id="upload_file2" name="upload_file2">
                                         </div>
                                     </div>
                                 </td>

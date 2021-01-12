@@ -204,8 +204,7 @@ class ApplicationController extends Controller{
             foreach($items  as $id){
                 $user->where('id', $id)
                     ->update([
-                            'status' => 2,
-                            'joinday' => date('Y-m-d')
+                            'status' => 2
                             ]);
             }
 

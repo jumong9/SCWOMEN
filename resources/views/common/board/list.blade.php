@@ -45,13 +45,16 @@
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
+                            <th>No</th>
                             <th>제목</th>
                             <th style="width: 10%;">등록일</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php ($no = $contentList->total() - $contentList->perPage() * ($contentList->currentPage()-1))
                         @foreach($contentList as $key => $list)
                         <tr>
+                            <td>{{$no--}}</td>
                             <td><a href="{{ route ('common.board.read', ['id'=>$list->id, 'board_id'=>$list->board_id, 'perPage'=>$contentList->perPage(), 'page'=>$contentList->currentPage(), 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->board_title}}</a></td>
                             <td>{{ $list->created_at->format('Y-m-d')}}</td>
                         @endforeach

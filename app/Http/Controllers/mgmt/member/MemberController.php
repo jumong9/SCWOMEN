@@ -10,6 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller{
@@ -126,7 +127,7 @@ class MemberController extends Controller{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select('users.id', 'users.group', 'users.name', 'users.mobile'
                                 , 'users.email', 'users.grade','users.gubun','users.status','users.created_at'
-                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_grade')
+                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_grade', 'class_category_user.joinday')
                         ->where('users.grade', '<', 90)
                         ->where(function($query) use ($request){
                             $searchType = $request->input('searchType');
@@ -262,7 +263,6 @@ class MemberController extends Controller{
                             'address' => $address,
                             'zipcode' => $zipcode,
                             'birthday' => $birthday,
-                            'joinday' => $joinday,
                             'stopday' => $stopday
                             ]);
 
@@ -291,6 +291,7 @@ class MemberController extends Controller{
                                 'main_count' => $cate->main_count,
                                 'sub_count' =>  $cate->sub_count,
                                 'user_grade' =>  $cate->user_grade,
+                                'joinday' => $joinday,
                             ]);
             }
             //dd(DB::getQueryLog());
@@ -397,5 +398,24 @@ class MemberController extends Controller{
      public function export(){
          return Excel::download(new ExportsUserExcelExport, 'users.xlsx');
     }
+
+
+    /**
+     * 사용자 승인처리
+     */
+    public function resetPasswd(Request $request){
+        // DB::enableQueryLog();
+        $id = $request->input('checkedItemId');
+        $password = Hash::make(str_replace('-','',$request->input('birthday')));
+        $user = new User;
+
+        $user->where('id', $id)
+             ->update([
+                    'password' => $password
+             ]);
+
+      //   dd(DB::getQueryLog());
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+     }
 
 }

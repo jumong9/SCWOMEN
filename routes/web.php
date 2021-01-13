@@ -163,6 +163,11 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\member\MemberController@updateClassCategory'
     ]);
 
+    //멤버관리 비밀번호 초기화
+    Route::match(['get','post'],'member/resetPasswd',[
+        'as' => 'mgmt.member.resetPasswd',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@resetPasswd'
+    ]);
 
 
     //수요처관리 리스트 화면

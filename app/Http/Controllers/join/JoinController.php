@@ -39,10 +39,14 @@ class JoinController extends Controller{
     public function postRegister(Request $request){
 
         $rule = [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'mobile' => ['required', 'string', 'min:10','max:13'],
+            'birthday' => ['required', 'string'],
+            'zipcode' => ['required', 'string', 'min:5','max:5'],
+            'address' => ['required', 'string', 'min:5','max:100'],
+
         ];
 
         $validator = Validator::make($request->all(), $rule);
@@ -68,7 +72,7 @@ class JoinController extends Controller{
             return view('errors.500');
         }
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.login')->with('message', '정상적으로 등록 되었습니다. 관리자 승인후 로그인이 가능합니다.');
     }
 
 }

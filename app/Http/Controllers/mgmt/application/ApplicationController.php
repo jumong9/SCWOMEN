@@ -144,7 +144,7 @@ class ApplicationController extends Controller{
                             'group' => $group,
                             'address' => $address,
                             'birthday' => $birthday,
-                            'joinday' => $joinday,
+
                             'stopday' => $stopday
                             ]);
 
@@ -160,6 +160,7 @@ class ApplicationController extends Controller{
                 $classUser = new ClassCategoryUser();
                 $classUser->user_id = $id;
                 $classUser->class_category_id = $cate;
+                $classUser->joinday = $joinday;
 
                 $classUser->save();
 
@@ -171,7 +172,8 @@ class ApplicationController extends Controller{
                     ->where('class_category_id', $cate->class_category_id)
                     ->update([
                                 'main_count' => $cate->main_count,
-                                'sub_count' =>  $cate->sub_count
+                                'sub_count' =>  $cate->sub_count,
+                                'joinday' => $joinday,
                             ]);
             }
 

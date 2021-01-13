@@ -80,7 +80,7 @@
                             <th>주소지</th>
                             <td>{{ $member[0]->address}}</td>
                             <th>입단일</th>
-                            <td>{{ $member[0]->joinday}}</td>
+                            <td>{{ $classCategory[0]->joinday}}</td>
                         </tr>
                         @if ($member[0]->status == 6 || $member[0]->status ==9)
                         <tr >

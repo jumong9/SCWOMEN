@@ -26,7 +26,7 @@ class LoginController extends Controller{
         ];
 
         if (! Auth::attempt($credentials)) {
-            return back()->withInput();
+            return back()->withInput()->with('message','이메일주소나 패스워드가 틀립니다.');
         }
 
         //미승인 사용자 로그아웃 처리

@@ -72,7 +72,7 @@
                             <th>핸드폰</th>
                             <th>E-mail</th>
                             <th>상태</th>
-                            <th>등록일</th>
+                            <th>입단일</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,7 +122,7 @@
                                     @default
                                 @endswitch
                             </td>
-                            <td>{{ $member->created_at}}</td>
+                            <td>{{ $member->joinday}}</td>
                         </tr>
                         @endforeach
                     </tbody>

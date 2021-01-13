@@ -107,7 +107,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="joinday" type="text" class="form-control datepicker" readonly name="joinday" value="{{ $member[0]->joinday }}" >
+                                        <input id="joinday" type="text" class="form-control datepicker" readonly name="joinday" value="{{ $classCategory[0]->joinday }}" >
                                     </div>
                                 </div>
                             </td>

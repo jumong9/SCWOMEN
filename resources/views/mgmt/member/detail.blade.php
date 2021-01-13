@@ -22,7 +22,7 @@
                     <tbody class="thead-light" style="border-bottom: 1px solid #dee2e6;">
                         <tr>
                             <th>강사명</th>
-                            <td>{{ $member[0]->name }}</td>
+                            <td>{{ $member[0]->name }} &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="passwdButton">비밀번호 초기화</button></td>
                             <th>상태</th>
                             <td>
                                 @switch($member[0]->status)
@@ -80,7 +80,7 @@
                             <th>주소지</th>
                             <td>{{ $member[0]->zipcode}} {{ $member[0]->address}}</td>
                             <th>입단일</th>
-                            <td>{{ $member[0]->joinday}}</td>
+                            <td>{{ $classCategory->joinday}}</td>
                         </tr>
                         <tr >
                             <th>등급</th>
@@ -132,6 +132,25 @@
         $(document).ready(function() {
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchGrade={{$searchGrade}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
+            $("#passwdButton").click(function(){
+                if(confirm("비밀번호를 초기화 하시겠습니까?")){
+                    $.ajax({
+                        type : "post",
+                        url : "{{ route('mgmt.member.resetPasswd') }}",
+                        data : {
+                            _token: "{{csrf_token()}}",
+                            'checkedItemId' : {{ $member[0]->id }},
+                            'birthday' : '{{ $member[0]->birthday}}',
+                        },
+                        success : function(data){
+                            alert(data.msg);
+                        },
+                        error : function(xhr, exMessage) {
+                            alert('error');
+                        },
+                    })
+                }
+            });
 
             $("#leaderButton").click(function(){
                 if(confirm("반장 강사로 변경 하시겠습니까?")){

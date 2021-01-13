@@ -11,7 +11,7 @@ class ClassCategoryUser extends Model
 
     protected $table = 'class_category_user';
 
-    public $fillable = ['class_category_id','user_id', 'user_grade','main_count','sub_count'];
+    public $fillable = ['class_category_id','user_id', 'user_grade','main_count','sub_count', 'joinday'];
 
 
 }

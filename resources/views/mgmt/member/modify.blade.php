@@ -132,8 +132,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <th>비고</th>
+                            <td><div class="row">
+                                <div class="col-md-12">
+                                    <input id="comments" type="text" class="form-control" name="comments" value="" >
+                                </div>
+                            </div></td>
                         </tr>
                         <tr>
                             <th>강사단명</th>

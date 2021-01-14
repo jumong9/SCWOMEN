@@ -75,7 +75,7 @@ class ClientController extends Controller{
     }
 
     /**
-     * 수요처 등록 화면
+     * 수요처 등록
      */
     public function createDo(Request $request, Client $client){
         $client->fill($request->input())
@@ -162,6 +162,10 @@ class ClientController extends Controller{
         $id = $request->input('id');
         $client->fill($request->input());
 
+        if($client->client_loctype!=99){
+            $client->client_loctype_etc="";
+        }
+
         $client->where('id', $id)
                 ->update([
                     'name'=>$client->name,
@@ -169,6 +173,7 @@ class ClientController extends Controller{
                     'client_tel'=>$client->client_tel,
                     'client_fax'=>$client->client_fax,
                     'client_loctype'=>$client->client_loctype,
+                    'client_loctype_etc'=>$client->client_loctype_etc,
                     'office_tel'=>$client->office_tel,
                     'office_fax'=>$client->office_fax,
                     'address'=>$client->address,

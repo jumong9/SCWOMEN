@@ -56,7 +56,12 @@
                                 {{ $client->zipcode }} {{ $client->address }}
                             </td>
                             <th>지역구분</th>
-                            <td>{{ $client->client_loctype_value }}</td>
+                            <td>@if($client->client_loctype==99)
+                                {{ $client->client_loctype_etc }}
+                                @else
+                                {{ $client->client_loctype_value }}
+                                @endif
+                            </td>
                         </tr>
                     </tbody>
                 </table>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\User;
+use App\Models\userHistory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -192,7 +193,11 @@ class MemberController extends Controller{
                                             ->get();
         $member[0]->cate_id = $cate_id;
 
-        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory[0], 'perPage' => $perPage, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
+        $userHistory = UserHistory::where('user_id', $id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+
+        return view('mgmt.member.detail', ['member'=>$member, 'classCategory' => $classCategory[0], 'userHistory' => $userHistory, 'perPage' => $perPage, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 
 
@@ -250,6 +255,7 @@ class MemberController extends Controller{
             $zipcode = $request->input('zipcode');
             $joinday = $request->input('joinday');
             $stopday = $request->input('stopday');
+            $comments = $request->input('comments');
 
             $user->fill($request->input());
             $user->where('id', $id)
@@ -294,6 +300,16 @@ class MemberController extends Controller{
                                 'joinday' => $joinday,
                             ]);
             }
+
+            if($status == 6 || $status == 8){
+                if(!empty($comments)){
+                    $userHistory = new UserHistory();
+                    $userHistory->user_id = $id;
+                    $userHistory->comments = $comments;
+                    $userHistory->save();
+                }
+            }
+
             //dd(DB::getQueryLog());
             DB::commit();
 

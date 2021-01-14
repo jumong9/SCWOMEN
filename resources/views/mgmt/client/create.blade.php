@@ -102,6 +102,9 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col-md-10 mt-1 client_loctype_etc" style="display:none;">
+                                        <input id="client_loctype_etc" type="text" class="form-control postcodify_address" name="client_loctype_etc" value="" >
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -133,6 +136,16 @@
                 return true;
             }
 
+            $("#client_loctype").change(function(){
+                var selItem = $("select[name=client_loctype]").val();
+                if(selItem == 99 ){
+                    $(".client_loctype_etc").show();
+                }else{
+                    $(".client_loctype_etc").hide();
+                    $("#client_loctype_etc").val("");
+                }
+
+            });
 
 
             $("#cancelButton").click(function(){

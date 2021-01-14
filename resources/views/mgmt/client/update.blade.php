@@ -102,11 +102,14 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <select name="client_loctype" id="gubun" class="form-control">
+                                        <select name="client_loctype" id="client_loctype" class="form-control">
                                             @foreach($codeLoclist as $code)
                                             <option value="{{$code->code_id}}" {{ $client->client_loctype == $code->code_id ? "selected" : "" }}>{{$code->code_value}}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="col-md-10 mt-1 client_loctype_etc" @if($client->client_loctype != 99) style="display:none;" @endif">
+                                        <input id="client_loctype_etc" type="text" class="form-control postcodify_address" name="client_loctype_etc" value="{{ $client->client_loctype_etc}}" >
                                     </div>
                                 </div>
                             </td>
@@ -143,6 +146,15 @@
                 location.href='{{ route('mgmt.client.read')}}'  + params +"&id={{$client->id}}";
             });
 
+            $("#client_loctype").change(function(){
+                var selItem = $("select[name=client_loctype]").val();
+                if(selItem == 99 ){
+                    $(".client_loctype_etc").show();
+                }else{
+                    $(".client_loctype_etc").hide();
+                }
+
+            });
 
             $('.datepicker').datepicker(
                 {

@@ -110,6 +110,14 @@
                                 {{ $classCategory->class_name }}( 주 : {{ $classCategory->main_count }}, 보조 : {{ $classCategory->sub_count }} )
                             </td>
                         </tr>
+                        @foreach($userHistory as $key => $history)
+                        <tr>
+                            <th>비고</th>
+                            <td colspan="3">
+                                {{ $history->created_at}} : {{ $history->comments }}
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

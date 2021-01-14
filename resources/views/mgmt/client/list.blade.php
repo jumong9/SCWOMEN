@@ -63,7 +63,13 @@
                                 {{ $list->client_gubun_value}}
                             </td>
                             <td><a href="{{ route ('mgmt.client.read', ['id'=>$list->id, 'perPage'=>$contentslist->perPage(), 'page'=>$contentslist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->name }}</a></td>
-                            <td>{{ $list->client_loctype_value}}</td>
+                            <td>
+                                @if($list->client_loctype==99)
+                                {{ $list->client_loctype_etc }}
+                                @else
+                                {{ $list->client_loctype_value }}
+                                @endif
+                            </td>
                             <td>{{ $list->client_tel}}</td>
                             <td>{{ $list->client_fax}}</td>
                             <td>{{ $list->office_tel}}</td>

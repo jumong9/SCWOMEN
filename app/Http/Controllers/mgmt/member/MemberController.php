@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassCategoryUser;
 use App\Models\User;
-use App\Models\userHistory;
+use App\Models\UserHistory;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -194,6 +194,7 @@ class MemberController extends Controller{
         $member[0]->cate_id = $cate_id;
 
         $userHistory = UserHistory::where('user_id', $id)
+                                ->where('class_category_id', $cate_id)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
@@ -255,6 +256,7 @@ class MemberController extends Controller{
             $zipcode = $request->input('zipcode');
             $joinday = $request->input('joinday');
             $stopday = $request->input('stopday');
+            $cate_id = $request->input('cate_id');
             $comments = $request->input('comments');
 
             $user->fill($request->input());
@@ -305,6 +307,7 @@ class MemberController extends Controller{
                 if(!empty($comments)){
                     $userHistory = new UserHistory();
                     $userHistory->user_id = $id;
+                    $userHistory->class_category_id = $cate_id;
                     $userHistory->comments = $comments;
                     $userHistory->save();
                 }

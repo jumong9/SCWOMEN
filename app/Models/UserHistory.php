@@ -9,5 +9,5 @@ class UserHistory extends Model
 {
     use HasFactory;
 
-    public $fillable = ['user_id','comments'];
+    public $fillable = ['user_id','class_category_id','comments'];
 }

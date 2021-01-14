@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Client;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -28,7 +29,8 @@ class ClientExcelExport implements FromQuery, WithHeadings
                         ->select(
                             'c.code_value as client_gubun_value',
                             'clients.name',
-                            'cc.code_value as client_loctype_value',
+
+                             DB::raw('case when clients.client_loctype = 99 then clients.client_loctype_etc else cc.code_value END'),
                             'clients.client_tel',
                             'clients.client_fax',
                             'clients.office_tel',

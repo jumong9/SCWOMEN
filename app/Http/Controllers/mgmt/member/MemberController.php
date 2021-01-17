@@ -291,15 +291,22 @@ class MemberController extends Controller{
 
             }
 
+            $joinTemp = $joinday;
             //기존 클래스 존재시 업데이트(주,보조강사 횟수)
             foreach($oldClassCategory as $cate){
+
+                if($cate_id != $cate->class_category_id){
+                    $joinTemp = $cate->joinday;
+                }else{
+                    $joinTemp = $joinday;
+                }
                 $cate->where('user_id', $cate->user_id)
-                    ->where('class_category_id', $cate->class_category_id)
-                    ->update([
+                     ->where('class_category_id', $cate->class_category_id)
+                     ->update([
                                 'main_count' => $cate->main_count,
                                 'sub_count' =>  $cate->sub_count,
                                 'user_grade' =>  $cate->user_grade,
-                                'joinday' => $joinday,
+                                'joinday' => $joinTemp,
                             ]);
             }
 

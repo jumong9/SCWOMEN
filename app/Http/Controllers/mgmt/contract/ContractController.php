@@ -65,6 +65,7 @@ class ContractController extends Controller{
                 "material_cost"       =>  $request->input('material_cost'),
                 "material_total_cost" =>  $request->input('material_total_cost'),
                 "total_cost"          =>  $request->input('total_cost'),
+                "outcome_material_cost"       =>  $request->input('outcome_material_cost'),
                 "paid_yn"             =>  $request->input('paid_yn'),
                 "status"              =>  $request->input('status'),
                 "comments"            =>  $request->input('comments'),
@@ -92,6 +93,7 @@ class ContractController extends Controller{
                 $inputClass->class_order            = $class['class_order'];
                 $inputClass->main_count             = $class['main_count'];
                 $inputClass->sub_count              = $class['sub_count'];
+                $inputClass->finance                = $class['finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
                 $inputClass->main_count             = $class['main_count'];
@@ -156,6 +158,7 @@ DB::enableQueryLog();
                                             , 'contract_classes.class_target'
                                             , 'contract_classes.class_sub_name'
                                             , 'contract_classes.online_type'
+                                            , 'contract_classes.finance'
                                             , 'contract_classes.id'
                                             , 'e.class_name'
                                             , 'd.name as user_name'
@@ -279,6 +282,7 @@ DB::enableQueryLog();
                         'material_cost'             =>  $contract->material_cost,
                         'material_total_cost'       =>  $contract->material_total_cost,
                         'total_cost'                =>  $contract->total_cost,
+                        'outcome_material_cost'     =>  $contract->outcome_material_cost,
                         'paid_yn'                   =>  $contract->paid_yn,
                         'status'                    =>  $contract->status,
                         'comments'                  =>  $contract->comments,
@@ -302,6 +306,7 @@ DB::enableQueryLog();
                 $inputClass->class_order            = $class['class_order'];
                 $inputClass->main_count             = $class['main_count'];
                 $inputClass->sub_count              = $class['sub_count'];
+                $inputClass->finance                = $class['finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
                 $inputClass->main_count             = $class['main_count'];
@@ -318,7 +323,7 @@ DB::enableQueryLog();
                 }
 
             }
-
+     //       dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

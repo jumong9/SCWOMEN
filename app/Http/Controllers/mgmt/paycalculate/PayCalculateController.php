@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\mgmt\paycalculate;
 
-use App\Exports\ClassCalculateExport;
+use App\Exports\PayCalculateExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCalculate;
 use App\Models\ContractClass;
@@ -245,7 +245,7 @@ class PayCalculateController extends Controller
             $searchFromDate = date("Y-m", time()) .'-01';
         }
 
-        return (new ClassCalculateExport)->forYear($searchFromMonth)->download('ClassCalculateReport.xlsx');
+        return (new PayCalculateExport)->forYear($searchFromMonth)->download('ClassCalculateReport.xlsx');
     }
 
 }

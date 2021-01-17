@@ -53,10 +53,11 @@
                     <tbody>
                         @php ($no = $contentList->total() - $contentList->perPage() * ($contentList->currentPage()-1))
                         @foreach($contentList as $key => $list)
-                        <tr>
-                            <td>{{$no--}}</td>
+                        <tr {{$list->important_yn == 1 ? 'style=background-color:#eaf5ff' : ''}}>
+                            <td>{{$list->id}}{{--$no--}}</td>
                             <td><a href="{{ route ('common.board.read', ['id'=>$list->id, 'board_id'=>$list->board_id, 'perPage'=>$contentList->perPage(), 'page'=>$contentList->currentPage(), 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->board_title}}</a></td>
                             <td>{{ $list->created_at->format('Y-m-d')}}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\mgmt\payreport;
 
-use App\Exports\CalculatorExport;
+use App\Exports\PayReportExport;
 use App\Http\Controllers\Controller;
 use App\Models\ContractClass;
 use DateTime;
@@ -101,7 +101,7 @@ class PayReportController extends Controller{
             $searcToDate = $dayCount->format( 'Y-m-t' );
         }
 
-        return (new CalculatorExport)->forYear($searcFromDate, $searcToDate)->download('PayReport.xlsx');
+        return (new PayReportExport)->forYear($searcFromDate, $searcToDate)->download('PayReport.xlsx');
     }
 
 

@@ -84,9 +84,9 @@
                                 <td>
                                     {{ $contract->code_value }}
                                 </td>
+                                <th>세출 재료비</th>
                                 <td>
-                                </td>
-                                <td>
+                                    {{ $contract->outcome_material_cost }}
                                 </td>
                             </tr>
                             <tr>
@@ -131,6 +131,7 @@
                                 <th style="width:50px;">차수</th>
                                 <th style="width:50px;">주강사</th>
                                 <th style="width:50px;">보조</th>
+                                <th style="width:50px;">재원</th>
                                 <th style="width:100px;">수업방식</th>
                                 <th style="width:80px;">수업구분</th>
                             </tr>
@@ -170,6 +171,9 @@
                                 </td>
                                 <td>
                                     {{number_format($list->sub_count)}}
+                                </td>
+                                <td>
+                                    {{$list->finance}}
                                 </td>
                                 <td>
                                     @if($list->class_type == 0 ) 오프라인

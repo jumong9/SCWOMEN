@@ -21,6 +21,7 @@ class Contracts extends Model
         'material_cost',
         'material_total_cost',
         'total_cost',
+        'outcome_material_cost',
         'paid_yn',
         'status',
         'comments'

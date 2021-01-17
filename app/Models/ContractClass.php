@@ -25,6 +25,7 @@ class ContractClass extends Model
         'class_order',
         'main_count',
         'sub_count',
+        'finance',
         'class_type',
         'online_type',
     ];

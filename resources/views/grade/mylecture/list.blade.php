@@ -87,9 +87,9 @@
                 </table>
                 {{ $classList->withQueryString()->links() }}
             </div>
-            <div class="row-fluid" style="text-align: right;">
+            {{-- <div class="row-fluid" style="text-align: right;">
                 <button class="btn btn-primary" type="button" name="requestButton" id="requestButton">지급요청</button>
-            </div>
+            </div> --}}
         </div>
     </div>
     </form>

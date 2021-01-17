@@ -337,6 +337,17 @@ Route::middleware(['adminmiddle'])->group(function(){
     ]);
 
 
+    //강의 진행관리 목록
+    Route::match(['get','post'],'mgmt/progress/list',[
+        'as' => 'mgmt.progress.list',
+        'uses' => 'App\Http\Controllers\mgmt\progress\ProgressController@list'
+    ]);
+
+    Route::match(['get','post'],'mgmt/progress/exportExcel',[
+        'as' => 'mgmt.progress.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\progress\ProgressController@exportExcel'
+    ]);
+
 
 });
 

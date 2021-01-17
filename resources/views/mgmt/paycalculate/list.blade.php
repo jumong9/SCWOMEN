@@ -59,6 +59,7 @@
                             <th>소득세</th>
                             <th>주민세</th>
                             <th>실지급액</th>
+                            <th>강의방식</th>
                             <th>수요처</th>
                             <th>프로그램</th>
 
@@ -83,6 +84,7 @@
                                     <td>{{ number_format( $list->calcu_cost ) }} </td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                 </tr>
                             @else
                                 <tr>
@@ -99,6 +101,15 @@
                                     <td>{{ number_format( $list->i_tax ) }} </td>
                                     <td>{{ number_format( $list->r_tax ) }} </td>
                                     <td>{{ number_format( $list->calcu_cost ) }} </td>
+                                    <td>
+                                        @if($list->class_type == 0)
+                                            오프라인
+                                        @elseif($list->class_type==1)
+                                            온라인실시간
+                                        @else
+                                            온라인동영상 {{$list->online_type == 0 ? ' - 최초방영' : ' - 재방' }}
+                                        @endif
+                                    </td>
                                     <td>{{ $list->client_name}} </td>
                                     <td>{{ $list->class_gubun}} - {{ $list->class_name }} </td>
                                 </tr>

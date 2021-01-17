@@ -59,12 +59,13 @@
                     <li class="nav-item pr-2">
                         <div class="dropdown show">
                             <a class="nav-link dropdown-toggle" href="{{ route('mgmt.lecture.list') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                강사배정 정보
+                                강의진행 정보
                             </a>
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item" href="{{ route('mgmt.lecture.list') }}">강사배정관리</a>
-                                <a class="dropdown-item" href="{{ route('mgmt.acreport.list') }}">활동일지관리</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.progress.list') }}">강의진행 정보</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.lecture.list') }}">강사배정 관리</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.acreport.list') }}">활동일지 관리</a>
                             </div>
                         </div>
                     </li>
@@ -76,7 +77,7 @@
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <a class="dropdown-item" href="{{ route('mgmt.payreport.list') }}">강사비 지급대상</a>
-                                <a class="dropdown-item" href="{{ route('mgmt.payment.list') }}">강사비 지급관리</a>
+                                {{-- <a class="dropdown-item" href="{{ route('mgmt.payment.list') }}">강사비 지급관리</a> --}}
                                 <a class="dropdown-item" href="{{ route('mgmt.paycalculate.list') }}">강사비 정산</a>
                             </div>
                         </div>
@@ -118,12 +119,14 @@
                 @endif
                 </ul>
             </div>
+            @if (Auth::user()->grade <90 )
             <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto" href="#">{{ config('app.name', 'Laravel8') }}</a>
+                <a class="navbar-brand mx-auto" href="{{ route('common.board.list')}}?board_id=notice">{{ config('app.name', 'Laravel8') }}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-collapse2">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
+            @endif
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">

@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ClassCalculateExport implements FromQuery, WithHeadings{
+class PayCalculateExport implements FromQuery, WithHeadings{
 
 
     use Exportable;
@@ -41,6 +41,13 @@ class ClassCalculateExport implements FromQuery, WithHeadings{
                                         , 'i_tax'
                                         , 'r_tax'
                                         , 'calcu_cost'
+                                        , DB::raw('case when class_day is null then \'\'
+                                                        else
+                                                                case when class_type = 0 then \'오프라인\'
+                                                                when class_type = 1 then \'온라인실시간\'
+                                                                else case when online_type = 0 then \'온라인동영상-최초방영\' else \'온라인동영상-재방\' end
+                                                                end
+                                                    end' )
                                         , 'client_name'
                                         , DB::raw('concat(class_gubun,\' - \',class_name)')
 
@@ -55,7 +62,7 @@ class ClassCalculateExport implements FromQuery, WithHeadings{
     public function headings(): array{
         return ["강사명", "활동일자", "시간", "자격", "지급기준"
                 , "기본시간", "기본금액", "추가시간", "추가금액"
-                , "총액", "소득세","주민세", "실지급액", "수요처"
-                , "프로그램"] ;
+                , "총액", "소득세","주민세", "실지급액"
+                , "강의방식", "수요처", "프로그램"] ;
     }
 }

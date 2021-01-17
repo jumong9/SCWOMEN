@@ -62,6 +62,7 @@
                             <th>실지급액</th>
                             <th>수요처</th>
                             <th>프로그램</th>
+                            <th>활동일지</th>
 
                         </tr>
                     </thead>
@@ -84,6 +85,7 @@
                             <td>{{ number_format( $list->pay ) }} </td>
                             <td>{{ $list->client_name}} </td>
                             <td>{{ $list->class_name }} </td>
+                            <td>{{ $list->class_status == 2 ? '작성완료':'' }} </td>
 
                         @endforeach
                     </tbody>

@@ -11,7 +11,8 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class CalculatorExport implements FromQuery, WithHeadings{
+//강사비 지급대상 엑셀다운
+class PayReportExport implements FromQuery, WithHeadings{
 
     use Exportable;
 
@@ -45,13 +46,15 @@ class CalculatorExport implements FromQuery, WithHeadings{
                                             ,  DB::raw('case when c.main_yn = 1 then c.main_count else c.sub_count END')
                                             ,  'contract_classes.class_count'
                                             ,  'contract_classes.class_order'
+                                            , 'c.lector_cost'
                                             , 'c.lector_cost as tot'
                                             , DB::raw('round(c.lector_cost * 0.03) AS i_tax')
                                             , DB::raw('round(c.lector_cost * 0.003) AS r_tax')
                                             , DB::raw('c.lector_cost - round(c.lector_cost * 0.033) AS pay')
                                             , 'd.client_name'
                                             , 'b.class_name'
-                                            , 'f.code_value as class_status_value'
+                                         //   , 'f.code_value as class_status_value'
+                                            , DB::raw('case when contract_classes.class_status = 2 then \'작성완료\' else \'\' END')
                                     )
                                     ->where('contract_classes.class_status', '>', '0')
                                     ->whereBetween('contract_classes.class_day', [$this->searcFromDate, $this->searcToDate])
@@ -66,7 +69,7 @@ class CalculatorExport implements FromQuery, WithHeadings{
     }
 
     public function headings(): array{
-        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "총액", "소득세", "주민세", "실지급액", "수요처", "프로그램", "진행상태"];
+        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "강사비", "총액", "소득세", "주민세", "실지급액", "수요처", "프로그램", "활동일지"];
     }
 
 }

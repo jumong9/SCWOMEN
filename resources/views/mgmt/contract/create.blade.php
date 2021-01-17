@@ -140,9 +140,13 @@
                                         </div>
                                     </div>
                                 </td>
+                                <th>세출 재료비</th>
                                 <td>
-                                </td>
-                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6 input-group-sm">
+                                            <input id="outcome_material_cost" type="number" class="form-control @error('outcome_material_cost') is-invalid @enderror" name="outcome_material_cost" value=""  >
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -174,12 +178,13 @@
                                 <th style="width:100px;"><span class="text-danger">*</span>시간</th>
                                 <th style="width:160px;"><span class="text-danger">*</span>프로그램</th>
                                 <th style="width:120px;"><span class="text-danger"></span>세부프로그램</th>
-                                <th style="width:160px;"><span class="text-danger">*</span>교육대상</th>
+                                <th style="width:120px;"><span class="text-danger">*</span>교육대상</th>
                                 <th style="width:40px;"><span class="text-danger">*</span>인원</th>
                                 <th style="width:40px;"><span class="text-danger">*</span>횟수</th>
                                 <th style="width:40px;"><span class="text-danger">*</span>차수</th>
                                 <th style="width:40px;"><span class="text-danger">*</span>주강사</th>
                                 <th style="width:40px;"><span class="text-danger">*</span>보조</th>
+                                <th style="width:100px;"><span class="text-danger">*</span>재원</th>
                                 <th style="width:120px;"><span class="text-danger">*</span>수업방식</th>
                                 <th style="width:80px;"><span class="text-danger">*</span>수업구분</th>
                                 <th style="width:50px;"></th>
@@ -190,7 +195,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-11 input-group-sm">
-                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$today}}" required >
+                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$today}}"  >
                                         </div>
                                     </div>
                                 </td>
@@ -267,6 +272,13 @@
                                 </td>
                                 <td>
                                     <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="finance" type="text" class="form-control @error('finance') is-invalid @enderror" name="finance" value="보조금" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
                                         <div class="col-md-12 input-group-sm">
                                             <select name="class_type" id="class_type" class="form-control ">
                                                 <option value="0">오프라인</option>
@@ -324,6 +336,7 @@
             data-class_order="${class_order}"
             data-main_count="${main_count}"
             data-sub_count="${sub_count}"
+            data-finance="${finance}"
             data-class_type="${class_type}"
             data-class_type="${online_type}"  >
 
@@ -337,6 +350,7 @@
             <td style="width:40px;">${class_order}</td>
             <td style="width:40px;">${main_count}</td>
             <td style="width:40px;">${sub_count}</td>
+            <td style="width:40px;">${finance}</td>
             <td style="width:120px;">${class_type_text}</td>
             <td style="width:120px;">${online_type_text}</td>
             <td style="width:50px;"><button class="btn-sm btn-primary delRow" type="button">삭제</button></td>
@@ -380,6 +394,7 @@
                 var _class_order        =$("#class_order","#classList").val();
                 var _main_count         =$("#main_count","#classList").val();
                 var _sub_count          =$("#sub_count","#classList").val();
+                var _finance          =$("#finance","#classList").val();
                 var _class_type         =$("#class_type option:selected","#classList").val();
                 var _class_type_text    =$("#class_type option:selected","#classList").text();
 
@@ -387,6 +402,13 @@
                 var _online_type_text    =$("#online_type option:selected","#classList").text();
                 if(_class_type!=2){
                     _online_type_text ="";
+                }
+
+
+
+                if(_class_day == "" || _time_from=="" || _time_to=="" || _class_target=="" || _class_number=="" || _class_count=="" || _class_order=="" || _main_count=="" || _sub_count=="" || _finance=="") {
+                    alert('필수 항목을 모두 입력해 주세요.');
+                    return false;
                 }
 
                 var defaultItem = {
@@ -402,6 +424,7 @@
                     ,class_order        :_class_order
                     ,main_count         :_main_count
                     ,sub_count          :_sub_count
+                    ,finance            :_finance
                     ,class_type         :_class_type
                     ,class_type_text    :_class_type_text
                     ,online_type        :_online_type

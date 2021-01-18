@@ -39,6 +39,7 @@
                             <th>교육대상</th>
                             <th>인원</th>
                             <th>작성자</th>
+                            <th>보조강사</th>
                             <th style="width: 200px;">교육내용</th>
                             <th style="width: 200px;">강사소견</th>
                             <th style="width: 200px;">사진자료</th>
@@ -67,6 +68,7 @@
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->created_name}}</td>
+                            <td>{{ $list->sub_user_names}}</td>
                             <td>{{ $list->class_contents}}</td>
                             <td>{{ $list->class_rating}}</td>
                             <td>

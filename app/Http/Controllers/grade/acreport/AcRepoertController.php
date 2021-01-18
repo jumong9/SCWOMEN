@@ -118,8 +118,11 @@ class AcRepoertController extends Controller{
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
                         ->where('contract_class_id',$id)
+                        ->where('main_yn', 0)
                         ->orderBy('main_yn','desc')
                         ->get();
+
+
 
 //dd(DB::getQueryLog());
         return view('grade.acreport.create', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
@@ -175,6 +178,7 @@ class AcRepoertController extends Controller{
             $classReport->class_place = $request->input('class_place');
             $classReport->class_contents = $request->input('class_contents');
             $classReport->class_rating = $request->input('class_rating');
+            $classReport->sub_user_names = $request->input('sub_user_names');
             $classReport->file_id = $file_id;
             $classReport->created_id = $user_id;
             $classReport->created_name = $user_name;
@@ -238,10 +242,11 @@ class AcRepoertController extends Controller{
                             ->where('clients.id', $contract[0]->client_id)
                             ->get();
 
-        $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('contract_class_id',$id)
-                        ->orderBy('main_yn','desc')
-                        ->get();
+        // $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
+        //                 ->where('contract_class_id',$id)
+        //                 ->where('main_yn', 0)
+        //                 ->orderBy('main_yn','desc')
+        //                 ->get();
 
         $calssReport = ClassReport::where('contract_class_id', $id)
                                     ->where('user_id', $user_id)->first();
@@ -254,7 +259,7 @@ class AcRepoertController extends Controller{
         }
 
 //dd(DB::getQueryLog());
-        return view('grade.acreport.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'calssReport'=>$calssReport, 'fileInfo'=>$fileInfo, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.acreport.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'calssReport'=>$calssReport, 'fileInfo'=>$fileInfo, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
 
     }
 
@@ -301,10 +306,7 @@ class AcRepoertController extends Controller{
                             ->where('clients.id', $contract[0]->client_id)
                             ->get();
 
-        $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('contract_class_id',$id)
-                        ->orderBy('main_yn','desc')
-                        ->get();
+
 
         $calssReport = ClassReport::where('contract_class_id', $id)
                                     ->where('user_id', $user_id)->first();
@@ -317,7 +319,7 @@ class AcRepoertController extends Controller{
         }
 
 //dd(DB::getQueryLog());
-        return view('grade.acreport.update', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'calssReport'=>$calssReport, 'fileInfo'=>$fileInfo, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.acreport.update', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'calssReport'=>$calssReport, 'fileInfo'=>$fileInfo, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
 
     }
 
@@ -383,6 +385,7 @@ class AcRepoertController extends Controller{
                                 'file_id'=> $file_id,
                                 'updated_id'=> $user_id,
                                 'updated_name'=> $user_name,
+                                'sub_user_names'=> $request->input('sub_user_names'),
                             ]);
 
             DB::commit();

@@ -198,11 +198,11 @@
                                         </div>
                                     </div>
                                 </td>
-                                <th><span class="text-danger">*</span>교육장소</th>
+                                <th><span class="text-danger">*</span>교육대상</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <input id="class_place" type="text" class="form-control @error('name') is-invalid @enderror" name="class_place" value="{{$contentsList[0]->class_target}}" required >
+                                            <input id="class_place" type="text" class="form-control @error('class_place') is-invalid @enderror" name="class_place" value="{{$contentsList[0]->class_target}}" required >
                                         </div>
                                     </div>
                                 </td>
@@ -229,7 +229,7 @@
                             </tr>
                             <tr>
                                 <th><span class="text-danger">*</span>사진자료</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="row">
                                         <div class="col-md-10">
                                             <input type="file" class="form-control-file" id="upload_file" name="upload_file" required>
@@ -238,6 +238,14 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+                                        </div>
+                                    </div>
+                                </td>
+                                <th>보조강사</th>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="sub_user_names" name="sub_user_names" value="@foreach($lectorsList as $key => $list){{$list->name}}@if(!$loop->last),@endif @endforeach">
                                         </div>
                                     </div>
                                 </td>

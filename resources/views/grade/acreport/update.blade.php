@@ -198,7 +198,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <th><span class="text-danger">*</span>교육장소</th>
+                                <th><span class="text-danger">*</span>교육대상</th>
                                 <td>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -229,13 +229,21 @@
                             </tr>
                             <tr>
                                 <th><span class="text-danger">*</span>사진자료</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="row">
                                         <div class="col-md-10">
                                             {{ $fileInfo[0]->file_real_name }}
                                             <input type="hidden" name="old_file_id" value="{{ $fileInfo[0]->id }}">
                                             <input type="hidden" name="old_file_name" value="{{ $fileInfo[0]->file_name }}">
                                             <input type="file" class="form-control-file" id="upload_file" name="upload_file">
+                                        </div>
+                                    </div>
+                                </td>
+                                <th>보조강사</th>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" id="sub_user_names" name="sub_user_names" value="{{$calssReport->sub_user_names}}">
                                         </div>
                                     </div>
                                 </td>

@@ -184,7 +184,7 @@
                                 <td>
                                     {{$calssReport->time_from}} - {{$calssReport->time_to}}
                                 </td>
-                                <th>교육장소</th>
+                                <th>교육대상</th>
                                 <td>
                                     {{$calssReport->class_place}}
                                 </td>
@@ -203,9 +203,13 @@
                             </tr>
                             <tr>
                                 <th>사진자료</th>
-                                <td colspan="3">
-                                    {{ $fileInfo[0]->file_real_name }}
+                                <td >
+                                    {{-- {{ $fileInfo[0]->file_real_name }} --}}
                                 <img src="{{ asset($fileInfo[0]->file_path.'/'.$fileInfo[0]->file_name)}}" width="300" height="200">
+                                </td>
+                                <th>보조강사</th>
+                                <td>
+                                    {{$calssReport->sub_user_names}}
                                 </td>
                             </tr>
                         </tbody>

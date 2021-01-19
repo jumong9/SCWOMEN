@@ -62,6 +62,7 @@
                             <th>강의방식</th>
                             <th>수요처</th>
                             <th>프로그램</th>
+                            <th>재원</th>
 
                         </tr>
                     </thead>
@@ -82,6 +83,7 @@
                                     <td>{{ number_format( $list->i_tax ) }} </td>
                                     <td>{{ number_format( $list->r_tax ) }} </td>
                                     <td>{{ number_format( $list->calcu_cost ) }} </td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -110,8 +112,9 @@
                                             온라인동영상 {{$list->online_type == 0 ? ' - 최초방영' : ' - 재방' }}
                                         @endif
                                     </td>
-                                    <td>{{ $list->client_name}} </td>
-                                    <td>{{ $list->class_gubun}} - {{ $list->class_name }} </td>
+                                    <td>{{ $list->client_name}}</td>
+                                    <td>{{ $list->class_gubun}} - {{ $list->class_name }}</td>
+                                    <td>{{ $list->finance}} </td>
                                 </tr>
                             @endif
 

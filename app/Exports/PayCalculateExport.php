@@ -50,6 +50,7 @@ class PayCalculateExport implements FromQuery, WithHeadings{
                                                     end' )
                                         , 'client_name'
                                         , DB::raw('concat(class_gubun,\' - \',class_name)')
+                                        , 'finance'
 
 
                               )
@@ -63,6 +64,6 @@ class PayCalculateExport implements FromQuery, WithHeadings{
         return ["강사명", "활동일자", "시간", "자격", "지급기준"
                 , "기본시간", "기본금액", "추가시간", "추가금액"
                 , "총액", "소득세","주민세", "실지급액"
-                , "강의방식", "수요처", "프로그램"] ;
+                , "강의방식", "수요처", "프로그램","재원"] ;
     }
 }

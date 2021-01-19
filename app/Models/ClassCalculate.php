@@ -19,6 +19,7 @@ class ClassCalculate extends Model
         'class_gubun',
         'class_name',
         'class_sub_name',
+        'finance',
         'class_day',
         'class_count',
         'class_order',

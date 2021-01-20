@@ -98,7 +98,7 @@
                         <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('grade.payment.list') }}">지급요청관리</a>
+                        <a class="nav-link" href="{{ route('grade.paycalculate.list') }}">강사비조회</a>
                     </li>
 
                 @else
@@ -113,7 +113,7 @@
                         <a class="nav-link" href="{{ route('grade.acreport.list') }}">활동일지관리</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('grade.payment.list') }}">강사비조회</a>
+                        <a class="nav-link" href="{{ route('grade.paycalculate.list') }}">강사비조회</a>
                     </li>
 
                 @endif

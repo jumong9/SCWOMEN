@@ -549,6 +549,14 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
+    //강사비 정산
+    Route::match(['get','post'],'grade/paycalculate/list',[
+        'as' => 'grade.paycalculate.list',
+        'uses' => 'App\Http\Controllers\grade\paycalculate\PayCalculateController@list'
+    ]);
+
+
+
     //게시판 목록
     Route::match(['get','post'], 'common/board/list',[
         'as' => 'common.board.list',
@@ -591,6 +599,9 @@ Route::middleware(['auth'])->group(function(){
         'as' => 'common.board.delete',
         'uses' => 'App\Http\Controllers\common\board\BoardController@delete'
     ]);
+
+
+
 
 });
 

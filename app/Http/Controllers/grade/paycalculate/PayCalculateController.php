@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Http\Controllers\grade\paycalculate;
+
+use App\Http\Controllers\Controller;
+use App\Models\ClassCalculate;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class PayCalculateController extends Controller{
+
+    public function __construct(){
+        $this->pageTitle = "강사비 정산";
+    }
+
+
+
+    public function list(Request $request){
+
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
+        $page = $request->input('page');
+        $searchFromMonth = $request->input('searchFromMonth');
+
+
+        if(empty($searchFromMonth)){
+
+            $month = date("Y-m-d", time());
+            $prevMonth = strtotime("1 months ago", strtotime($month));
+            $searchFromMonth = date("Y-m", $prevMonth);
+        }
+        $user_id = Auth::id();
+        // DB::enableQueryLog();
+
+        $classList = ClassCalculate::where('calcu_month', $searchFromMonth)
+                                     ->where('user_id', $user_id)
+                                     ->where(function ($query) use ($searchWord){
+                                        if(!empty($searchWord)){
+                                            $query->where('user_name', 'LIKE',"{$searchWord}%");
+                                        }
+                                     })
+                                     ->orderByRaw('ISNULL(user_name), user_name ASC')
+                                     ->orderBy('user_id', 'asc')
+                                     ->orderByRaw('ISNULL(class_day), class_day ASC')
+                                     ->orderBy('my_main_count', 'asc')
+                                     ->paginate($perPage);
+
+
+        $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searchFromMonth'=>$searchFromMonth));
+
+
+        //dd(DB::getQueryLog());
+        return view('grade.paycalculate.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromMonth'=>$searchFromMonth] );
+
+    }
+
+}

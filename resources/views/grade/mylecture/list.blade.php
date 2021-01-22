@@ -83,7 +83,7 @@
                             <td>{{ $list->main_yn == 0 ? '보조강사' : '주강사' }}</td>
                             <td>@if($list->class_type == 0 ) 오프라인
                                 @elseif($list->class_type == 1) 온라인 실시간
-                                @else 온라인 동영상
+                                @else 온라인 동영상  {{$list->online_type == 0 ? ' - 최초방영' : ' - 재방' }}
                                 @endif
                             </td>
                             <td>{{ $list->class_status_value }}</td>

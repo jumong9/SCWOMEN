@@ -549,11 +549,18 @@ Route::middleware(['auth'])->group(function(){
     ]);
 
 
-    //강사비 정산
+    //강사비조회
     Route::match(['get','post'],'grade/paycalculate/list',[
         'as' => 'grade.paycalculate.list',
         'uses' => 'App\Http\Controllers\grade\paycalculate\PayCalculateController@list'
     ]);
+
+    //강사비조회 엑셀다운
+    Route::match(['get','post'],'grade/paycalculate/exportExcel',[
+        'as' => 'grade.paycalculate.exportExcel',
+        'uses' => 'App\Http\Controllers\grade\paycalculate\PayCalculateController@exportExcel'
+    ]);
+
 
 
 

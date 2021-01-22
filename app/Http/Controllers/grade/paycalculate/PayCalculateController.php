@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\grade\paycalculate;
 
+use App\Exports\MyPayCalculateExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCalculate;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class PayCalculateController extends Controller{
 
     public function __construct(){
-        $this->pageTitle = "강사비 정산";
+        $this->pageTitle = "강사비조회";
     }
 
 
@@ -55,5 +56,19 @@ class PayCalculateController extends Controller{
         return view('grade.paycalculate.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromMonth'=>$searchFromMonth] );
 
     }
+
+
+
+    public function exportExcel(Request $request){
+
+        $searchFromMonth = $request->input('searchFromMonth');
+
+        if(empty($searchFromMonth)){
+            $searchFromDate = date("Y-m", time()) .'-01';
+        }
+
+        return (new MyPayCalculateExport)->forYear($searchFromMonth)->download('MyCalculateReport.xlsx');
+    }
+
 
 }

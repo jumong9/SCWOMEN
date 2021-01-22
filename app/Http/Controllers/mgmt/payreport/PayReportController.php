@@ -46,6 +46,7 @@ class PayReportController extends Controller{
                                     )
                                     ->select('contract_classes.*'
                                             , 'b.class_name'
+                                            , 'b.class_gubun'
                                             , 'c.main_yn'
                                             , 'c.lector_cost'
                                             , 'c.main_count as my_main_count'

@@ -35,6 +35,7 @@ class ProgressExport implements FromQuery, WithHeadings{
                                     , 'contract_classes.time_from'
                                     , 'contract_classes.time_to'
                                     , 'contracts.client_name'
+                                    , 'd.class_gubun'
                                     , 'd.class_name'
                                     , 'contract_classes.class_target'
                                     , 'contract_classes.class_number'
@@ -64,7 +65,7 @@ class ProgressExport implements FromQuery, WithHeadings{
     }
 
     public function headings(): array{
-        return ["계약번호", "활동일자", "시작시간", "종료시간", "수요처", "프로그램", "교육대상", "인원", "횟수", "차수", "주강사", "보조강사", "배정", "수업", "활동일지"];
+        return ["계약번호", "활동일자", "시작시간", "종료시간", "수요처", "분야", "프로그램", "교육대상", "인원", "횟수", "차수", "주강사", "보조강사", "배정", "수업", "활동일지"];
     }
 
 }

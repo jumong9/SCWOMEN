@@ -45,9 +45,9 @@
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
-                            <th>
+                            {{-- <th>
                                 <input type="checkbox" id="selectAllCheck">
-                            </th>
+                            </th> --}}
                             <th>활동일자</th>
                             <th>시간</th>
                             <th>수요처</th>
@@ -58,6 +58,7 @@
                             <th>횟수</th>
                             <th>차수</th>
                             <th>자격</th>
+                            <th>수업방식</th>
                             <th>진행상태</th>
                             <th>등록일</th>
                         </tr>
@@ -65,11 +66,11 @@
                     <tbody>
                         @foreach($classList as $key => $list)
                         <tr>
-                            <td>
+                            {{-- <td>
                                 @if($list->class_status > 0 and $list->class_status < 3)
                                     <input type="checkbox" name="id" id="id" value="{{ $list->id }}" >
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
@@ -80,6 +81,11 @@
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
                             <td>{{ $list->main_yn == 0 ? '보조강사' : '주강사' }}</td>
+                            <td>@if($list->class_type == 0 ) 오프라인
+                                @elseif($list->class_type == 1) 온라인 실시간
+                                @else 온라인 동영상
+                                @endif
+                            </td>
                             <td>{{ $list->class_status_value }}</td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
                         @endforeach

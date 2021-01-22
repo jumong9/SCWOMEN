@@ -55,6 +55,7 @@
                             <th>차수</th>
                             <th>주강사</th>
                             <th>보조강사</th>
+                            <th>수업방식</th>
                             <th>진행상태</th>
                             <th>등록일</th>
                         </tr>
@@ -73,6 +74,11 @@
                             <td>{{ $list->class_order}}</td>
                             <td>{{ $list->main_count}}</td>
                             <td>{{ number_format($list->sub_sount)}}</td>
+                            <td>@if($list->class_type == 0 ) 오프라인
+                                @elseif($list->class_type == 1) 온라인 실시간
+                                @else 온라인 동영상
+                                @endif
+                            </td>
                             <td>{{ $list->lector_apply_yn == 0 ? '배정중' : '배정완료' }}</td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
                         @endforeach

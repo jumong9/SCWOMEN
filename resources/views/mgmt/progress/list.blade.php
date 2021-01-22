@@ -51,6 +51,7 @@
                             <th>활동일자</th>
                             <th>시간</th>
                             <th>수요처</th>
+                            <th>분야</th>
                             <th>프로그램</th>
                             <th>교육대상</th>
                             <th>인원</th>
@@ -70,6 +71,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
+                            <td>{{ $list->class_gubun}}</td>
                             <td><a href="{{ route ('mgmt.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>

@@ -52,6 +52,7 @@ class PayReportExport implements FromQuery, WithHeadings{
                                             , DB::raw('round(c.lector_cost * 0.003) AS r_tax')
                                             , DB::raw('c.lector_cost - round(c.lector_cost * 0.033) AS pay')
                                             , 'd.client_name'
+                                            , 'b.class_gubun'
                                             , 'b.class_name'
                                          //   , 'f.code_value as class_status_value'
                                             , DB::raw('case when contract_classes.class_status = 2 then \'작성완료\' else \'\' END')
@@ -69,7 +70,7 @@ class PayReportExport implements FromQuery, WithHeadings{
     }
 
     public function headings(): array{
-        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "강사비", "총액", "소득세", "주민세", "실지급액", "수요처", "프로그램", "활동일지"];
+        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "강사비", "총액", "소득세", "주민세", "실지급액", "수요처","분류", "프로그램", "활동일지"];
     }
 
 }

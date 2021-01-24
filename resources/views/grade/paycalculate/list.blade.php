@@ -179,6 +179,11 @@
 
             });
 
+            $("#exportExcelButton").click(function(e){
+                $("#searchForm").attr("action", "{{ route('grade.paycalculate.exportExcel') }}");
+                $("#searchForm").submit();
+                $("#searchForm").attr("action", "{{route('grade.paycalculate.list') }}");
+            });
 
             $("#printButton").click(function(e){
 

@@ -561,6 +561,12 @@ Route::middleware(['auth'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\paycalculate\PayCalculateController@exportExcel'
     ]);
 
+    //강사비 지급조서 출력
+    Route::match(['get','post'],'grade/paycalculate/popupPayDocument',[
+        'as' => 'grade.paycalculate.popupPayDocument',
+        'uses' => 'App\Http\Controllers\grade\paycalculate\PayCalculateController@popupPayDocument'
+    ]);
+
 
 
 

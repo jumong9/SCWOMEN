@@ -34,7 +34,7 @@
                         </select>
                         --}}
                         <input style="width: 110px;" type="text" class="form-control datepickerm " id="searchFromMonth" name="searchFromMonth" value="{{ $searchFromMonth }}" placeholder="종료일">
-                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명">
+                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
                 </div>
@@ -122,10 +122,16 @@
             <div class="row-fluid" style="text-align: right;">
                 @if (count($classList) > 0)
                     <button class="btn btn-primary" type="button" name="exportExcelButton" id="exportExcelButton">엑셀다운로드</button>
+                    <button class="btn btn-primary" type="button" name="printButton" id="printButton">지급조서출력</button>
                 @endif
             </div>
         </div>
     </div>
+    </form>
+    <form target="printPopup" name="winopenOpen" id="winopenOpen" action="{{route('grade.paycalculate.popupPayDocument') }}" method="post">
+        @csrf
+        <input type="hidden" name="searchFromMonth" id="searchFromMonth" value="">
+        <input type="hidden" name="searchWord" id="searchWord" value="">
     </form>
 @endsection
 
@@ -174,12 +180,22 @@
             });
 
 
+            $("#printButton").click(function(e){
+
+                $("#searchFromMonth","#winopenOpen").val($("#searchFromMonth","#searchForm").val());
+                $("#searchWord","#winopenOpen").val($("#searchWord","#searchForm").val());
+
+                var url = '{{ route('grade.paycalculate.popupPayDocument') }}';
+
+                if( /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor) ){
+                    window.open('', "printPopup");
+                }else{
+                    window.open('', "printPopup", "resizable=yes,toolbar=yes,menubar=yes,location=yes");
+                }
+
+                document.getElementById('winopenOpen').submit();
 
 
-            $("#exportExcelButton").click(function(e){
-                $("#searchForm").attr("action", "{{ route('grade.paycalculate.exportExcel') }}");
-                $("#searchForm").submit();
-                $("#searchForm").attr("action", "{{route('grade.paycalculate.list') }}");
             });
 
         });

@@ -39,7 +39,7 @@ class PayCalculateController extends Controller{
                                      ->where('user_id', $user_id)
                                      ->where(function ($query) use ($searchWord){
                                         if(!empty($searchWord)){
-                                            $query->where('user_name', 'LIKE',"{$searchWord}%");
+                                            $query->where('client_name', 'LIKE',"{$searchWord}%");
                                         }
                                      })
                                      ->orderByRaw('ISNULL(user_name), user_name ASC')
@@ -57,6 +57,37 @@ class PayCalculateController extends Controller{
 
     }
 
+
+    public function popupPayDocument(Request $request){
+        $searchFromMonth = $request->input('searchFromMonth');
+        $searchWord = $request->input('searchWord');
+
+        if(empty($searchFromMonth)){
+
+            $month = date("Y-m-d", time());
+            $prevMonth = strtotime("1 months ago", strtotime($month));
+            $searchFromMonth = date("Y-m", $prevMonth);
+        }
+
+        $thisYear = date("Y", time());
+        $user_id = Auth::id();
+        $userInfo = Auth::user();
+        $classList = ClassCalculate::where('calcu_month', $searchFromMonth)
+                                     ->where('user_id', $user_id)
+                                     ->where(function ($query) use ($searchWord){
+                                        if(!empty($searchWord)){
+                                            $query->where('client_name', 'LIKE',"{$searchWord}%");
+                                        }
+                                     })
+                                     ->orderByRaw('ISNULL(user_name), user_name ASC')
+                                     ->orderBy('user_id', 'asc')
+                                     ->orderByRaw('ISNULL(class_day), class_day ASC')
+                                     ->orderBy('my_main_count', 'asc')
+                                     ->get();
+
+        return view('grade.paycalculate.popupPayDocument', ['classList'=>$classList, 'userInfo'=>$userInfo, 'thisYear'=>$thisYear]);
+
+    }
 
 
     public function exportExcel(Request $request){

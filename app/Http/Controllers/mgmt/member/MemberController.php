@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\mgmt\member;
 
+use App\Exports\AdMemberExport;
 use App\Exports\UserExcelExport as ExportsUserExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
@@ -421,8 +422,14 @@ class MemberController extends Controller{
      }
 
 
-     public function export(){
-         return Excel::download(new ExportsUserExcelExport, 'users.xlsx');
+     public function exportExcel(Request $request){
+
+        $searchType = $request->input('searchType');
+        $searchGrade = $request->input('searchGrade');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = (null==$request->input('searchStatus') ) ? 99 : $request->input('searchStatus');
+
+        return (new AdMemberExport)->forSearch($searchType, $searchGrade, $searchWord, $searchStatus)->download('MemberReport.xlsx');
     }
 
 

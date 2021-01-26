@@ -152,9 +152,9 @@ Route::middleware(['adminmiddle'])->group(function(){
     ]);
 
     //멤버관리 엑셀 export
-    Route::match(['get','post'],'member/export',[
-        'as' => 'mgmt.member.export',
-        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@export'
+    Route::match(['get','post'],'member/exportExcel',[
+        'as' => 'mgmt.member.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@exportExcel'
     ]);
 
     //멤버관리 승인처리

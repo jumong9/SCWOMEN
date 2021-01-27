@@ -259,6 +259,11 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@deleteDo'
     ]);
 
+    //계약관리 엑셀다운
+    Route::match(['get','post'],'mgmt/contract/exportExcel',[
+        'as' => 'mgmt.contract.exportExcel',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@exportExcel'
+    ]);
 
 
     //강좌 배정 목록

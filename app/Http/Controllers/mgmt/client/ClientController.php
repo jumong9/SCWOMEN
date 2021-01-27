@@ -189,7 +189,10 @@ class ClientController extends Controller{
 
     public function exportExcel(Request $request){
         //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
-        return (new ClientExcelExport)->download('ClientReport.xlsx');
+
+        $searchWord = $request->input('searchWord');
+
+        return (new ClientExcelExport)->forSearch($searchWord)->download('ClientReport.xlsx');
 
     }
 

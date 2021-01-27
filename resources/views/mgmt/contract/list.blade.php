@@ -98,6 +98,11 @@
                 </table>
                 {{ $contractList->withQueryString()->links() }}
             </div>
+            <div class="row-fluid" style="text-align: right;">
+                <button class="btn btn-primary" type="button" name="exportExcelButton" id="exportExcelButton">엑셀다운로드</button>
+            </div>
+        </div>
+
         </div>
     </div>
     </form>
@@ -130,6 +135,12 @@
                 location.href='{{ route('mgmt.client.create')}}';
             });
 
+
+            $("#exportExcelButton").click(function(e){
+                $("#searchForm").attr("action", "{{ route('mgmt.contract.exportExcel') }}");
+                $("#searchForm").submit();
+                $("#searchForm").attr("action", "{{route('mgmt.contract.list') }}");
+            });
 
 
 

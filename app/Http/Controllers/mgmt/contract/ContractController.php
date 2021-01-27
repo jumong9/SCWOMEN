@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\mgmt\contract;
 
+use App\Exports\ContractExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCategory;
 use App\Models\ClassLector;
@@ -387,6 +388,14 @@ DB::enableQueryLog();
                     ]);
 
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
+
+
+    public function exportExcel(Request $request){
+        $searchWord = $request->input('searchWord');
+
+        return (new ContractExport)->forSearch($searchWord)->download('ContractReport.xlsx');
 
     }
 

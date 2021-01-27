@@ -13,6 +13,11 @@ class ClientExcelExport implements FromQuery, WithHeadings
 
     use Exportable;
 
+    public function forSearch($searchWord){
+        $this->searchWord = $searchWord;
+        return $this;
+    }
+
     public function query() {
        // DB::enableQueryLog();
         //return Client::get();
@@ -37,7 +42,12 @@ class ClientExcelExport implements FromQuery, WithHeadings
                             'clients.office_fax',
                             'clients.zipcode',
                             'clients.address',
-                            )
+                        )
+                        ->where(function($query){
+                            if(!empty($this->searchWord)){
+                                $query ->where('clients.name','LIKE', "{$this->searchWord}%");
+                            }
+                        })
                         ->orderBy('clients.created_at','desc');
 
     }

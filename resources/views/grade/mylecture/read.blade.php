@@ -69,7 +69,7 @@
                                     {{ number_format($contract->material_total_cost) }}
                                 </td>
                             </tr>
-                             --}}
+
                              <tr>
                                 <th>인당 재료비</th>
                                 <td>
@@ -80,6 +80,7 @@
                                     {{ number_format($contract->material_total_cost) }}
                                 </td>
                             </tr>
+                            --}}
                         </tbody>
                     </table>
                 </div>

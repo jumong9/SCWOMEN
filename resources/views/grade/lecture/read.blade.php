@@ -191,7 +191,7 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    @if($contentsList[0]->lector_apply_yn == 0)
+                    @if($contract->status< 4)
                         <button class="btn btn-primary" type="button"  id="openPopup">강사매칭</button>
                         <button class="btn btn-primary" type="button"  id="applyButton">배정완료</button>
                     @endif

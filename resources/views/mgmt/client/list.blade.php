@@ -26,13 +26,14 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        {{--
+
                         <select class="form-control" name="searchType" id="searchType">
-                            <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
-                            <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
+                            <option value="">구분</option>
+                            @foreach($clientGubunList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
                         </select>
-                        --}}
+
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>

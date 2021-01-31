@@ -13,7 +13,8 @@ class ClientExcelExport implements FromQuery, WithHeadings
 
     use Exportable;
 
-    public function forSearch($searchWord){
+    public function forSearch($searchWord, $searchType){
+        $this->searchType = $searchType;
         $this->searchWord = $searchWord;
         return $this;
     }
@@ -46,6 +47,9 @@ class ClientExcelExport implements FromQuery, WithHeadings
                         ->where(function($query){
                             if(!empty($this->searchWord)){
                                 $query ->where('clients.name','LIKE', "{$this->searchWord}%");
+                            }
+                            if(!empty($this->searchType)){
+                                $query->where('clients.gubun','=',"{$this->searchType}");
                             }
                         })
                         ->orderBy('clients.created_at','desc');

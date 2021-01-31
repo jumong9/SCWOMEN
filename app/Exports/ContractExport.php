@@ -14,7 +14,8 @@ class ContractExport implements FromQuery, WithHeadings
 
     use Exportable;
 
-    public function forSearch($searchWord){
+    public function forSearch($searchWord, $searchType){
+        $this->searchType = $searchType;
         $this->searchWord = $searchWord;
         return $this;
     }
@@ -36,8 +37,8 @@ class ContractExport implements FromQuery, WithHeadings
                                 , DB::raw('case when cl.gubun = 1 then  \'초등학교\'
                                                  when cl.gubun = 2 then  \'중학교\'
                                                  when cl.gubun = 3 then  \'고등학교\'
-                                                 when cl.gubun = 4 then  \'돌봄\'
-                                                 when cl.gubun = 5 then  \'유아\'
+
+                                                 when cl.gubun = 5 then  \'어린이집\'
                                                  when cl.gubun = 6 then  \'아파트\'
                                                  else \'기타\' END')
                                 , 'cl.name as client_name'
@@ -50,6 +51,9 @@ class ContractExport implements FromQuery, WithHeadings
                                 , DB::raw('DATE_FORMAT(contracts.created_at,"%Y-%m-%d") as dateymd')
                         )
                         ->where(function($query){
+                            if(!empty($this->searchType)){
+                                $query ->where('cl.gubun','=', "{$this->searchType}");
+                            }
                             if(!empty($this->searchWord)){
                                 $query ->where('cl.name','LIKE', "{$this->searchWord}%");
                             }

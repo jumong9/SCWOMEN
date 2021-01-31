@@ -196,14 +196,23 @@ DB::enableQueryLog();
                                             }
                                     )
                                     ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'cl.gubun')
-                                    ->where('cl.name','LIKE',"{$searchWord}%")
+                                    ->where(function($query) use ($request){
+                                        $searchType = $request->input('searchType');
+                                        $searchWord = $request->input('searchWord');
+                                        if(!empty($request->input('searchType'))){
+                                            $query->where('cl.gubun','=',"{$searchType}");
+                                        }
+                                        if(!empty($request->input('searchWord'))){
+                                            $query->where('cl.name','LIKE',"{$searchWord}%");
+                                        }
+                                   })
                                     ->orderBy('contracts.created_at', 'desc')
                                     ->paginate($perPage);
         $contractList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
-
+        $clientGubunList = CommonCode::getCommonCode('client_gubun');
  //       dd(DB::getQueryLog());
-        return view('mgmt.contract.list', ['pageTitle'=>$this->pageTitle,'contractList'=>$contractList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        return view('mgmt.contract.list', ['pageTitle'=>$this->pageTitle, 'clientGubunList'=>$clientGubunList, 'contractList'=>$contractList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
 
     }
 
@@ -394,8 +403,8 @@ DB::enableQueryLog();
 
     public function exportExcel(Request $request){
         $searchWord = $request->input('searchWord');
-
-        return (new ContractExport)->forSearch($searchWord)->download('ContractReport.xlsx');
+        $searchType = $request->input('searchType');
+        return (new ContractExport)->forSearch($searchWord, $searchType)->download('ContractReport.xlsx');
 
     }
 

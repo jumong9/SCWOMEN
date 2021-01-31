@@ -48,13 +48,25 @@ class ClientController extends Controller{
                                     , 'c.code_value as client_gubun_value'
                                     , 'cc.code_value as client_loctype_value'
                                     )
-                           ->where('clients.name','LIKE',"{$searchWord}%")
+                            ->where(function($query) use ($request){
+                                $searchType = $request->input('searchType');
+                                $searchWord = $request->input('searchWord');
+                                if(!empty($request->input('searchType'))){
+                                    $query->where('clients.gubun','=',"{$searchType}");
+                                }
+                                if(!empty($request->input('searchWord'))){
+                                    $query->where('clients.name','LIKE',"{$searchWord}%");
+                                }
+                           })
                            ->orderBy('clients.created_at', 'desc')
+
                            ->paginate($perPage);
 
         $clients->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
 
-        return view('mgmt.client.list', ['contentslist'=>$clients, 'pageTitle'=>$this->pageTitle, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
+        $clientGubunList = CommonCode::getCommonCode('client_gubun');
+
+        return view('mgmt.client.list', ['contentslist'=>$clients, 'clientGubunList'=>$clientGubunList, 'pageTitle'=>$this->pageTitle, 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]);
 
     }
 
@@ -191,8 +203,9 @@ class ClientController extends Controller{
         //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
 
         $searchWord = $request->input('searchWord');
+        $searchType = $request->input('searchType');
 
-        return (new ClientExcelExport)->forSearch($searchWord)->download('ClientReport.xlsx');
+        return (new ClientExcelExport)->forSearch($searchWord, $searchType)->download('ClientReport.xlsx');
 
     }
 

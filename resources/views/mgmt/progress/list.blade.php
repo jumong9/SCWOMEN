@@ -77,7 +77,7 @@
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->class_count}}</td>
                             <td>{{ $list->class_order}}</td>
-                            <td>{{ $list->main_count}}</td>
+                            <td>{{ $list->user_name}}</td>
                             <td>{{ $list->sub_count}}</td>
                             <td>{{ $list->lector_apply_yn == 0 ? '배정중' : '배정완료' }}</td>
                             <td>{{ $list->class_status == 0 ? '수업예정' : '수업완료' }}</td>

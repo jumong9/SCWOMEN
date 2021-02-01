@@ -41,11 +41,18 @@ class ProgressController extends Controller
         $classList = ContractClass::join('contracts', 'contracts.id', '=','contract_classes.contract_id')
                                     ->join('clients as b', 'b.id', '=', 'contract_classes.client_id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
+                                    ->leftjoin('class_lectors as le', function($join){
+                                        $join->on('le.contract_class_id', '=','contract_classes.id')
+                                             ->where('le.main_yn', 1);
+                                        }
+                                    )
+                                    ->leftjoin('users as u', 'u.id', '=', 'le.user_id')
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             , 'contracts.id as contract_id'
+                                            , 'u.name as user_name'
                                             )
                                     ->where('contracts.status','>',1)
                                    // ->where('contracts.id', "{$searchWord}")
@@ -80,7 +87,7 @@ class ProgressController extends Controller
         $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
 
 
-        //dd(DB::getQueryLog());
+  //      dd(DB::getQueryLog());
         return view('mgmt.progress.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
 
     }

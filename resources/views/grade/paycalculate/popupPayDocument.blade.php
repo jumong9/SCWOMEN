@@ -76,7 +76,7 @@
                             <h1>강사비 지급 조서</h1>
                         </div>
 
-                        <table class="" style="width: 100%; margin-bottom: 30px;;">
+                        <table class="" style="width: 100%; margin-bottom: 30px;">
                             <tr>
                                 <td style="width:150px; padding: 10px;">성명</td>
                                 <td colspan="2" style="padding-left: 10px;">{{$userInfo->name}}</td>

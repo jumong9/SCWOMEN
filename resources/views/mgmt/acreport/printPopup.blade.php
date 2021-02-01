@@ -9,10 +9,48 @@
 
         <title>{{ config('app.name', 'Laravel8') }}</title>
 
-
         <title>@yield('title','welcome to laravel')</title>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+        <style>
 
+            body {
+                margin: 1;
+                padding: 0;
+                font: 9pt "Tahoma";
+            }
+            * {
+                box-sizing: border-box;
+                -moz-box-sizing: border-box;
+            }
+            .page {
+                width: 29.7cm;
+                min-height: 21cm;
+
+
+                border-radius: 5px;
+                background: white;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0);
+            }
+            .subpage {
+                padding: 0.2cm;
+                height: 256mm;
+            }
+            @media print {
+              @page {
+                size: 29.7cm 21cm; /*A4*/
+                margin:1;
+              }
+              html, body { border:0; margin:0; padding:0; }
+            }
+            table {
+                width: 100%;
+                border: 1px solid #444444;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #444444;
+            }
+
+        </style>
     </head>
     <body>
 
@@ -20,29 +58,25 @@
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="book">
 
-        <div class="card-header py-3">
-
-        </div>
-
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+        <div class="page">
+            <div class="subpage">
+                <table class="" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
-                            <th>활동일자</th>
-                            <th>시간</th>
-                            <th>수요처</th>
-                            <th>프로그램</th>
-                            <th>진행방식</th>
-                            <th>교육대상</th>
-                            <th>인원</th>
-                            <th>작성자</th>
-                            <th>보조강사</th>
-                            <th style="width: 200px;">교육내용</th>
-                            <th style="width: 200px;">강사소견</th>
-                            <th style="width: 200px;">사진자료</th>
+                            <th style="width: 4cm;">활동일자</th>
+                            <th style="width: 2cm;">시간</th>
+                            <th style="width: 5cm;">수요처</th>
+                            <th style="width: 5cm;">프로그램</th>
+                            <th style="width: 5cm;">진행방식</th>
+                            <th style="width: 5cm;">교육대상</th>
+                            <th style="width: 2cm;">인원</th>
+                            <th style="width: 3cm;">작성자</th>
+                            <th style="width: 3cm;">보조강사</th>
+                            <th style="width: 6cm;">교육내용</th>
+                            <th style="width: 6cm;">강사소견</th>
+                            <th style="width: 151x;">사진자료</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,19 +106,16 @@
                             <td>{{ $list->class_contents}}</td>
                             <td>{{ $list->class_rating}}</td>
                             <td>
-                                <img src="{{ asset($list->file_path.'/'.$list->file_name)}}" width="200" height="170">
+                                <img src="{{ asset($list->file_path.'/'.$list->file_name)}}" width="150" height="150">
                             </td>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            {{-- <div class="row-fluid" style="text-align: right;">
-                <button class="btn btn-primary" type="button" name="printButton" id="printButton">선택출력</button>
-            </div> --}}
+
         </div>
     </div>
 
 </body>
 
-<script src="{{ asset('js/app.js') }}"></script>
 </html>

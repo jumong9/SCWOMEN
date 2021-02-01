@@ -29,6 +29,12 @@ class ProgressExport implements FromQuery, WithHeadings{
         return ContractClass::join('contracts', 'contracts.id', '=','contract_classes.contract_id')
                             ->join('clients as b', 'b.id', '=', 'contract_classes.client_id')
                             ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
+                            ->leftjoin('class_lectors as le', function($join){
+                                $join->on('le.contract_class_id', '=','contract_classes.id')
+                                     ->where('le.main_yn', 1);
+                                }
+                            )
+                            ->leftjoin('users as u', 'u.id', '=', 'le.user_id')
                             ->select(
                                       'contracts.id'
                                     , 'contract_classes.class_day'
@@ -41,7 +47,7 @@ class ProgressExport implements FromQuery, WithHeadings{
                                     , 'contract_classes.class_number'
                                     , 'contract_classes.class_count'
                                     , 'contract_classes.class_order'
-                                    , 'contract_classes.main_count'
+                                    , 'u.name'
                                     , 'contract_classes.sub_count'
                                     , DB::raw('case when contract_classes.lector_apply_yn = 0 then \'배정중\' else \'배정완료\' END')
                                     , DB::raw('case when contract_classes.class_status = 0 then \'수업예정\' else \'수업완료\' END')

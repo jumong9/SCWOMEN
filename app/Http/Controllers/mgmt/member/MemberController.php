@@ -249,7 +249,7 @@ class MemberController extends Controller{
             $name = $request->input('name');
             $mobile = $request->input('mobile');
             $email = $request->input('email');
-            $gubun = $request->input('gubun');
+            $gubun = $request->input('gubun'); //내부 0, 외부강사:2
             $status = $request->input('status');
             $group = $request->input('group');
             $birthday = $request->input('birthday');
@@ -301,10 +301,17 @@ class MemberController extends Controller{
                 }else{
                     $joinTemp = $joinday;
                 }
+
+                //외부강사는 주강사 횟수 10회 등록
+                $c_main_count = $cate->main_count;
+                if($gubun == 2 && $c_main_count < 10){
+                    $c_main_count = $cate->main_count +10;
+                }
+
                 $cate->where('user_id', $cate->user_id)
                      ->where('class_category_id', $cate->class_category_id)
                      ->update([
-                                'main_count' => $cate->main_count,
+                                'main_count' => $c_main_count,
                                 'sub_count' =>  $cate->sub_count,
                                 'user_grade' =>  $cate->user_grade,
                                 'joinday' => $joinTemp,

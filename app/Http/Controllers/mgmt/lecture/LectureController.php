@@ -62,7 +62,9 @@ class LectureController extends Controller{
                                             }
                                         }
                                     })
-                                    ->orderBy('contract_classes.created_at', 'desc')
+                                    ->orderBy('contract_classes.contract_id', 'desc')
+                                    ->orderBy('contract_classes.class_day', 'asc')
+                                    ->orderBy('contract_classes.time_from', 'asc')
                                     ->paginate($perPage);
 
 

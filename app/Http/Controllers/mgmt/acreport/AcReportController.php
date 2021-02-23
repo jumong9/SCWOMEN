@@ -35,8 +35,10 @@ class AcReportController extends Controller{
 
         if(empty($searcFromDate) || empty($searcToDate)){
             $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
             $dayCount = new DateTime( $searcFromDate );
             $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
         }
 
         DB::enableQueryLog();
@@ -131,7 +133,7 @@ class AcReportController extends Controller{
         $id = $request->input('id');
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
-                                    ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
+                                   // ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'

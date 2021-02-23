@@ -14,7 +14,7 @@ class ProgressController extends Controller
     public function __construct(){
 
         $this->filePath = "uploads/".date("Y")."/acreport";
-        $this->pageTitle = "강의 진행관리";
+        $this->pageTitle = "강의진행정보";
     }
 
 
@@ -30,9 +30,15 @@ class ProgressController extends Controller
         $searcToDate = $request->input('searcToDate');
 
         if(empty($searcFromDate) || empty($searcToDate)){
+            // $searcFromDate = date("Y-m", time()) .'-01';
+            // $dayCount = new DateTime( $searcFromDate );
+            // $searcToDate = $dayCount->format( 'Y-m-t' );
+
             $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
             $dayCount = new DateTime( $searcFromDate );
             $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
         }
 
         //echo Auth::user()->grade;
@@ -64,8 +70,10 @@ class ProgressController extends Controller
 
                                         if(empty($searcFromDate) || empty($searcToDate)){
                                             $searcFromDate = date("Y-m", time()) .'-01';
+                                            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
                                             $dayCount = new DateTime( $searcFromDate );
                                             $searcToDate = $dayCount->format( 'Y-m-t' );
+                                            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
                                         }
 
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
@@ -80,14 +88,17 @@ class ProgressController extends Controller
                                             }
                                         }
                                     })
-                                    ->orderBy('contract_classes.created_at', 'desc')
+                                    //->orderBy('contract_classes.created_at', 'desc')
+                                    ->orderBy('contract_classes.contract_id', 'desc')
+                                    ->orderBy('contract_classes.class_day', 'asc')
+                                    ->orderBy('contract_classes.time_from', 'asc')
                                     ->paginate($perPage);
 
 
         $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
 
 
-  //      dd(DB::getQueryLog());
+       // dd(DB::getQueryLog());
         return view('mgmt.progress.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
 
     }

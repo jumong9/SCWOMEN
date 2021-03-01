@@ -118,7 +118,18 @@ class MyLectureController extends Controller{
                             ->where('clients.id', $contract[0]->client_id)
                             ->get();
 
+        // $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
+        //                             ->where('contract_class_id',$id)
+        //                             ->orderBy('main_yn','desc')
+        //                             ->get();
+
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
+                                    ->join('contract_classes as d', 'd.id', '=', 'class_lectors.contract_class_id')
+                                    ->join('class_category_user as c', function($join){
+                                          $join->on('c.user_id', '=', 'class_lectors.user_id');
+                                          $join->on('c.class_category_id' ,'=', 'd.class_category_id');
+                                          }
+                                    )
                                     ->where('contract_class_id',$id)
                                     ->orderBy('main_yn','desc')
                                     ->get();

@@ -123,17 +123,17 @@ class LectureController extends Controller{
                             ->join('contract_classes as c', 'c.class_category_id', '=', 'b.class_category_id')
                             ->select('users.id as user_id',
                                      'users.name as user_name',
-                                     'users.status as user_status',
-                                     'users.group as group',
+                                     'b.user_status as user_status',
+                                     'b.user_group as group',
                                      'b.main_count',
                                      'b.sub_count',
                                      'c.id as class_id',
                                      'c.main_count as class_main_count',
                                      'c.sub_count as class_sub_count')
-                            ->whereIn('users.status', [2,4])
+                            ->whereIn('b.user_status', [2,4])
                             ->where('c.id' , $id)
-                            ->orderBy('users.group', 'desc')
-                            ->orderBy('users.status', 'asc')
+                            ->orderBy('b.user_group', 'desc')
+                            ->orderBy('b.user_status', 'asc')
                             ->get();
 
         //dd(DB::getQueryLog());
@@ -155,14 +155,14 @@ class LectureController extends Controller{
         $userList = User::join('class_category_user as b', 'b.user_id', '=', 'users.id')
                             ->select('users.id as user_id',
                                      'users.name as user_name',
-                                     'users.status as user_status',
-                                     'users.group as group',
+                                     'b.user_status as user_status',
+                                     'b.user_group as group',
                                      'b.main_count',
                                      'b.sub_count')
-                            ->whereIn('users.status', [2,4])
+                            ->whereIn('b.user_status', [2,4])
                             ->where('b.class_category_id' , $id)
-                            ->orderBy('users.group', 'desc')
-                            ->orderBy('users.status', 'asc')
+                            ->orderBy('b.user_group', 'desc')
+                            ->orderBy('b.user_status', 'asc')
                             ->get();
 
         //dd(DB::getQueryLog());

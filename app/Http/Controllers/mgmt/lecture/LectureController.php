@@ -118,11 +118,17 @@ class LectureController extends Controller{
                             ->get();
 
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
-                        ->where('contract_class_id',$id)
-                        ->orderBy('main_yn','desc')
-                        ->get();
+                                  ->join('contract_classes as d', 'd.id', '=', 'class_lectors.contract_class_id')
+                                  ->join('class_category_user as c', function($join){
+                                        $join->on('c.user_id', '=', 'class_lectors.user_id');
+                                        $join->on('c.class_category_id' ,'=', 'd.class_category_id');
+                                        }
+                                  )
+                                  ->where('contract_class_id',$id)
+                                  ->orderBy('main_yn','desc')
+                                  ->get();
 
-//dd(DB::getQueryLog());
+        //dd(DB::getQueryLog());
         return view('mgmt.lecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }

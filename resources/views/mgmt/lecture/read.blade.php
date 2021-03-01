@@ -166,7 +166,7 @@
                                     {{ $list->main_yn == 1 ? '주강사' : '보조강사' }}
                                 </td>
                                 <td>
-                                    {{ $list->group }}
+                                    {{ $list->user_group }}
                                 </td>
                                 <td>
                                     {{ $list->name }}

@@ -29,7 +29,7 @@ class ApplicationController extends Controller{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select('users.id', 'users.group', 'users.name', 'users.mobile'
                                 , 'users.email', 'users.grade','users.gubun','users.status','users.created_at'
-                                , 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count')
+                                , 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_group')
                         ->where('users.grade', '<', 90)
                         ->where('users.status', 0)
                         ->where(function($query) use ($request){
@@ -149,33 +149,40 @@ class ApplicationController extends Controller{
                             ]);
 
             //기존 클래스 조회
-            $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
+            //$oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
 
             //기존 클래스 정보 삭제
             ClassCategoryUser::where('user_id',$id)->delete();
 
             //신규 클래스 등록
             $classCategory = $request->input('class_category_id');
-            foreach($classCategory as $cate){
+            //foreach($classCategory as $cate){
                 $classUser = new ClassCategoryUser();
                 $classUser->user_id = $id;
-                $classUser->class_category_id = $cate;
+                $classUser->class_category_id = $classCategory;
                 $classUser->joinday = $joinday;
+                $classUser->user_group = $group;
+
+                //외부강사 주강사카운트 10으로 등록
+                if($gubun==2){
+                    $classUser->main_count = 10;
+                }
 
                 $classUser->save();
 
-            }
+            //}
 
             //기존 클래스 존재시 업데이트(주,보조강사 횟수)
-            foreach($oldClassCategory as $cate){
-                $cate->where('user_id', $cate->user_id)
-                    ->where('class_category_id', $cate->class_category_id)
-                    ->update([
-                                'main_count' => $cate->main_count,
-                                'sub_count' =>  $cate->sub_count,
-                                'joinday' => $joinday,
-                            ]);
-            }
+            // foreach($oldClassCategory as $cate){
+            //     $cate->where('user_id', $cate->user_id)
+            //         ->where('class_category_id', $cate->class_category_id)
+            //         ->update([
+            //                     'main_count' => $cate->main_count,
+            //                     'sub_count' =>  $cate->sub_count,
+            //                     'joinday' => $joinday,
+            //                     'user_group' => $cate->user_group,
+            //                 ]);
+            // }
 
             DB::commit();
         } catch (Exception $e) {
@@ -205,9 +212,14 @@ class ApplicationController extends Controller{
 
             foreach($items  as $id){
                 $user->where('id', $id)
-                    ->update([
+                     ->update([
                             'status' => 2
                             ]);
+
+                ClassCategoryUser::where('user_id',$id)
+                                 ->update([
+                                     'user_status' => 2
+                                 ]);
             }
 
             DB::commit();

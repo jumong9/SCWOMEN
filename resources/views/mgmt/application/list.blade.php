@@ -85,7 +85,7 @@
                                     @default
                                 @endswitch
                             </td>
-                            <td>{{ $member->group }}</td>
+                            <td>{{ $member->user_group }}</td>
                             <td><a href="{{ route ('mgmt.application.read', ['id'=>$member->id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
                             <td>{{ $member->mobile }}</td>

@@ -81,7 +81,7 @@
                                     @foreach($items as $item)
                                         <option value="{{ $item->id }}">{{ $item->class_name }}</option>
                                     @endforeach
-                                  </select>
+                                </select>
                             </div>
                         </div>
 

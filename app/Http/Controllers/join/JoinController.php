@@ -5,6 +5,7 @@ namespace App\Http\Controllers\join;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\ClassCategory;
+use App\Models\ClassCategoryUser;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,7 @@ class JoinController extends Controller{
         }
 
         try {
+            DB::enableQueryLog();
             DB::beginTransaction();
             $user = new User;
             $user->fill($request->input());
@@ -63,9 +65,18 @@ class JoinController extends Controller{
             $user->save();
 
             $class_category_id = $request->input('class_category_id');
-
+            $user_group = $request->input('group');
             $user->classCategories()->attach($class_category_id);
 
+            $read_user = User::where('email', $user->email)->first();
+            ClassCategoryUser::where('user_id', $read_user->id)
+                             ->where('class_category_id', $class_category_id)
+                             ->update([
+                                    'user_group' => $user_group,
+                             ]);
+
+
+            //dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

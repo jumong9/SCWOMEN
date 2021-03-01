@@ -30,7 +30,7 @@ class AdMemberExport implements FromQuery, WithHeadings{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select(
                                   DB::raw('case when users.gubun = 0 then  \'내부\' else \'외부\' END')
-                                , 'users.group'
+                                , 'class_category_user.user_group'
                                 , 'users.name'
                                 , 'class_categories.class_name'
                                 , DB::raw('case when class_category_user.user_grade = 0 then  \'일반강사\' else \'반장강사\' END')
@@ -38,20 +38,20 @@ class AdMemberExport implements FromQuery, WithHeadings{
                                 , 'class_category_user.sub_count'
                                 , 'users.mobile'
                                 , 'users.email'
-                                , DB::raw('case when users.status = 0 then  \'승인대기\'
-                                                when users.status = 2 then  \'활동중\'
-                                                when users.status = 4 then  \'프리랜서\'
-                                                when users.status = 6 then  \'활동보류\'
-                                                when users.status = 8 then  \'활동중단\'
+                                , DB::raw('case when class_category_user.user_status = 0 then  \'승인대기\'
+                                                when class_category_user.user_status = 2 then  \'활동중\'
+                                                when class_category_user.user_status = 4 then  \'프리랜서\'
+                                                when class_category_user.user_status = 6 then  \'활동보류\'
+                                                when class_category_user.user_status = 8 then  \'활동중단\'
                                                 else \'\' END')
                                 , 'class_category_user.joinday'
                         )
                         ->where('users.grade', '<', 90)
                         ->where(function($query){
                             if($this->searchStatus!=99){
-                                $query->where('users.status', "{$this->searchStatus}");
+                                $query->where('class_category_user.user_status', "{$this->searchStatus}");
                             }else{
-                                $query->where('users.status', '>', 0);
+                                $query->where('class_category_user.user_status', '>', 0);
                             }
                             if("" != $this->searchGrade){
                                 $query->where('class_category_user.user_grade', "{$this->searchGrade}");
@@ -60,7 +60,7 @@ class AdMemberExport implements FromQuery, WithHeadings{
                                 if('name'==$this->searchType) {
                                     $query ->where('users.name','LIKE',"{$this->searchWord}%");
                                 }elseif('group'==$this->searchType){
-                                    $query ->where('users.group', "{$this->searchWord}");
+                                    $query ->where('class_category_user.user_group', "{$this->searchWord}");
                                 }elseif('category'==$this->searchType){
                                     $query ->where('class_categories.class_name','LIKE', "{$this->searchWord}%");
                                 }

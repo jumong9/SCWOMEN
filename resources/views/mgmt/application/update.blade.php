@@ -38,8 +38,8 @@
                                             <option value="0" {{ $member[0]->status == 0 ? "selected" : "" }}>승인대기</option>
                                             <option value="2" {{ $member[0]->status == 2 ? "selected" : "" }}>활동중</option>
                                             <option value="4" {{ $member[0]->status == 4 ? "selected" : "" }}>프리랜서</option>
-                                            <option value="6" {{ $member[0]->status == 6 ? "selected" : "" }}>활동보류</option>
-                                            <option value="8" {{ $member[0]->status == 8 ? "selected" : "" }}>활동중단</option>
+                                            {{-- <option value="6" {{ $member[0]->status == 6 ? "selected" : "" }}>활동보류</option>
+                                            <option value="8" {{ $member[0]->status == 8 ? "selected" : "" }}>활동중단</option> --}}
                                         </select>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ $member[0]->group }}" required >
+                                        <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{$classCategory[0]->user_group }}" required >
                                     </div>
                                 </div>
                             </td>
@@ -126,16 +126,20 @@
                         </tr>
                         <tr>
                             <th>강사단명</th>
-                            <td colspan="3">
+                            <td>
                                 <div class="row">
-                                @foreach($classItems as $item)
-                                    <div class="form-check pl-5 pr-3">
-                                        <input id="class_category_id_{{ $item->id }}" name="class_category_id[]" class="form-check-input" type="checkbox" value="{{ $item->id }} ">
-                                        <label class="form-check-label" for="class_category_id_{{ $item->id }}"> {{ $item->class_name }} </label>
+                                    <div class="col-md-6">
+                                        <select name="class_category_id" id="class_category_id" class="form-control">
+                                            @foreach($classItems as $item)
+                                                <option value="{{ $item->id }}" {{ $classCategory[0]->class_category_id == $item->id ? "selected" : "" }}>{{ $item->class_name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                @endforeach
+
                                 </div>
                             </td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

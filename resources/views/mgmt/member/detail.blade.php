@@ -25,7 +25,7 @@
                             <td>{{ $member[0]->name }} &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="passwdButton">비밀번호 초기화</button></td>
                             <th>상태</th>
                             <td>
-                                @switch($member[0]->status)
+                                @switch($classCategory->user_status)
                                     @case(0)
                                         승인대기
                                         @break
@@ -66,7 +66,7 @@
                             <th>E-mail</th>
                             <td>{{ $member[0]->email }}</td>
                             <th>기수</th>
-                            <td>{{ $member[0]->group }}</td>
+                            <td>{{ $classCategory->user_group }}</td>
 
                         </tr>
                         <tr>
@@ -92,9 +92,9 @@
                                     &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="normalButton">일반강사로 변경</button>
                                 @endif
                             </td>
-                            @if ($member[0]->status == 6 || $member[0]->status ==9)
+                            @if ($classCategory->user_status == 6 || $classCategory->user_status ==9)
                             <th>보류/중단일</th>
-                            <td>{{ $member[0]->stopday}}</td>
+                            <td>{{ $classCategory->stopday}}</td>
                             @else
                             <td></td>
                             <td></td>

@@ -42,11 +42,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <select name="status" id="status" class="form-control">
-                                            <option value="0" {{ $member[0]->status == 0 ? "selected" : "" }}>승인대기</option>
-                                            <option value="2" {{ $member[0]->status == 2 ? "selected" : "" }}>활동중</option>
-                                            <option value="4" {{ $member[0]->status == 4 ? "selected" : "" }}>프리랜서</option>
-                                            <option value="6" {{ $member[0]->status == 6 ? "selected" : "" }}>활동보류</option>
-                                            <option value="8" {{ $member[0]->status == 8 ? "selected" : "" }}>활동중단</option>
+                                            <option value="0" {{ $classCategory[0]->user_status == 0 ? "selected" : "" }}>승인대기</option>
+                                            <option value="2" {{ $classCategory[0]->user_status == 2 ? "selected" : "" }}>활동중</option>
+                                            <option value="4" {{ $classCategory[0]->user_status == 4 ? "selected" : "" }}>프리랜서</option>
+                                            <option value="6" {{ $classCategory[0]->user_status == 6 ? "selected" : "" }}>활동보류</option>
+                                            <option value="8" {{ $classCategory[0]->user_status == 8 ? "selected" : "" }}>활동중단</option>
                                         </select>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ $member[0]->group }}" required >
+                                        <input id="group" type="number" class="form-control @error('group') is-invalid @enderror" name="group" value="{{ $classCategory[0]->user_group }}" required >
                                     </div>
                                 </div>
                             </td>
@@ -128,7 +128,7 @@
                             <td >
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input id="stopday" type="text" class="form-control datepicker" readonly name="stopday" value="{{ $member[0]->stopday }}" >
+                                        <input id="stopday" type="text" class="form-control datepicker" readonly name="stopday" value="{{ $classCategory[0]->stopday }}" >
                                     </div>
                                 </div>
                             </td>
@@ -180,7 +180,7 @@
             }
 
             showStopday = function(){
-                if(6 == '{{ $member[0]->status}}' || 8 == '{{ $member[0]->status}}'){
+                if(6 == '{{ $classCategory[0]->user_status}}' || 8 == '{{ $classCategory[0]->user_status}}'){
                     $(".stopday").show();
                 }
             }

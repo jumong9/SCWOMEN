@@ -129,7 +129,7 @@ class MemberController extends Controller{
                         ->join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
                         ->select('users.id', 'users.group', 'users.name', 'users.mobile'
                                 , 'users.email', 'users.grade','users.gubun','users.status','users.created_at'
-                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_grade', 'class_category_user.joinday')
+                                , 'class_category_user.class_category_id', 'class_categories.class_name', 'class_category_user.main_count', 'class_category_user.sub_count', 'class_category_user.user_grade', 'class_category_user.joinday', 'class_category_user.user_group', 'class_category_user.user_status')
                         ->where('users.grade', '<', 90)
                         ->where(function($query) use ($request){
                             $searchType = $request->input('searchType');
@@ -138,9 +138,9 @@ class MemberController extends Controller{
                             $searchStatus = (null==$request->input('searchStatus') ) ? 99 : $request->input('searchStatus');
 
                             if($searchStatus!=99){
-                                $query ->where('users.status', "{$searchStatus}");
+                                $query ->where('class_category_user.user_status', "{$searchStatus}");
                             }else{
-                                $query ->where('users.status', '>', 0);
+                                $query ->where('class_category_user.user_status', '>', 0);
                             }
 
                             if(""!=$searchGrade){
@@ -151,7 +151,7 @@ class MemberController extends Controller{
                                 if('name'==$searchType) {
                                     $query ->where('users.name','LIKE',"{$searchWord}%");
                                 }elseif('group'==$searchType){
-                                    $query ->where('users.group', "{$searchWord}");
+                                    $query ->where('class_category_user.user_group', "{$searchWord}");
                                 }elseif('category'==$searchType){
                                     $query ->where('class_categories.class_name','LIKE', "{$searchWord}%");
                                 }
@@ -220,7 +220,10 @@ class MemberController extends Controller{
         $member = User::with('classCategories')->where('id', $id)->get();
         $member[0]->cate_id = $cate_id;
 
-        $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')->where('user_id', $id)->get();
+        $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
+                                          ->where('user_id', $id)
+                                          ->where('class_category_id', $cate_id)
+                                          ->get();
 
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
@@ -234,6 +237,7 @@ class MemberController extends Controller{
     public function update(Request $request){
 
         try {
+            DB::enableQueryLog();
             DB::beginTransaction();
 
             $searchType = $request->input('searchType');
@@ -281,41 +285,65 @@ class MemberController extends Controller{
             //기존 클래스 정보 삭제
             ClassCategoryUser::where('user_id',$id)->delete();
 
+
             //신규 클래스 등록
             $classCategory = $request->input('class_category_id');
             foreach($classCategory as $cate){
+
+                //외부강사는 주강사 횟수 10회 등록
+                $c_main_count = 0;
+                if($gubun == 2 && $c_main_count < 10){
+                    $c_main_count = $cate->main_count +10;
+                }
+
                 $classUser = new ClassCategoryUser();
                 $classUser->user_id = $id;
                 $classUser->class_category_id = $cate;
+                $classUser->main_count = $c_main_count;
+                $classUser->user_status = $status;
 
                 $classUser->save();
 
             }
 
-            $joinTemp = $joinday;
+
             //기존 클래스 존재시 업데이트(주,보조강사 횟수)
             foreach($oldClassCategory as $cate){
 
-                if($cate_id != $cate->class_category_id){
-                    $joinTemp = $cate->joinday;
-                }else{
-                    $joinTemp = $joinday;
-                }
+                if($cate_id != $cate->class_category_id){  //기존정보 업데이트
 
-                //외부강사는 주강사 횟수 10회 등록
-                $c_main_count = $cate->main_count;
-                if($gubun == 2 && $c_main_count < 10){
-                    $c_main_count = $cate->main_count +10;
-                }
+                    $cate->where('user_id', $cate->user_id)
+                         ->where('class_category_id', $cate->class_category_id)
+                         ->update([
+                                'main_count' => $cate->main_count,
+                                'sub_count' =>  $cate->sub_count,
+                                'user_grade' =>  $cate->user_grade,
+                                'user_status' =>  $cate->user_status,
+                                'user_group' =>  $cate->user_group,
+                                'joinday' => $cate->joinday,
+                                'stopday' => $cate->stopday,
+                            ]);
 
-                $cate->where('user_id', $cate->user_id)
-                     ->where('class_category_id', $cate->class_category_id)
-                     ->update([
+                }else{          //현재 변경대상
+
+                    //외부강사는 주강사 횟수 10회 등록
+                    $c_main_count = $cate->main_count;
+                    if($gubun == 2 && $c_main_count < 10){
+                        $c_main_count = $cate->main_count +10;
+                    }
+                    $cate->where('user_id', $cate->user_id)
+                         ->where('class_category_id', $cate->class_category_id)
+                         ->update([
                                 'main_count' => $c_main_count,
                                 'sub_count' =>  $cate->sub_count,
                                 'user_grade' =>  $cate->user_grade,
-                                'joinday' => $joinTemp,
+                                'user_status' =>  $status,
+                                'user_group' =>  $group,
+                                'joinday' => $joinday,
+                                'stopday' => $stopday,
                             ]);
+                }
+
             }
 
             if($status == 6 || $status == 8){
@@ -328,7 +356,7 @@ class MemberController extends Controller{
                 }
             }
 
-            //dd(DB::getQueryLog());
+           // dd(DB::getQueryLog());
             DB::commit();
 
         } catch (Exception $e) {

@@ -66,7 +66,7 @@
                             <th>E-mail</th>
                             <td>{{ $member[0]->email }}</td>
                             <th>기수</th>
-                            <td>{{ $member[0]->group }}</td>
+                            <td>{{ $classCategory[0]->user_group}}</td>
 
                         </tr>
                         <tr>

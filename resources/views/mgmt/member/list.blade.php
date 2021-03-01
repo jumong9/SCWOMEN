@@ -94,7 +94,7 @@
                                     @default
                                 @endswitch
                             </td>
-                            <td>{{ $member->group }}</td>
+                            <td>{{ $member->user_group }}</td>
                             <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchGrade'=>$searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
                             <td>{{ $member->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
@@ -103,7 +103,7 @@
                             <td>{{ $member->mobile }}</td>
                             <td>{{ $member->email }}</td>
                             <td>
-                                @switch($member->status)
+                                @switch($member->user_status)
                                     @case(0)
                                         승인대기
                                         @break

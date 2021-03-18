@@ -39,11 +39,9 @@ class ApplicationController extends Controller{
 
 
                             if(!empty($request->input('searchWord'))){
-                                if('name'==$searchType) {
-                                    $query ->where('users.name','LIKE',"{$searchWord}%");
-                                }elseif('group'==$searchType){
-                                    $query ->where('users.group', "{$searchWord}");
-                                }
+
+                                $query ->where('users.name','LIKE',"{$searchWord}%");
+
                             }
 
                         })

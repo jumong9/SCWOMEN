@@ -95,6 +95,7 @@ class ContractController extends Controller{
                 $inputClass->main_count             = $class['main_count'];
                 $inputClass->sub_count              = $class['sub_count'];
                 $inputClass->finance                = $class['finance'];
+                $inputClass->sub_finance            = $class['sub_finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
                 $inputClass->main_count             = $class['main_count'];
@@ -160,6 +161,7 @@ DB::enableQueryLog();
                                             , 'contract_classes.class_sub_name'
                                             , 'contract_classes.online_type'
                                             , 'contract_classes.finance'
+                                            , 'contract_classes.sub_finance'
                                             , 'contract_classes.id'
                                             , 'e.class_name'
                                             , 'd.name as user_name'
@@ -317,6 +319,7 @@ DB::enableQueryLog();
                 $inputClass->main_count             = $class['main_count'];
                 $inputClass->sub_count              = $class['sub_count'];
                 $inputClass->finance                = $class['finance'];
+                $inputClass->sub_finance            = $class['sub_finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
                 $inputClass->main_count             = $class['main_count'];

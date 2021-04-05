@@ -294,7 +294,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-12 input-group-sm">
-                                            <select name="class_type" id="class_type" class="form-control ">
+                                            <select name="class_type" id="class_type" class="form-control class_type">
                                                 <option value="0">오프라인</option>
                                                 <option value="1">온라인 실시간</option>
                                                 <option value="2">온라인 동영상</option>
@@ -305,7 +305,7 @@
                                 <td>
                                     <div class="row">
                                         <div class="col-md-12 input-group-sm">
-                                            <select name="online_type" id="online_type" class="form-control " style="display: none">
+                                            <select name="online_type" id="online_type" class="form-control online_type" style="display: none">
                                                 <option value="0">최초</option>
                                                 <option value="1">재방</option>
                                             </select>
@@ -320,6 +320,126 @@
                                     </div>
                                 </td>
                             </tr>
+                            @foreach($classList as $key => $cl)
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-11 input-group-sm">
+                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$cl->class_day}}"  >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
+                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$cl->time_from}}"  >
+                                        </div>
+                                        <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
+                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$cl->time_to}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            {{$cl->class_name}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <input type="text" name="class_sub_name" id="class_sub_name" class="form-control" value="{{$cl->class_sub_name}}">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <input id="class_target" type="text" class="form-control @error('class_target') is-invalid @enderror" name="class_target" value="{{$cl->class_target}}"  >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="class_number" type="number" class="form-control @error('class_number') is-invalid @enderror" name="class_number" value="{{$cl->class_number}}"  >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="class_count" type="number" class="form-control @error('class_count') is-invalid @enderror" name="class_count" value="{{$cl->class_count}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="class_order" type="number" class="form-control @error('class_order') is-invalid @enderror" name="class_order" value="value="{{$cl->class_count}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="main_count" type="number" class="form-control @error('main_count') is-invalid @enderror" name="main_count" value="{{$cl->main_count}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="sub_count" type="number" class="form-control @error('sub_count') is-invalid @enderror" name="sub_count" value="{{$cl->sub_count}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+
+                                            <input id="finance" type="text" class="form-control @error('finance') is-invalid @enderror" name="finance" value="{{$cl->finance}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-10 input-group-sm">
+                                            <input id="sub_finance" type="text" class="form-control @error('sub_finance') is-invalid @enderror" name="sub_finance" value="{{$cl->sub_finance}}" >
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <select name="class_type" id="class_type" class="form-control class_type">
+                                                <option value="0" {{ $cl->class_type == 0 ? "selected" : "" }}>오프라인</option>
+                                                <option value="1" {{ $cl->class_type == 1 ? "selected" : "" }}>온라인 실시간</option>
+                                                <option value="2" {{ $cl->class_type == 2 ? "selected" : "" }}>온라인 동영상</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <select name="online_type" id="online_type" class="form-control online_type" {{ $cl->class_type != 2 ? "style='display:none'" : "" }}>
+                                                <option value="0" {{ $cl->online_type == 0 ? "selected" : "" }}>최초</option>
+                                                <option value="1" {{ $cl->online_type == 1 ? "selected" : "" }}>재방</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <input class="btn-sm btn-primary delRow" type="button"  value="삭제">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -372,7 +492,9 @@
             <td style="width:40px;">${sub_finance}</td>
             <td style="width:120px;">${class_type_text}</td>
             <td style="width:120px;">${online_type_text}</td>
-            <td style="width:50px;"><button class="btn-sm btn-primary delRow" type="button">삭제</button></td>
+            <td style="width:50px;">
+                <button class="btn-sm btn-primary delRow" type="button">삭제</button>
+            </td>
         </tr>
     </script>
 
@@ -388,14 +510,19 @@
                 }
             );
 
-            $("#class_type").change(function(){
-                if($("#class_type option:selected","#classList").val()==2){
-                    $("#online_type","#classList").show();
+            $(".class_type").change(function(){
+                if($(this).val()==2){
+                    $(this).find(".online_type").show();
                 }else{
-                    $("#online_type","#classList").hide();
+                    $(this).find(".online_type").hide();
                 }
             });
 
+
+            $(".delRow").click(function(e){
+                $.extend($(this.closest("tr")).data("userData"), {"action_type":"D"});
+                $(this.closest("tr")).hide();
+            });
 
             $("#cancelButton").click(function(){
                 location.href='{{ route('mgmt.contract.read')}}' + params +"&id={{ $contract->id}}";

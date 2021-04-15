@@ -224,7 +224,8 @@
                         $("#showModal").modal("show");
                     },
                     error : function(xhr, exMessage) {
-                        alert('error');
+
+                        alert('강사 정보가 존재하지 않습니다.');
                     },
                 });
             });

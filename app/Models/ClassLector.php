@@ -12,6 +12,7 @@ class ClassLector extends Model
     protected $fillable = [
         'user_id',
         'user_name',
+        'class_category_id',
         'sub_user_names',
         'main_yn',
         'main_count',

@@ -72,7 +72,7 @@ class MyLectureController extends Controller{
 
 
     public function read(Request $request){
-        DB::enableQueryLog();
+
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
         $searchStatus = $request->input('searchStatus');
@@ -83,7 +83,7 @@ class MyLectureController extends Controller{
         $user_id = Auth::id();
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
-                                    ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
+                                    ->join('class_lectors as c', 'c.contract_class_id', '=', 'contract_classes.id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
                                     ->join('common_codes as f', function($join){
                                         $join->on('f.code_id','=', 'contract_classes.class_status')
@@ -122,18 +122,18 @@ class MyLectureController extends Controller{
         //                             ->where('contract_class_id',$id)
         //                             ->orderBy('main_yn','desc')
         //                             ->get();
-
+        DB::enableQueryLog();
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
                                     ->join('contract_classes as d', 'd.id', '=', 'class_lectors.contract_class_id')
                                     ->join('class_category_user as c', function($join){
                                           $join->on('c.user_id', '=', 'class_lectors.user_id');
-                                          $join->on('c.class_category_id' ,'=', 'd.class_category_id');
+                                          $join->on('c.class_category_id' ,'=', 'class_lectors.class_category_id');
                                           }
                                     )
                                     ->where('contract_class_id',$id)
                                     ->orderBy('main_yn','desc')
                                     ->get();
-
+       // dd(DB::getQueryLog());
         $mainYn = ClassLector::where('contract_class_id',$id)
                                 ->where('user_id', $user_id)
                                 ->where('main_yn', 1)->first();
@@ -154,7 +154,7 @@ class MyLectureController extends Controller{
         }
 
 
-//dd(DB::getQueryLog());
+
         return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }
@@ -260,10 +260,12 @@ class MyLectureController extends Controller{
                             ]);
 
             $contractClass = ContractClass::where('id',$id)->get();
-            $class_category_id = $contractClass[0]->class_category_id;
+            //$class_category_id = $contractClass[0]->class_category_id;
 
             $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
             foreach($classLectorsList as $user){
+
+                $class_category_id = $user->class_category_id;
                 $main_yn = $user->main_yn;   // 0:sub, 1:main
                 if($main_yn){
                     ClassCategoryUser::where('class_category_id', $class_category_id)
@@ -328,7 +330,7 @@ class MyLectureController extends Controller{
                             ]);
 
             $contractClass = ContractClass::where('id',$id)->get();
-            $class_category_id = $contractClass[0]->class_category_id;
+            //$class_category_id = $contractClass[0]->class_category_id;
             $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
             $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
             $class_order = $contractClass[0]->class_order; //수업차수
@@ -336,8 +338,11 @@ class MyLectureController extends Controller{
             $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
             foreach($classLectorsList as $user){
 
+                $class_category_id = $user->class_category_id;
+
                 $classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
                                                   ->where('user_id', $user->user_id)->get();
+
 
                 $main_count = $classCateUser[0]->main_count;
                 $sub_count = $classCateUser[0]->sub_count;

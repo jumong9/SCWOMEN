@@ -96,7 +96,7 @@ class PayCalculateController extends Controller
                                                     , 'b.class_gubun'
                                                     , 'b.class_name'
                                                     , 'contract_classes.class_sub_name'
-                                                    , 'contract_classes.finance'
+                                                    , DB::raw('case when c.main_yn = 1 then  contract_classes.finance else contract_classes.sub_finance END')
                                                     , 'contract_classes.class_day'
                                                     , 'contract_classes.class_count'
                                                     , 'contract_classes.class_order'

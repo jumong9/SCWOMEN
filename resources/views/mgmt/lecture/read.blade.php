@@ -181,7 +181,9 @@
                 </div>
 
                 <div class="row-fluid" style="text-align: right;">
-                    <button class="btn btn-primary" type="button"  id="openPopup">강사배정</button>
+                    @if($contentsList[0]->class_status == 0)                <!--수업완료시 강사배정 변경 금지 -->
+                        <button class="btn btn-primary" type="button"  id="openPopup">강사배정</button>
+                    @endif
                     @if($contentsList[0]->lector_apply_yn == 0)
                         <button class="btn btn-primary" type="button"  id="applyButton">배정완료</button>
                     @endif
@@ -213,8 +215,8 @@
                         $("#modalFrame").html(data);
                         $("#showModal").modal("show");
                     },
-                    error : function(xhr, exMessage) {
-                        alert('error');
+                    error : function(xhr, exMessage, thrownError) {
+                        alert('강사 정보가 존재하지 않습니다.');
                     },
                 });
             });

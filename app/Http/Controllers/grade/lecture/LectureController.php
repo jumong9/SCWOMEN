@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\grade\lecture;
 
 use App\Http\Controllers\Controller;
+use App\Models\ClassCategory;
 use App\Models\ClassLector;
 use App\Models\Client;
 use App\Models\ContractClass;
@@ -112,7 +113,7 @@ class LectureController extends Controller{
                         ->join('contract_classes as d', 'd.id', '=', 'class_lectors.contract_class_id')
                         ->join('class_category_user as c', function($join){
                               $join->on('c.user_id', '=', 'class_lectors.user_id');
-                              $join->on('c.class_category_id' ,'=', 'd.class_category_id');
+                              $join->on('c.class_category_id' ,'=', 'class_lectors.class_category_id');
                               }
                         )
                         ->where('contract_class_id',$id)
@@ -139,20 +140,46 @@ class LectureController extends Controller{
                                      'b.sub_count',
                                      'c.id as class_id',
                                      'c.main_count as class_main_count',
-                                     'c.sub_count as class_sub_count')
+                                     'c.sub_count as class_sub_count',
+                                     'c.class_category_id')
                             ->whereIn('b.user_status', [2,4])
                             ->where('c.id' , $id)
                             ->orderBy('b.user_group', 'desc')
                             ->orderBy('b.user_status', 'asc')
                             ->get();
 
-        //dd(DB::getQueryLog());
-        //return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
 
-        $selectedUser = ClassLector::where('contract_class_id',$id)
+        if(sizeof($userList) ==0){
+            throw new Exception('강사 정보가 존재하지 않습니다.');
+        }
+
+        $cateId = $userList[0]->class_category_id;
+
+        $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
+
+
+
+        $selectedUser = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
+                                   ->join('class_category_user as c', function($join){
+                                            $join->on('c.user_id', '=', 'class_lectors.user_id');
+                                            $join->on('c.class_category_id' ,'=', 'class_lectors.class_category_id');
+                                            }
+                                    )
+                                    ->select('class_lectors.*',
+                                             'b.id as user_id',
+                                             'b.name as user_name',
+                                             'c.user_status as user_status',
+                                             'c.user_group as group',
+                                             'c.main_count',
+                                             'c.sub_count',
+                                             'c.id as class_id',
+                                             'c.main_count as class_main_count',
+                                             )
+                                    ->where('contract_class_id',$id)
                                     ->get();
         //dd(DB::getQueryLog());
-        return view('grade.lecture.popupuser', ['class_id'=>$id, 'selectedUser'=>$selectedUser, 'userList'=>$userList]);
+        return view('grade.lecture.popupuser', ['class_id'=>$id, 'cateId'=>$cateId, 'selectedUser'=>$selectedUser, 'userList'=>$userList, 'classItems'=> $classItems ]);
+
     }
 
 
@@ -186,7 +213,7 @@ class LectureController extends Controller{
 
 
     public function updateUser(Request $request){
-
+        DB::enableQueryLog();
         $main_user_id = $request->input('main_user_id');
         $sub_user_id = $request->input('sub_user_id');
         $contract_class_id = $request->input('contract_class_id');
@@ -200,20 +227,24 @@ class LectureController extends Controller{
             $mainUser = new ClassLector();
             $mainUser->contract_class_id = $contract_class_id;
             $mainUser->main_yn = 1;
-            $mainUser->user_id = $main_user_id;
+            $main_user_data = explode("_", $main_user_id);
+            $mainUser->user_id = $main_user_data[0];
+            $mainUser->class_category_id = $main_user_data[1];
 
             $mainUser->save();
 
             if(!empty($sub_user_id)){
                 foreach($sub_user_id as $sub){
+                    $sub_user_data = explode("_", $sub);
                     $subUser = new ClassLector();
                     $subUser->contract_class_id = $contract_class_id;
                     $subUser->main_yn = 0;
-                    $subUser->user_id = $sub;
+                    $subUser->user_id = $sub_user_data[0];
+                    $subUser->class_category_id = $sub_user_data[1];
                     $subUser->save();
                 }
             }
-
+            //dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
@@ -289,4 +320,26 @@ class LectureController extends Controller{
     }
 
 
+    public function allUserList(Request $request){
+
+        $class_category_id = $request->input('class_category_id');
+        DB::enableQueryLog();
+        $userList = User::join('class_category_user as b', 'b.user_id', '=', 'users.id')
+                            ->select('users.id as user_id',
+                                     'users.name as user_name',
+                                     'b.class_category_id',
+                                     'b.user_status as user_status',
+                                     'b.user_group as group',
+                                     'b.main_count',
+                                     'b.sub_count')
+                            ->whereIn('b.user_status', [2,4])
+                            ->where('b.class_category_id' , $class_category_id)
+                            ->orderBy('b.user_group', 'desc')
+                            ->orderBy('b.user_status', 'asc')
+                            ->get();
+
+        //dd(DB::getQueryLog());
+
+        return response()->json(['userList' => $userList]);
+    }
 }

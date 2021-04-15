@@ -411,6 +411,13 @@ Route::middleware(['managermiddle'])->group(function(){
     ]);
 
 
+    //강사조회
+    Route::match(['get','post'],'grade/lecture/allUserList',[
+        'as' => 'grade.lecture.allUserList',
+        'uses' => 'App\Http\Controllers\grade\lecture\LectureController@allUserList'
+    ]);
+
+
 });
 
 

@@ -373,7 +373,7 @@ class MyLectureController extends Controller{
                             $lector_cost = $lector_main_cost;
                             if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                 $lector_extra_count = $class_order-1;
-                                $lector_extra_cost=(15000*$lector_extra_count);
+                                $lector_extra_cost=(10000*$lector_extra_count);
                                 $lector_cost += $lector_extra_cost;
                             }
                         }

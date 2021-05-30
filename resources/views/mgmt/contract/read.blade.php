@@ -131,8 +131,8 @@
                                 <th style="width:50px;">차수</th>
                                 <th style="width:50px;">주강사</th>
                                 <th style="width:50px;">보조</th>
-                                <th style="width:50px;">재원</th>
-                                <th style="width:50px;">보조재원</th>
+                                <th style="width:70px;">재원</th>
+                                <th style="width:70px;">보조재원</th>
                                 <th style="width:100px;">수업방식</th>
                                 <th style="width:80px;">수업구분</th>
                             </tr>
@@ -142,6 +142,7 @@
                             <tr>
                                 <td>
                                     {{$list->lector_apply_yn == 0? '' : '배정완료'}}
+                                    {{$list->class_status > 0 ? '- 수업완료':''}}
                                 </td>
                                 <td>
                                     {{ $list->class_day }}
@@ -176,8 +177,9 @@
                                 <td>
                                     {{$list->finance}}
                                 </td>
-                                <td>
+                                <td>@if($list->sub_count>0)
                                     {{$list->sub_finance}}
+                                    @endif
                                 </td>
                                 <td>
                                     @if($list->class_type == 0 ) 오프라인

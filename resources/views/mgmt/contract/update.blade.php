@@ -181,265 +181,31 @@
                     <table class="table-sm" id="" cellspacing="0">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width:100px;"><span class="text-danger">*</span>활동일자</th>
-                                <th style="width:100px;"><span class="text-danger">*</span>시간</th>
-                                <th style="width:160px;"><span class="text-danger">*</span>프로그램</th>
-                                <th style="width:120px;"><span class="text-danger"></span>세부프로그램</th>
-                                <th style="width:160px;"><span class="text-danger">*</span>교육대상</th>
-                                <th style="width:40px;"><span class="text-danger">*</span>인원</th>
-                                <th style="width:40px;"><span class="text-danger">*</span>횟수</th>
-                                <th style="width:40px;"><span class="text-danger">*</span>차수</th>
-                                <th style="width:40px;"><span class="text-danger">*</span>주강사</th>
-                                <th style="width:40px;"><span class="text-danger">*</span>보조</th>
-                                <th style="width:100px;"><span class="text-danger">*</span>재원</th>
-                                <th style="width:100px;"><span class="text-danger">*</span>보조재원</th>
-                                <th style="width:120px;"><span class="text-danger">*</span>수업방식</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>수업구분</th>
-                                <th style="width:50px;"></th>
+                                <th style="width:140px;"><span class="text-danger">*</span>활동일자</th>
+                                <th style="width:140px;"><span class="text-danger">*</span>시간</th>
+                                <th style="width:180px;"><span class="text-danger">*</span>프로그램</th>
+                                <th style="width:150px;"><span class="text-danger"></span>세부프로그램</th>
+                                <th style="width:180px;"><span class="text-danger">*</span>교육대상</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>인원</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>횟수</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>차수</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>주강사</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>보조</th>
+                                <th style="width:140px;"><span class="text-danger">*</span>재원</th>
+                                <th style="width:140px;"><span class="text-danger">*</span>보조재원</th>
+                                <th style="width:140px;"><span class="text-danger">*</span>수업방식</th>
+                                <th style="width:140px;"><span class="text-danger">*</span>수업구분</th>
+                                <th style="width:100px;">
+                                    <div class="row">
+                                        <div class="col-md-12 input-group-sm">
+                                            <input class="btn-sm btn-primary" type="button" name="addClass" id="addClassButton" value="추가">
+                                        </div>
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
-                        <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-11 input-group-sm">
-                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$today}}"  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
-                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value=""  >
-                                        </div>
-                                        <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
-                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <select name="class_category_id" id="class_category_id" class="form-control ">
-                                                @foreach($classItems as $code)
-                                                    <option value="{{$code->id}}">{{$code->class_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input type="text" name="class_sub_name" id="class_sub_name" class="form-control" value="">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input id="class_target" type="text" class="form-control @error('class_target') is-invalid @enderror" name="class_target" value=""  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_number" type="number" class="form-control @error('class_number') is-invalid @enderror" name="class_number" value=""  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_count" type="number" class="form-control @error('class_count') is-invalid @enderror" name="class_count" value="1" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_order" type="number" class="form-control @error('class_order') is-invalid @enderror" name="class_order" value="1" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="main_count" type="number" class="form-control @error('main_count') is-invalid @enderror" name="main_count" value="1" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="sub_count" type="number" class="form-control @error('sub_count') is-invalid @enderror" name="sub_count" value="0" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="finance" type="text" class="form-control @error('finance') is-invalid @enderror" name="finance" value="보조금" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="sub_finance" type="text" class="form-control @error('sub_finance') is-invalid @enderror" name="sub_finance" value="보조금" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <select name="class_type" id="class_type" class="form-control class_type">
-                                                <option value="0">오프라인</option>
-                                                <option value="1">온라인 실시간</option>
-                                                <option value="2">온라인 동영상</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <select name="online_type" id="online_type" class="form-control online_type" style="display: none">
-                                                <option value="0">최초</option>
-                                                <option value="1">재방</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input class="btn-sm btn-primary" type="button" name="addClass" id="addClass" value="추가">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @foreach($classList as $key => $cl)
-                            <tr>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-11 input-group-sm">
-                                            <input id="class_day" type="text" class="form-control datepicker @error('class_day') is-invalid @enderror" name="class_day" value="{{$cl->class_day}}"  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
-                                            <input id="time_from" type="text" class="form-control @error('time_from') is-invalid @enderror" name="time_from" value="{{$cl->time_from}}"  >
-                                        </div>
-                                        <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
-                                             <input id="time_to" type="text" class="form-control @error('time_to') is-invalid @enderror" name="time_to" value="{{$cl->time_to}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            {{$cl->class_name}}
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input type="text" name="class_sub_name" id="class_sub_name" class="form-control" value="{{$cl->class_sub_name}}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input id="class_target" type="text" class="form-control @error('class_target') is-invalid @enderror" name="class_target" value="{{$cl->class_target}}"  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_number" type="number" class="form-control @error('class_number') is-invalid @enderror" name="class_number" value="{{$cl->class_number}}"  >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_count" type="number" class="form-control @error('class_count') is-invalid @enderror" name="class_count" value="{{$cl->class_count}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="class_order" type="number" class="form-control @error('class_order') is-invalid @enderror" name="class_order" value="value="{{$cl->class_count}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="main_count" type="number" class="form-control @error('main_count') is-invalid @enderror" name="main_count" value="{{$cl->main_count}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="sub_count" type="number" class="form-control @error('sub_count') is-invalid @enderror" name="sub_count" value="{{$cl->sub_count}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
+                        <tbody id="classList" class="thead-light classList" style="border-bottom: 1px solid #dee2e6;">
 
-                                            <input id="finance" type="text" class="form-control @error('finance') is-invalid @enderror" name="finance" value="{{$cl->finance}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-10 input-group-sm">
-                                            <input id="sub_finance" type="text" class="form-control @error('sub_finance') is-invalid @enderror" name="sub_finance" value="{{$cl->sub_finance}}" >
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <select name="class_type" id="class_type" class="form-control class_type">
-                                                <option value="0" {{ $cl->class_type == 0 ? "selected" : "" }}>오프라인</option>
-                                                <option value="1" {{ $cl->class_type == 1 ? "selected" : "" }}>온라인 실시간</option>
-                                                <option value="2" {{ $cl->class_type == 2 ? "selected" : "" }}>온라인 동영상</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <select name="online_type" id="online_type" class="form-control online_type" {{ $cl->class_type != 2 ? "style='display:none'" : "" }}>
-                                                <option value="0" {{ $cl->online_type == 0 ? "selected" : "" }}>최초</option>
-                                                <option value="1" {{ $cl->online_type == 1 ? "selected" : "" }}>재방</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-12 input-group-sm">
-                                            <input class="btn-sm btn-primary delRow" type="button"  value="삭제">
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -498,6 +264,274 @@
         </tr>
     </script>
 
+
+    <script id="tmpCclassTr" type="text/jquery-template">
+        <tr class="classTarget" data-action_type="${action_type}" data-class_id="${class_id}" data-class_status="${class_status}">
+            <td>
+                <div class="row">
+                    <div class="col-md-11 input-group-sm">
+                        <input  type="hidden" class="form-control datepicker class_day" name="cclassList[].class_day" value="${class_day}" />${class_day}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
+                        <input type="hidden" class="form-control time_from" name="cclassList[].time_from" value="${time_from}"  >
+                        ${time_from}
+                    </div>
+                    <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
+                        <input type="hidden" class="form-control time_to" name="cclassList[].time_to" value="${time_to}" >
+                        ${time_to}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <input type="hidden" class="class_category_id" value="${class_category_id}">${class_category_text}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <input type="hidden" name="cclassList[].class_sub_name" class="form-control class_sub_name" value="${class_sub_name}">
+                        ${class_sub_name}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <input type="hidden" class="form-control class_target" name="cclassList[].class_target" value="${class_target}"  >
+                        ${class_target}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="hidden" class="form-control class_number" name="cclassList[].class_number" value="${class_number}"  >
+                        ${class_number}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="hidden" class="form-control class_count" name="cclassList[].class_count" value="${class_count}" >
+                        ${class_count}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input  type="hidden" class="form-control class_order" name="cclassList[].class_order" value="${class_order}" >
+                        ${class_order}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="hidden" class="form-control main_count" name="cclassList[].main_count" value="${main_count}" >${main_count}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="hidden" class="form-control sub_count" name="cclassList[].sub_count" value="${sub_count}" >${sub_count}
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].finance"  class="form-control finance">
+                            @foreach($financeList as $code)
+                            <option value="{{$code->code_id}}" ${finance == {{$code->code_id}} ? 'selected':''}>{{$code->code_value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].sub_finance"  class="form-control sub_finance">
+                            @foreach($financeList as $code)
+                                <option value="{{$code->code_id}}" ${sub_finance == {{$code->code_id}} ? 'selected':''}>{{$code->code_value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].class_type" class="form-control class_type">
+                            <option value="0" ${class_type == 0 ? 'selected' : ''} > 오프라인</option>
+                            <option value="1" ${class_type == 1 ? 'selected' : ''} > 온라인 실시간</option>
+                            <option value="2" ${class_type == 2 ? 'selected' : ''}> 온라인 동영상</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].online_type" class="form-control online_type" style="display: ${class_type == 2 ? 'block' : 'none'} ">
+                            <option value="0" ${online_type == 0 ? 'selected' : ''}>최초</option>
+                            <option value="1" ${online_type == 1 ? 'selected' : ''}>재방</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <button class="btn-sm btn-primary delRow" id="deleteRowButton" type="button">삭제</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="tmpCclassTrNew" type="text/jquery-template">
+        <tr class="classTarget" data-action_type="${action_type}" data-class_status="0">
+            <td>
+                <div class="row">
+                    <div class="col-md-11 input-group-sm">
+                        <input  type="text" class="form-control datepicker class_day" name="cclassList[].class_day" />
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
+                        <input type="text" class="form-control time_from" name="cclassList[].time_from" value="10:00"  >
+                    </div>
+                    <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
+                         <input type="text" class="form-control time_to" name="cclassList[].time_to" value="11:00" >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].class_category_id"  class="form-control class_category_id">
+                            @foreach($classItems as $code)
+                                <option value="{{$code->id}}">{{$code->class_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <input type="text" name="cclassList[].class_sub_name" class="form-control class_sub_name" value="">
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <input type="text" class="form-control class_target" name="cclassList[].class_target" value=""  >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="number" class="form-control class_number" name="cclassList[].class_number" value=""  >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="number" class="form-control class_count" name="cclassList[].class_count" value="1" >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input  type="number" class="form-control class_order" name="cclassList[].class_order" value="1" >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="number" class="form-control main_count" name="cclassList[].main_count" value="1" >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-10 input-group-sm">
+                        <input type="number" class="form-control sub_count" name="cclassList[].sub_count" value="0" >
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].finance"  class="form-control finance">
+                            @foreach($financeList as $code)
+                                <option value="{{$code->code_id}}">{{$code->code_value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].sub_finance"  class="form-control sub_finance">
+                            @foreach($financeList as $code)
+                                <option value="{{$code->code_id}}">{{$code->code_value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].class_type" class="form-control class_type">
+                            <option value="0">오프라인</option>
+                            <option value="1">온라인 실시간</option>
+                            <option value="2">온라인 동영상</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <select name="cclassList[].online_type" class="form-control online_type" style="display: none">
+                            <option value="0">최초</option>
+                            <option value="1">재방</option>
+                        </select>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-12 input-group-sm">
+                        <button class="btn-sm btn-primary delRow" id="deleteRowButton" type="button">삭제</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </script>
+
     <!-- Custom scripts for all pages-->
     <script>
         $(document).ready(function() {
@@ -520,12 +554,52 @@
 
 
             $(".delRow").click(function(e){
-                $.extend($(this.closest("tr")).data("userData"), {"action_type":"D"});
+                $.extend($(this.closest("tr")).data("action_type"), {"action_type":"D"});
                 $(this.closest("tr")).hide();
             });
 
             $("#cancelButton").click(function(){
-                location.href='{{ route('mgmt.contract.read')}}' + params +"&id={{ $contract->id}}";
+                location.href='{{ route('mgmt.contract.read')}}' + params +"&id={{$contract->id}}";
+            });
+
+            $("#addClassButton").click(function(){
+
+                var data ={action_type:'I'};
+                var newRow = $("#tmpCclassTrNew").tmpl(data);
+
+                $("input[name='cclassList[].class_day']", newRow).datepicker({
+                    dateFormat: 'yy-mm-dd',	//날짜 포맷이다. 보통 yy-mm-dd 를 많이 사용하는것 같다.
+                    changeMonth : true,
+                    changeYear : true,
+                    yearRange: 'c-100:c+10',
+                    prevText: '이전 달',	// 마우스 오버시 이전달 텍스트
+                    nextText: '다음 달',	// 마우스 오버시 다음달 텍스트
+                    closeText: '닫기', // 닫기 버튼 텍스트 변경
+                    currentText: '오늘', // 오늘 텍스트 변경
+                    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],	//한글 캘린더중 월 표시를 위한 부분
+                    monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],	//한글 캘린더 중 월 표시를 위한 부분
+                    dayNames: ['일', '월', '화', '수', '목', '금', '토'],	//한글 캘린더 요일 표시 부분
+                    dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],	//한글 요일 표시 부분
+                    dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],	// 한글 요일 표시 부분
+                    showMonthAfterYear: true,	// true : 년 월  false : 월 년 순으로 보여줌
+                    yearSuffix: '',
+                });
+                $(newRow)
+                .on("click", "#deleteRowButton", function(event){
+                    this.closest("tr").remove();})
+                .on("change","select[name='cclassList[].class_type']", function(event){
+                    var $select = $(this),
+                        selItem = $select.val();
+                        if(selItem==2){
+                            $("select[name='cclassList[].online_type']", newRow).show();
+                        }else{
+                            $("select[name='cclassList[].online_type']", newRow).hide();
+                        }
+                    });
+
+                $("tbody.classList").append(newRow);
+
+
             });
 
             $("#addClass").click(function(){
@@ -542,8 +616,8 @@
                 var _class_order        =$("#class_order","#classList").val();
                 var _main_count         =$("#main_count","#classList").val();
                 var _sub_count          =$("#sub_count","#classList").val();
-                var _finance          =$("#finance","#classList").val();
-                var _sub_finance          =$("#sub_finance","#classList").val();
+                var _finance          =$("#finance  option:selected","#classList").val();
+                var _sub_finance          =$("#sub_finance  option:selected","#classList").val();
                 var _class_type         =$("#class_type option:selected","#classList").val();
                 var _class_type_text    =$("#class_type option:selected","#classList").text();
                 var _online_type         =$("#online_type option:selected","#classList").val();
@@ -578,9 +652,10 @@
                     ,online_type        :_online_type
                     ,online_type_text   :_online_type_text
                     ,action_type        : 'I'
+                    ,class_status       : '0'
 			    }
 
-                $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
+                $("#tmpCclassTr").tmpl(defaultItem).appendTo($("#classList"))
 				.on("click",".delRow", function(e){
 					this.closest("tr").remove();
 
@@ -592,16 +667,85 @@
 
             searchFormSubmit = function(){
 
+                var isOk=true;
                 var classList = [];
 			    $("tr.classTarget").each(function(){
-                    classList.push($(this).data("userData"));
+
+                    var _actiion_type   =     $(this.closest("tr")).data("action_type");
+                    var _class_status   =     $(this.closest("tr")).data("class_status");
+                    if(_class_status!=0){
+                        _actiion_type = 'S';
+                    }
+                    var _class_id           = $(this.closest("tr")).data("class_id");
+                    var _class_day          =$(this).find(".class_day").val();
+                    var _time_from          =$(this).find(".time_from","#classList").val();
+                    var _time_to            =$(this).find(".time_to","#classList").val();
+
+                    var _class_category_id =$(this).find(".class_category_id","#classList").val();
+                    if(_actiion_type=='I') {
+                        _class_id = '';
+                        _class_category_id   =$(this).find(".class_category_id option:selected","#classList").val();
+                    }
+                    var _class_sub_name     =$(this).find(".class_sub_name","#classList").val();
+                    var _class_target       =$(this).find(".class_target","#classList").val();
+                    var _class_number       =$(this).find(".class_number","#classList").val();
+                    var _class_count        =$(this).find(".class_count","#classList").val();
+                    var _class_order        =$(this).find(".class_order","#classList").val();
+                    var _main_count         =$(this).find(".main_count","#classList").val();
+                    var _sub_count          =$(this).find(".sub_count","#classList").val();
+                    var _finance          =$(this).find(".finance","#classList").val();
+                    var _sub_finance          =$(this).find(".sub_finance","#classList").val();
+                    var _class_type         =$(this).find(".class_type option:selected","#classList").val();
+                    var _class_type_text    =$(".class_type option:selected","#classList").text();
+                    var _online_type         =$(this).find(".online_type option:selected","#classList").val();
+                    var _online_type_text    =$(this).find(".online_type option:selected","#classList").text();
+                    if(_class_type!=2){
+                        _online_type_text ="";
+                    }
+
+
+                    if(_class_day == "" || _time_from=="" || _time_to=="" || _class_target=="" || _class_number=="" || _class_count=="" || _class_order=="" || _main_count=="" || _sub_count=="" || _finance==""|| _sub_finance=="") {
+                        isOk =false;
+                        return false;
+                    }
+
+                    var defaultItem = {
+                         class_id           :_class_id
+                        ,class_day          :_class_day
+                        ,time_from          :_time_from
+                        ,time_to            :_time_to
+                        ,class_category_id  :_class_category_id
+                        ,class_sub_name     :_class_sub_name
+                        ,class_target       :_class_target
+                        ,class_number       :_class_number
+                        ,class_count        :_class_count
+                        ,class_order        :_class_order
+                        ,main_count         :_main_count
+                        ,sub_count          :_sub_count
+                        ,finance            :_finance
+                        ,sub_finance            :_sub_finance
+                        ,class_type         :_class_type
+                        ,class_type_text    :_class_type_text
+                        ,online_type        :_online_type
+                        ,online_type_text   :_online_type_text
+                        ,action_type        :_actiion_type
+			        }
+                    classList.push(defaultItem);
                 });
 
-                $("#classTargetList").val(JSON.stringify(classList));
 
-                return trud;
+                if(isOk == false){
+                    alert('필수 항목을 모두 입력해 주세요.');
+                    return false;
+                }else{
+                    $("#classTargetList").val(JSON.stringify(classList));
+                    return true;
+                }
+
             }
 
+            var $madeIndex = 0;
+            var $commIndex = 0;
             // 최초 데이터 출력
             @foreach($classList as $item)
                 var defaultItem = {
@@ -625,13 +769,34 @@
                     ,online_type        : '{{$item->online_type}}'
                     ,online_type_text   :  @if ($item->class_type==2) @if ($item->online_type==0) '최초' @else '재방' @endif @else '' @endif
                     ,action_type        : 'U'
+                    ,class_status       : '{{$item->class_status}}'
 			    }
-
-                $("#tmpClassTr").tmpl(defaultItem).appendTo($("#classList"))
+                var data ={madeIndex:$madeIndex};
+			    //var newRow = $("#tmpCclassTr").tmpl(data);
+			    var thisIndex = $madeIndex;
+                var newRow = $("#tmpCclassTr").tmpl(defaultItem);
+                $(newRow)
                     .on("click",".delRow", function(e){
-                        $.extend($(this.closest("tr")).data("userData"), {"action_type":"D"});
+                        $.extend($(this.closest("tr")).data("action_type"), {"action_type":"D"});
+                        $(this.closest("tr")).data("action_type",'D');
                         $(this.closest("tr")).hide();
-                    }).data('userData',defaultItem);
+                    })
+                    .on("change","select[name='cclassList[].class_type']", newRow, function(event){
+				        var $select = $(this.closest("tr")),
+						selItem = $(this).val();
+                        if(selItem==2){
+                            $("select[name='cclassList[].online_type']", $select).show();
+                        }else{
+                            $("select[name='cclassList[].online_type']", $select).hide();
+                        }
+                    });
+                $("tbody.classList").append(newRow);
+                // $("#tmpCclassTr").tmpl(defaultItem).appendTo($("#classList"))
+                //     .on("click",".delRow", function(e){
+                //         $.extend($(this.closest("tr")).data("userData"), {"action_type":"D"});
+                //         $(this.closest("tr")).hide();
+                //     }).data('userData',defaultItem);
+                $madeIndex++;
            @endforeach
 
 

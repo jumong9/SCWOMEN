@@ -35,19 +35,17 @@ class ContractController extends Controller{
 
 
         $codelist = CommonCode::getCommonCode('contract_status');
-        $financeList = CommonCode::getCommonCode('finance_type');
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
         $today = date("Y-m-d", time());
 
         $result[0]->id = $id;
-        return view('mgmt.contract.create', ['pageTitle'=>$this->pageTitle, 'client'=>$result[0], 'commonCode'=> $codelist, 'financeList'=> $financeList, 'classItems'=> $classItems, 'today'=>$today ]);
+        return view('mgmt.contract.create', ['pageTitle'=>$this->pageTitle, 'client'=>$result[0], 'commonCode'=> $codelist, 'classItems'=> $classItems, 'today'=>$today ]);
     }
 
 
     public function createDo(Request $request){
         DB::enableQueryLog();
         $classTargetList = $request->get('classTargetList');
-//dd($classTargetList);
         $classJson = json_decode($classTargetList, true);
         $client_id = $request->input('client_id');
 
@@ -100,6 +98,8 @@ class ContractController extends Controller{
                 $inputClass->sub_finance            = $class['sub_finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
+                $inputClass->main_count             = $class['main_count'];
+
                 $inputClass->save();
 
             }
@@ -133,26 +133,13 @@ DB::enableQueryLog();
         $client_id = $contract[0]->client_id;
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
-                                    ->join('common_codes as c1', function($join){
-                                        $join->on('c1.code_id','=', 'contract_classes.finance')
-                                            ->where('c1.code_group', '=','finance_type');
-                                        }
-                                    )
-                                    ->join('common_codes as c2', function($join){
-                                        $join->on('c2.code_id','=', 'contract_classes.sub_finance')
-                                            ->where('c2.code_group', '=','finance_type');
-                                        }
-                                    )
                                     ->select('contract_classes.*'
                                             , 'class_categories.class_gubun'
                                             , 'class_categories.class_name'
-                                            , 'c1.code_value as finance'
-                                            , 'c2.code_value as sub_finance'
                                             )
                                     ->where('contract_id', $id)
                                     ->orderBy('contract_classes.class_day', 'asc')
                                     ->orderBy('contract_classes.time_from', 'asc')
-                                    ->orderBy('contract_classes.id', 'asc')
                                     ->get();
 
         $client = new Client();
@@ -252,9 +239,7 @@ DB::enableQueryLog();
 
         $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
                                     ->select('contract_classes.*', 'class_categories.class_name' )
-                                    ->where('contract_id', $id)
-                                    ->where('class_status', '=', 0)
-                                    ->get();
+                                    ->where('contract_id', $id)->get();
 
         //dd(DB::getQueryLog());
         $client = new Client();
@@ -268,13 +253,12 @@ DB::enableQueryLog();
 
 
         $codelist = CommonCode::getCommonCode('contract_status');
-        $financeList = CommonCode::getCommonCode('finance_type');
         $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
 
         $today = date("Y-m-d", time());
         //echo($result[0]->id);
         //dd(DB::getQueryLog());
-        return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'financeList'=> $financeList, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus,  'today'=>$today]);
+        return view('mgmt.contract.update', ['pageTitle'=>$this->pageTitle,'client'=>$result[0], 'contract'=>$contract[0], 'classList'=>$classList, 'commonCode'=> $codelist, 'classItems'=> $classItems, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus,  'today'=>$today]);
     }
 
 
@@ -292,8 +276,9 @@ DB::enableQueryLog();
 
         $classTargetList = $request->get('classTargetList');
         $classJson = json_decode($classTargetList, true);
-//dd($classJson);
+
         $contract->fill($request->input());
+
         try {
             DB::beginTransaction();
 
@@ -315,11 +300,10 @@ DB::enableQueryLog();
                         'comments'                  =>  $contract->comments,
                     ]);
 
-
             //contract class 정보 생성
             foreach($classJson as $class){
-                $inputClass = new ContractClass();
 
+                $inputClass = new ContractClass();
 
                 $inputClass->contract_id            = $id;
                 $inputClass->client_id              = $client_id;
@@ -338,27 +322,21 @@ DB::enableQueryLog();
                 $inputClass->sub_finance            = $class['sub_finance'];
                 $inputClass->class_type             = $class['class_type'];
                 $inputClass->online_type            = $class['online_type'];
-
+                $inputClass->main_count             = $class['main_count'];
                 if('I' == $class['action_type']){
                     $inputClass->save();
                 }else if('D' == $class['action_type']){
-                    ClassLector::where('contract_class_id', $class['class_id'])
-                    ->delete();
 
-                    $inputClass->where('id', $class['class_id'])
-                    ->delete();
-                }else if('U' == $class['action_type']){
-                    $inputClass->where('id', $class['class_id'] )
-                                ->update([
-                                    'finance'       =>  $inputClass->finance,
-                                    'sub_finance'   =>  $inputClass->sub_finance,
-                                    'class_type'    =>  $inputClass->class_type,
-                                    'online_type'   =>  $inputClass->online_type,
-                                ]);
+                    $inputClass->id                 = $class['class_id'];
+                    ClassLector::where('contract_class_id', $inputClass->id)
+                                ->delete();
+
+                    $inputClass->where('id', $inputClass->id )
+                            ->delete();
                 }
 
             }
-  //          dd(DB::getQueryLog());
+     //       dd(DB::getQueryLog());
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

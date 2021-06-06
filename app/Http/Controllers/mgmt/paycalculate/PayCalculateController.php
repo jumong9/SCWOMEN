@@ -5,6 +5,7 @@ namespace App\Http\Controllers\mgmt\paycalculate;
 use App\Exports\PayCalculateExport;
 use App\Http\Controllers\Controller;
 use App\Models\ClassCalculate;
+use App\Models\CommonCode;
 use App\Models\ContractClass;
 use DateTime;
 use Exception;
@@ -37,10 +38,21 @@ class PayCalculateController extends Controller
             $searchFromMonth = date("Y-m", $prevMonth);
         }
 
-        // DB::enableQueryLog();
+     DB::enableQueryLog();
+        $financeList = CommonCode::getCommonCode('finance_type');
 
-        $classList = ClassCalculate::where('calcu_month', $searchFromMonth)
-                                     ->where(function ($query) use ($searchWord){
+        $classList = ClassCalculate::leftjoin('common_codes as c1', function($join){
+                                            $join->on('c1.code_id','=', 'class_calculates.finance')
+                                                ->where('c1.code_group', '=','finance_type');
+                                            }
+                                        )
+                                     ->where('calcu_month', $searchFromMonth)
+                                     ->where(function ($query) use ($request){
+                                        $searchType = $request->input('searchType');
+                                        $searchWord = $request->input('searchWord');
+                                        if(!empty($request->input('searchType'))){
+                                            $query->where('c1.code_id','=',"{$searchType}");
+                                        }
                                         if(!empty($searchWord)){
                                             $query->where('user_name', 'LIKE',"{$searchWord}%");
                                         }
@@ -56,22 +68,23 @@ class PayCalculateController extends Controller
 
 
         //dd(DB::getQueryLog());
-        return view('mgmt.paycalculate.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromMonth'=>$searchFromMonth] );
+        return view('mgmt.paycalculate.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'financeList'=>$financeList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromMonth'=>$searchFromMonth] );
 
     }
 
 
     public function createDo(Request $request){
-        // DB::enableQueryLog();
+        DB::enableQueryLog();
         $searchFromMonth = $request->input('searchFromMonth');
         $searchFromDate = "";
         $searchToDate = "";
 
-        if(empty($searchFromMonth)){
+        $financeType = $request->input('financeType');
+
+        if(empty($searchFromMonth) || empty($financeType)){
             return response()->json(['msg'=>'잘못된 요청 입니다.']);
         }else{
 
-           // dd($prevMonth);
             $searchFromDate = date("Y-m", strtotime($searchFromMonth)) .'-01';
             $dayCount = new DateTime( $searchFromDate );
             $searchToDate = $dayCount->format( 'Y-m-t' );
@@ -81,7 +94,9 @@ class PayCalculateController extends Controller
             DB::beginTransaction();
 
             ClassCalculate::where('calcu_month', $searchFromMonth)
+                            ->where('finance', $financeType)
                             ->delete();
+
 
             $targetClassList = DB::table('contract_classes')
                                             ->join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
@@ -112,9 +127,9 @@ class PayCalculateController extends Controller
                                                     , 'c.lector_extra_count'
                                                     , 'c.lector_extra_cost'
                                                     , 'c.lector_cost as tot'
-                                                    , DB::raw('round(c.lector_cost * 0.03) AS i_tax')
-                                                    , DB::raw('round(c.lector_cost * 0.003) AS r_tax')
-                                                    , DB::raw('c.lector_cost - round(c.lector_cost * 0.033) AS pay')
+                                                    , DB::raw('case when case when c.main_yn = 1 then  contract_classes.finance else contract_classes.sub_finance end = 2 then round(c.lector_cost * 0.08) else round(c.lector_cost * 0.03) end AS i_tax')
+                                                    , DB::raw('case when case when c.main_yn = 1 then  contract_classes.finance else contract_classes.sub_finance end = 2 then round(c.lector_cost * 0.008) else round(c.lector_cost * 0.003) end AS r_tax')
+                                                    , DB::raw('case when case when c.main_yn = 1 then  contract_classes.finance else contract_classes.sub_finance end = 2 then c.lector_cost - round(c.lector_cost * 0.088) else c.lector_cost - round(c.lector_cost * 0.033) end AS pay')
                                             )
                                             ->where('contract_classes.class_status', '>', '0')
                                             ->where(function ($query) use ($searchFromDate, $searchToDate){
@@ -123,6 +138,7 @@ class PayCalculateController extends Controller
                                                     $query->whereBetween('contract_classes.class_day', [$searchFromDate, $searchToDate]);
                                                 }
                                             })
+                                            ->where(DB::raw('case when c.main_yn = 1 then  contract_classes.finance else contract_classes.sub_finance END'), $financeType )
                                             ->orderBy('e.name', 'asc')
                                             ->orderBy('e.id', 'asc')
                                             ->orderBy('contract_classes.class_day', 'asc')
@@ -165,6 +181,7 @@ class PayCalculateController extends Controller
 
 
             $calcuList = ClassCalculate::where('calcu_month', $searchFromMonth)
+                                         ->where('finance', $financeType)
                                          ->select(
                                               'calcu_month'
                                             , 'user_id'
@@ -173,11 +190,16 @@ class PayCalculateController extends Controller
                                             , DB::raw('sum(i_tax) as i_tax')
                                             , DB::raw('sum(r_tax) as r_tax')
                                             , DB::raw('sum(calcu_cost) as calcu_cost')
+                                            , DB::raw('case when finance = 2 then "Y" else "N" END as modTax' )
+                                            , DB::raw( 'min(finance) as finance')
                                          )
                                          ->groupBy('calcu_month')
                                          ->groupBy('user_name')
                                          ->groupBy('user_id')
+                                         ->groupBy(DB::raw('case when finance = 2 then "Y" else "N" END'))
                                          ->get();
+
+
 
             $sum_tot_cost = 0;
             $sum_i_tax = 0;
@@ -194,11 +216,22 @@ class PayCalculateController extends Controller
                 $sumCalcu->r_tax = $key->r_tax;
                 $sumCalcu->calcu_cost = $key->calcu_cost;
 
-                if($key->tot_cost <= 30000){
-                    $sumCalcu->i_tax = 0;
-                    $sumCalcu->r_tax = 0;;
-                    $sumCalcu->calcu_cost = $key->tot_cost;
+                //서울시성평등 기금 financt = 2 총액 125,000원 이하 공제x, 125,000원 초과시 8.8%로 공제
+                if("Y" == $key->modTax){
+                    if($key->tot_cost <= 125000){
+                        $sumCalcu->i_tax = 0;
+                        $sumCalcu->r_tax = 0;;
+                        $sumCalcu->calcu_cost = $key->tot_cost;
+                    }
+                }else{
+                    if($key->tot_cost <= 30000){
+                        $sumCalcu->i_tax = 0;
+                        $sumCalcu->r_tax = 0;;
+                        $sumCalcu->calcu_cost = $key->tot_cost;
+                    }
                 }
+
+                $sumCalcu->finance = $key->finance;
 
                 $last_cost = substr($sumCalcu->calcu_cost,-1);
                 if( $last_cost != 0){
@@ -216,6 +249,7 @@ class PayCalculateController extends Controller
 
             if($sum_calcu_cost > 0) {
                 $sumCalcu = new ClassCalculate();
+                $sumCalcu->finance = $financeType;
                 $sumCalcu->calcu_month = $searchFromMonth;
                 $sumCalcu->tot_cost = $sum_tot_cost;
                 $sumCalcu->i_tax = $sum_i_tax;
@@ -224,7 +258,7 @@ class PayCalculateController extends Controller
                 $sumCalcu->save();
             }
 
-            //dd(DB::getQueryLog());
+          //  dd(DB::getQueryLog());
 
             DB::commit();
         } catch (Exception $e) {
@@ -242,12 +276,13 @@ class PayCalculateController extends Controller
     public function exportExcel(Request $request){
 
         $searchFromMonth = $request->input('searchFromMonth');
+        $financeType = $request->input('searchType');
 
         if(empty($searchFromMonth)){
             $searchFromDate = date("Y-m", time()) .'-01';
         }
 
-        return (new PayCalculateExport)->forYear($searchFromMonth)->download('ClassCalculateReport.xlsx');
+        return (new PayCalculateExport)->forYear($searchFromMonth, $financeType)->download('ClassCalculateReport.xlsx');
     }
 
 }

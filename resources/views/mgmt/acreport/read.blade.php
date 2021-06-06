@@ -204,7 +204,7 @@
                             <tr>
                                 <th>사진자료</th>
                                 <td colspan="3">
-                                    {{ $fileInfo[0]->file_real_name }}
+                                    {{-- {{ $fileInfo[0]->file_real_name }} --}}
                                 <img src="{{ asset($fileInfo[0]->file_path.'/'.$fileInfo[0]->file_name)}}" width="300" height="200">
                                 </td>
                             </tr>

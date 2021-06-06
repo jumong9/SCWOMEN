@@ -26,13 +26,11 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        {{--
                         <select class="form-control" name="searchType" id="searchType">
-                            <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
-                            <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
+                            @foreach($financeList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
                         </select>
-                        --}}
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
                         <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
@@ -70,7 +68,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('mgmt.acreport.read', ['id'=>$list->contract_class_id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord , 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate]) }}">{{ $list->class_name }} </a></td>
+                            <td><a href="{{ route ('mgmt.acreport.read', ['id'=>$list->id, 'contract_class_id'=>$list->contract_class_id, 'user_id'=>$list->user_id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord , 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate]) }}">{{ $list->class_name }} </a></td>
                             <td>
                                 @switch($list->class_type)
                                     @case(0)

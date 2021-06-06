@@ -26,13 +26,11 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        {{--
                         <select class="form-control" name="searchType" id="searchType">
-                            <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
-                            <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
+                            @foreach($financeList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
                         </select>
-                        --}}
                         <input style="width: 110px;" type="text" class="form-control datepickerm " id="searchFromMonth" name="searchFromMonth" value="{{ $searchFromMonth }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
@@ -114,7 +112,7 @@
                                     </td>
                                     <td>{{ $list->client_name}}</td>
                                     <td>{{ $list->class_gubun}} - {{ $list->class_name }}</td>
-                                    <td>{{ $list->finance}} </td>
+                                    <td>{{ $list->code_value}} </td>
                                 </tr>
                             @endif
 
@@ -192,12 +190,14 @@
                         `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
                     );
                     var searchFromMonth = $("#searchFromMonth").val();
+                    var financeType = $("select[name=searchType]").val();
                     $.ajax({
                         type : "post",
                         url : "{{ route('mgmt.paycalculate.createDo') }}",
                         data : {
                             _token: "{{csrf_token()}}",
                             'searchFromMonth' :searchFromMonth,
+                            'financeType' : financeType,
                         },
                         success : function(data){
                             alert(data.msg);

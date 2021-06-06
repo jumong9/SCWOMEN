@@ -72,7 +72,7 @@ class MyLectureController extends Controller{
 
 
     public function read(Request $request){
-
+        DB::enableQueryLog();
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
         $searchStatus = $request->input('searchStatus');
@@ -95,6 +95,7 @@ class MyLectureController extends Controller{
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             , 'f.code_value as class_status_value'
+                                            , 'c.main_yn as mainYn'
                                             )
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
@@ -122,7 +123,7 @@ class MyLectureController extends Controller{
         //                             ->where('contract_class_id',$id)
         //                             ->orderBy('main_yn','desc')
         //                             ->get();
-        DB::enableQueryLog();
+
         $lectorsList = ClassLector::join('users as b', 'b.id', '=', 'class_lectors.user_id')
                                     ->join('contract_classes as d', 'd.id', '=', 'class_lectors.contract_class_id')
                                     ->join('class_category_user as c', function($join){
@@ -133,17 +134,10 @@ class MyLectureController extends Controller{
                                     ->where('contract_class_id',$id)
                                     ->orderBy('main_yn','desc')
                                     ->get();
-       // dd(DB::getQueryLog());
+//dd(DB::getQueryLog());
         $mainYn = ClassLector::where('contract_class_id',$id)
                                 ->where('user_id', $user_id)
                                 ->where('main_yn', 1)->first();
-
-        if(empty($mainYn)){
-            $mainYn =0;
-        }else{
-            $mainYn =1;
-        }
-
 
         $today = strtotime(date('Y-m-d'));
         $target = strtotime($classList[0]->class_day);
@@ -152,10 +146,28 @@ class MyLectureController extends Controller{
         if($today >= $target) {
             $timeDiff = 1;
         }
+        $reportNeedYn = 0;
+
+        if($timeDiff){
+
+            $classReport = ClassReport::where('contract_class_id', $id)
+                                      ->where('user_id', $user_id)->first();
+            if(empty($classReport)){
+                $reportNeedYn = 1;
+            }
+
+            if(empty($mainYn)){
+                if( $classList[0]->sub_finance != 2 ){      //서울시성평등(2) 인경우 보조강사도 리포트작성
+                    $reportNeedYn = 0;
+                }
+            }
+        }
+
+        echo($timeDiff);
+        echo($reportNeedYn);
 
 
-
-        return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'reportNeedYn'=>$reportNeedYn, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
         //return "ok";
     }
 

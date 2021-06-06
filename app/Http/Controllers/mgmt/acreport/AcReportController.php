@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassLector;
 use App\Models\ClassReport;
 use App\Models\Client;
+use App\Models\CommonCode;
 use App\Models\ContractClass;
 use App\Models\Contracts;
 use App\Models\UserFile;
@@ -44,6 +45,8 @@ class AcReportController extends Controller{
         DB::enableQueryLog();
         $user_id = Auth::id();
 
+        $financeList = CommonCode::getCommonCode('finance_type');
+
         $classList = ClassReport::join('contract_classes as b', 'b.id' ,'=', 'class_reports.contract_class_id')
                                     ->join('contracts as c', 'c.id', '=','b.contract_id')
                                     ->join('clients as d', 'd.id', '=', 'c.client_id')
@@ -53,7 +56,16 @@ class AcReportController extends Controller{
                                             , 'd.name AS client_name'
                                             , 'f.class_name'
                                     )
-                                    ->where('d.name','LIKE',"{$searchWord}%")
+                                    ->where(function ($query) use ($request){
+                                        $searchType = $request->input('searchType');
+                                        $searchWord = $request->input('searchWord');
+                                        if(!empty($request->input('searchType'))){
+                                            $query->where('class_reports.finance','=',"{$searchType}");
+                                        }
+                                        if(!empty($searchWord)){
+                                            $query->where('d.name', 'LIKE',"{$searchWord}%");
+                                        }
+                                     })
                                     ->where(function ($query) use ($searcFromDate, $searcToDate){
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
                                             $query->whereBetween('class_reports.class_day', [$searcFromDate, $searcToDate]);
@@ -68,7 +80,7 @@ class AcReportController extends Controller{
 
 
         //dd(DB::getQueryLog());
-        return view('mgmt.acreport.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
+        return view('mgmt.acreport.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'financeList'=>$financeList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
 
     }
 
@@ -131,6 +143,8 @@ class AcReportController extends Controller{
 
 
         $id = $request->input('id');
+        $contract_class_id = $request->input('contract_class_id');
+        $user_id = $request->input('user_id');
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
                                    // ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
@@ -140,7 +154,7 @@ class AcReportController extends Controller{
                                             , 'd.class_name'
                                             , 'd.class_gubun'
                                             )
-                                    ->where('contract_classes.id',$id)
+                                    ->where('contract_classes.id',$contract_class_id)
                                     ->get();
         //dd(DB::getQueryLog());
         $contract = Contracts::join('common_codes as c', function($join){
@@ -152,7 +166,7 @@ class AcReportController extends Controller{
 
 
 
-        $contract[0]->id=$id;
+        $contract[0]->id=$contract_class_id;
 
         $client = Client::join('common_codes as c', function($join){
                                 $join->on('c.code_id','=', 'clients.gubun')
@@ -167,7 +181,7 @@ class AcReportController extends Controller{
                         ->orderBy('main_yn','desc')
                         ->get();
 
-        $calssReport = ClassReport::where('contract_class_id', $id)
+        $calssReport = ClassReport::where('id', $id)
                                     ->first();
         $file_id = $calssReport->file_id;
 

@@ -87,17 +87,18 @@ class AcRepoertController extends Controller{
         }
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
-                                    ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
+                                    ->join('class_lectors as c', 'c.contract_class_id', '=', 'contract_classes.id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
+                                            , DB::raw('case when c.main_yn = 1 then contract_classes.finance else contract_classes.sub_finance end as finance_type')
                                             )
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
                                     ->get();
-
+//dd(DB::getQueryLog());
         $contract = Contracts::join('common_codes as c', function($join){
                                     $join->on('c.code_id','=', 'contracts.status')
                                             ->where('c.code_group', '=','contract_status');
@@ -124,7 +125,7 @@ class AcRepoertController extends Controller{
 
 
 
-//dd(DB::getQueryLog());
+
         return view('grade.acreport.create', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
 
     }
@@ -179,6 +180,8 @@ class AcRepoertController extends Controller{
             $classReport->class_contents = $request->input('class_contents');
             $classReport->class_rating = $request->input('class_rating');
             $classReport->sub_user_names = $request->input('sub_user_names');
+            $classReport->finanace = $request->input('finance_type');
+
             $classReport->file_id = $file_id;
             $classReport->created_id = $user_id;
             $classReport->created_name = $user_name;
@@ -213,7 +216,7 @@ class AcRepoertController extends Controller{
         $user_id = Auth::id();
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
-                                    ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
+                                    ->join('class_lectors as c', 'c.contract_class_id', '=', 'contract_classes.id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
@@ -277,12 +280,13 @@ class AcRepoertController extends Controller{
         $user_id = Auth::id();
 
         $classList = ContractClass::join('clients as b', 'b.id', '=', 'contract_classes.client_id')
-                                    ->join('class_category_user as c', 'c.class_category_id', '=', 'contract_classes.class_category_id')
+                                    ->join('class_lectors as c', 'c.contract_class_id', '=', 'contract_classes.id')
                                     ->join('class_categories as d', 'd.id' ,'=', 'contract_classes.class_category_id')
                                     ->select('contract_classes.*'
                                             , 'b.name as client_name'
                                             , 'd.class_name'
                                             , 'd.class_gubun'
+                                            , DB::raw('case when c.main_yn = 1 then contract_classes.finance else contract_classes.sub_finance end as finance_type')
                                             )
                                     ->where('contract_classes.id',$id)
                                     ->where('c.user_id', $user_id)
@@ -382,6 +386,7 @@ class AcRepoertController extends Controller{
                                 'class_place'=> $request->input('class_place'),
                                 'class_contents'=> $request->input('class_contents'),
                                 'class_rating'=> $request->input('class_rating'),
+                                'finance'=> $request->input('finance_type'),
                                 'file_id'=> $file_id,
                                 'updated_id'=> $user_id,
                                 'updated_name'=> $user_name,

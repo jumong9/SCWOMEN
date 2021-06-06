@@ -10,6 +10,7 @@
         @csrf
 
         <input type="hidden" name="contract_class_id" value="{{ $contentsList[0]->id }}">
+        <input type="hidden" name="finance_type" value="{{ $contentsList[0]->finance_type }}">
         <input type="hidden" name="class_category_id" value="{{ $contentsList[0]->class_category_id }}">
         <input type="hidden" name="class_day" value="{{ $contentsList[0]->class_day }}">
 

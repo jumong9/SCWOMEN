@@ -26,13 +26,11 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        {{--
                         <select class="form-control" name="searchType" id="searchType">
-                            <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
-                            <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
+                            @foreach($financeList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
                         </select>
-                        --}}
                         <input style="width: 110px;" type="text" class="form-control datepickerm " id="searchFromMonth" name="searchFromMonth" value="{{ $searchFromMonth }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
@@ -132,6 +130,7 @@
         @csrf
         <input type="hidden" name="searchFromMonth" id="searchFromMonth" value="">
         <input type="hidden" name="searchWord" id="searchWord" value="">
+        <input type="hidden" name="finance" id="finance" value="">
     </form>
 @endsection
 
@@ -189,6 +188,7 @@
 
                 $("#searchFromMonth","#winopenOpen").val($("#searchFromMonth","#searchForm").val());
                 $("#searchWord","#winopenOpen").val($("#searchWord","#searchForm").val());
+                $("#finance","#winopenOpen").val($("select[name=searchType]","#searchForm").val());
 
                 var url = '{{ route('grade.paycalculate.popupPayDocument') }}';
 

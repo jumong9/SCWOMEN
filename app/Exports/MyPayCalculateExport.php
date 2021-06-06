@@ -14,16 +14,22 @@ class MyPayCalculateExport implements FromQuery, WithHeadings{
 
     use Exportable;
 
-    public function forYear($searchFromMonth){
+    public function forYear($searchFromMonth, $financeType){
         $this->searchFromMonth = $searchFromMonth;
-
+        $this->financeType = $financeType;
         return $this;
     }
 
     public function query() {
         $user_id = Auth::id();
 
-        return ClassCalculate::where('calcu_month', $this->searchFromMonth)
+        return ClassCalculate::leftjoin('common_codes as c1', function($join){
+                                    $join->on('c1.code_id','=', 'class_calculates.finance')
+                                        ->where('c1.code_group', '=','finance_type');
+                                    }
+                                )
+                              ->where('calcu_month', $this->searchFromMonth)
+                              ->where('finance', $this->financeType)
                               ->where('user_id', $user_id)
                               ->select(
                                           'user_name'

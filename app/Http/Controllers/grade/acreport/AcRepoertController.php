@@ -140,7 +140,7 @@ class AcRepoertController extends Controller{
 
         $file = $request->file('upload_file');
 
-
+        DB::enableQueryLog();
         $user_id = Auth::id();
         $user_name = Auth::user()->name;
 
@@ -167,7 +167,7 @@ class AcRepoertController extends Controller{
                 "user_id"               =>  $user_id,
             ];
             $file_id = UserFile::create($file_arr)->id;
-
+echo($request->input('finance_type'));
             $class_id = $request->input('contract_class_id');
             $classReport = new ClassReport();
             $classReport->contract_class_id = $class_id;
@@ -180,7 +180,7 @@ class AcRepoertController extends Controller{
             $classReport->class_contents = $request->input('class_contents');
             $classReport->class_rating = $request->input('class_rating');
             $classReport->sub_user_names = $request->input('sub_user_names');
-            $classReport->finanace = $request->input('finance_type');
+            $classReport->finance = $request->input('finance_type');
 
             $classReport->file_id = $file_id;
             $classReport->created_id = $user_id;
@@ -188,7 +188,6 @@ class AcRepoertController extends Controller{
             $classReport->updated_id = $user_id;
             $classReport->updated_name = $user_name;
             $classReport->save();
-
             ContractClass::where('id',$class_id)
                             ->update([
                                 'class_status'=> 2,

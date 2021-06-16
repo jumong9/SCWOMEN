@@ -178,24 +178,24 @@
 
             <div class="card-body">
                 <div class="table">
-                    <table class="table-sm" id="" cellspacing="0">
+                    <table class="table-sm" id="" cellspacing="0" style="width: 100%">
                         <thead class="thead-light">
                             <tr>
-                                <th style="width:140px;"><span class="text-danger">*</span>활동일자</th>
-                                <th style="width:140px;"><span class="text-danger">*</span>시간</th>
-                                <th style="width:180px;"><span class="text-danger">*</span>프로그램</th>
-                                <th style="width:150px;"><span class="text-danger"></span>세부프로그램</th>
-                                <th style="width:180px;"><span class="text-danger">*</span>교육대상</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>인원</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>횟수</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>차수</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>주강사</th>
-                                <th style="width:80px;"><span class="text-danger">*</span>보조</th>
-                                <th style="width:140px;"><span class="text-danger">*</span>재원</th>
-                                <th style="width:140px;"><span class="text-danger">*</span>보조재원</th>
-                                <th style="width:140px;"><span class="text-danger">*</span>수업방식</th>
-                                <th style="width:140px;"><span class="text-danger">*</span>수업구분</th>
-                                <th style="width:100px;">
+                                <th style="width:90px;"><span class="text-danger">*</span>활동일자</th>
+                                <th style="width:80px;"><span class="text-danger">*</span>시간</th>
+                                <th style="width:145px;"><span class="text-danger">*</span>프로그램</th>
+                                <th style="width:100px;"><span class="text-danger"></span>세부프로그램</th>
+                                <th style="width:90px;"><span class="text-danger">*</span>교육대상</th>
+                                <th style="width:45px;"><span class="text-danger">*</span>인원</th>
+                                <th style="width:45px;"><span class="text-danger">*</span>횟수</th>
+                                <th style="width:45px;"><span class="text-danger">*</span>차수</th>
+                                <th style="width:50px;"><span class="text-danger">*</span>주강사</th>
+                                <th style="width:45px;"><span class="text-danger">*</span>보조</th>
+                                <th style="width:110px;"><span class="text-danger">*</span>주재원</th>
+                                <th style="width:110px;"><span class="text-danger">*</span>보조재원</th>
+                                <th style="width:110px;"><span class="text-danger">*</span>수업방식</th>
+                                <th style="width:75px;"><span class="text-danger">*</span>수업구분</th>
+                                <th style="width:50px;">
                                     <div class="row">
                                         <div class="col-md-12 input-group-sm">
                                             <input class="btn-sm btn-primary" type="button" name="addClass" id="addClassButton" value="추가">
@@ -446,35 +446,35 @@
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-10 input-group-sm">
+                    <div class="col-md-11 input-group-sm">
                         <input type="number" class="form-control class_number" name="cclassList[].class_number" value=""  >
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-10 input-group-sm">
+                    <div class="col-md-11 input-group-sm">
                         <input type="number" class="form-control class_count" name="cclassList[].class_count" value="1" >
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-10 input-group-sm">
+                    <div class="col-md-11 input-group-sm">
                         <input  type="number" class="form-control class_order" name="cclassList[].class_order" value="1" >
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-10 input-group-sm">
+                    <div class="col-md-11 input-group-sm">
                         <input type="number" class="form-control main_count" name="cclassList[].main_count" value="1" >
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
-                    <div class="col-md-10 input-group-sm">
+                    <div class="col-md-11 input-group-sm">
                         <input type="number" class="form-control sub_count" name="cclassList[].sub_count" value="0" >
                     </div>
                 </div>

@@ -216,7 +216,7 @@
                         @if($contentsList[0]->class_status == 1 || $contentsList[0]->class_status == 2)
                             <button class="btn btn-primary" type="button"  id="resetButton" data-status='0'>교육완료취소</button>
                         @endif
-                    @elseif ($timeDiff && $contentsList[0]->class_status == 1 && $reportNeedYn)
+                    @elseif ($timeDiff && $contentsList[0]->class_status >= 1 && $reportNeedYn)
                         <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
                     @endif
                     {{-- <button class="btn btn-primary" type="button"  id="updateButton">수정</button> --}}

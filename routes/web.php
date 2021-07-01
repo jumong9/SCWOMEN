@@ -25,40 +25,53 @@ Route::middleware(['auth'])->group(function(){
 });
 
 
-//외부 인덱스
-//Route::get('/', function () {return view('welcome');});
-Route::get('/', 'App\Http\Controllers\login\LoginController@getLogin' );
 
 
-//로그인폼
-Route::get('auth/login', [
-    'as' => 'auth.login',
-    'uses' => 'App\Http\Controllers\login\LoginController@getLogin'
-]);
 
-//로그인 처리
-Route::post('auth/login',[
-    'as' => 'auth.logindo'
-    , 'uses' =>  'App\Http\Controllers\login\LoginController@postLogin'
-]);
 
-//로그아웃
-Route::match(['post','get'], 'auth/logout', [
-    'as' => 'auth.logoutdo',
-    'uses' => 'App\Http\Controllers\login\LoginController@postLogout'
-]);
+Route::middleware(['force.https'])->group(function(){
 
-//회원가입 폼
-Route::get('auth/register', [
-   'as' => 'auth.register',
-   'uses' => 'App\Http\Controllers\join\JoinController@getRegister'
-]);
+    //외부 인덱스
+    //Route::get('/', function () {return view('welcome');});
+    Route::get('/', 'App\Http\Controllers\login\LoginController@getLogin' );
 
-//회원가입 처리
-Route::post('auth/register',[
-    'as' => 'auth.registerdo',
-    'uses' => 'App\Http\Controllers\join\JoinController@postRegister'
-]);
+    //로그인폼
+    Route::get('auth/login', [
+        'as' => 'auth.login',
+        'uses' => 'App\Http\Controllers\login\LoginController@getLogin'
+    ]);
+
+    //로그인 처리
+    Route::post('auth/login',[
+        'as' => 'auth.logindo'
+        , 'uses' =>  'App\Http\Controllers\login\LoginController@postLogin'
+    ]);
+
+    //로그아웃
+    Route::match(['post','get'], 'auth/logout', [
+        'as' => 'auth.logoutdo',
+        'uses' => 'App\Http\Controllers\login\LoginController@postLogout'
+    ]);
+
+
+    //회원가입 폼
+    Route::get('auth/register', [
+        'as' => 'auth.register',
+        'uses' => 'App\Http\Controllers\join\JoinController@getRegister'
+    ]);
+
+    //회원가입 처리
+    Route::post('auth/register',[
+        'as' => 'auth.registerdo',
+        'uses' => 'App\Http\Controllers\join\JoinController@postRegister'
+    ]);
+
+
+});
+
+
+
+
 
 
 //메인화면

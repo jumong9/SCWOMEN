@@ -15,7 +15,7 @@ class ForceHttps
     ];
     // HTTPS 로 제공하지 않을 애플리케이션 환경. 개발자 PC 에서 구동(local)할 경우와 PHPUnit 을 구동(testing)할 경우는 강제 Https 를 사용하지 않음
     protected $exceptEnv = [
-        'testing',
+        'testing','local'
     ];
 
 

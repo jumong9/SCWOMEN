@@ -194,6 +194,7 @@ class LectureController extends Controller{
                                      'users.name as user_name',
                                      'b.user_status as user_status',
                                      'b.user_group as group',
+                                     'b.class_category_id',
                                      'b.main_count',
                                      'b.sub_count')
                             ->whereIn('b.user_status', [2,4])
@@ -274,15 +275,22 @@ class LectureController extends Controller{
                 $mainUser = new ClassLector();
                 $mainUser->contract_class_id = $class_id;
                 $mainUser->main_yn = 1;
-                $mainUser->user_id = $main_user_id;
+                //$mainUser->user_id = $main_user_id;
+                $main_user_data = explode("_", $main_user_id);
+                $mainUser->user_id = $main_user_data[0];
+                $mainUser->class_category_id = $main_user_data[1];
+
                 $mainUser->save();
 
                 if(!empty($sub_user_id)){
                     foreach($sub_user_id as $sub){
+                        $sub_user_data = explode("_", $sub);
                         $subUser = new ClassLector();
                         $subUser->contract_class_id = $class_id;
                         $subUser->main_yn = 0;
-                        $subUser->user_id = $sub;
+                        //$subUser->user_id = $sub;
+                        $subUser->user_id = $sub_user_data[0];
+                        $subUser->class_category_id = $sub_user_data[1];
                         $subUser->save();
                     }
                 }

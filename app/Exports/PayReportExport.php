@@ -37,6 +37,11 @@ class PayReportExport implements FromQuery, WithHeadings{
                                                 ->where('f.code_group', '=','contract_class_status');
                                         }
                                     )
+                                    ->leftjoin('common_codes as f2', function($join){
+                                        $join->on(DB::raw('case when c.main_yn = 1 then f2.code_id = contract_classes.finance else f2.code_id = contract_classes.sub_finance end'), DB::raw('1=1'))
+                                            ->where('f2.code_group', '=',"finance_type");
+                                     //   $join->on('f2.code_id','=', 'contract_classes.finance');
+                                    })
                                     ->select(
                                                'e.name'
                                             ,  'contract_classes.class_day'
@@ -56,6 +61,7 @@ class PayReportExport implements FromQuery, WithHeadings{
                                             , 'b.class_name'
                                          //   , 'f.code_value as class_status_value'
                                             , DB::raw('case when contract_classes.class_status = 2 then \'작성완료\' else \'\' END')
+                                            , 'f2.code_value as finance_value'
                                     )
                                     ->where('contract_classes.class_status', '>', '0')
                                     ->whereBetween('contract_classes.class_day', [$this->searcFromDate, $this->searcToDate])
@@ -70,7 +76,7 @@ class PayReportExport implements FromQuery, WithHeadings{
     }
 
     public function headings(): array{
-        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "강사비", "총액", "소득세", "주민세", "실지급액", "수요처","분류", "프로그램", "활동일지"];
+        return ["강사명", "강의일", "시작시간", "종료시간", "강사구분", "지급기준", "횟수", "차수", "강사비", "총액", "소득세", "주민세", "실지급액", "수요처","분류", "프로그램", "활동일지", "재원"];
     }
 
 }

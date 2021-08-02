@@ -26,13 +26,11 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-                        {{--
-                        <select class="form-control" name="searchType" id="searchType">
-                            <option value="">선택하세요</option>
-                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >이름</option>
-                            <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
-                        </select>
-                        --}}
+                        {{-- <select class="form-control" name="searchType" id="searchType">
+                            @foreach($financeList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
+                        </select> --}}
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
                         <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명">
@@ -64,7 +62,7 @@
                             <th>분류</th>
                             <th>프로그램</th>
                             <th>활동일지</th>
-
+                            <th>재원</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +86,7 @@
                             <td>{{ $list->class_gubun }} </td>
                             <td>{{ $list->class_name }} </td>
                             <td>{{ $list->class_status == 2 ? '작성완료':'' }} </td>
-
+                            <td>{{ $list->finance_value }} </td>
                         @endforeach
                     </tbody>
                 </table>

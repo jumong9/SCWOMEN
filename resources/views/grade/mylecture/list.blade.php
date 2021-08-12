@@ -60,6 +60,7 @@
                             <th>자격</th>
                             <th>수업방식</th>
                             <th>진행상태</th>
+                            <th>활동일지</th>
                             <th>등록일</th>
                         </tr>
                     </thead>
@@ -86,7 +87,16 @@
                                 @else 온라인 동영상  {{$list->online_type == 0 ? ' - 최초방영' : ' - 재방' }}
                                 @endif
                             </td>
-                            <td>{{ $list->class_status_value }}</td>
+                            <td>
+                                @if($list->class_status == 0) 교육예정
+                                @elseif($list->class_status >= 1) 교육완료
+                                @endif
+                            </td>
+                            <td>@if($list->reportCnt == 0) 미작성
+                                @elseif($list->reportCnt == 1) 작성완료
+                                @else 대상아님
+                                @endif
+                            </td>
                             <td>{{ date_format($list->created_at,'Y-m-d')}}</td>
                         @endforeach
                     </tbody>

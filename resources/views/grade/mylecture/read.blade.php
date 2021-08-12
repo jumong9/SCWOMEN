@@ -207,7 +207,7 @@
 
                 <div class="row-fluid" style="text-align: right;">
                     @if($mainYn && $timeDiff)
-                        @if($contentsList[0]->class_status == 1)
+                        @if($contentsList[0]->class_status >= 1 && $reportNeedYn)
                             <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
                         @endif
                         @if($contract->status == 6 && $contentsList[0]->class_status == 0)

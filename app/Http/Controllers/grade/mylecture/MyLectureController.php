@@ -53,6 +53,14 @@ class MyLectureController extends Controller{
                                             , 'c.user_id'
                                             , 'd.client_name'
                                             , 'f.code_value as class_status_value'
+                                            , DB::raw(
+                                                        'case when c.main_yn = 1 then
+                                                            (select count(*) from class_reports x where x.contract_class_id = contract_classes.id and x.user_id =  c.user_id)
+                                                              when c.main_yn = 0 and contract_classes.sub_finance = 2 then
+                                                            (select count(*) from class_reports x where x.contract_class_id = contract_classes.id and x.user_id =  c.user_id)
+                                                              else 99
+                                                         end as reportCnt'
+                                                    )
                                     )
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
@@ -163,8 +171,8 @@ class MyLectureController extends Controller{
             }
         }
 
-        echo($timeDiff);
-        echo($reportNeedYn);
+   //     echo($timeDiff);
+   //     echo($reportNeedYn);
 
 
         return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'reportNeedYn'=>$reportNeedYn, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);

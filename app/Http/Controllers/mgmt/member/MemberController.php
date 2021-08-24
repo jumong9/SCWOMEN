@@ -207,7 +207,7 @@ class MemberController extends Controller{
      * 사용자 정보 수정화면
      */
     public function modify(Request $request){
-
+        DB::enableQueryLog();
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
         $searchGrade = $request->input('searchGrade');
@@ -225,8 +225,10 @@ class MemberController extends Controller{
                                           ->where('class_category_id', $cate_id)
                                           ->get();
 
-        $classItems = ClassCategory::orderBy('class_group', 'asc', 'class_order', 'asc')->get(['id', 'class_name']);
-
+        $classItems = ClassCategory::orderBy('class_group', 'asc')
+                                    ->orderBy('class_order', 'asc')
+                                    ->get(['id', 'class_name']);
+        //dd(DB::getQueryLog());
         return view('mgmt.member.modify', ['member'=>$member, 'classCategory' => $classCategory, 'classItems'=>$classItems, 'perPage' => $perPage, 'searchGrade' => $searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus ]);
     }
 

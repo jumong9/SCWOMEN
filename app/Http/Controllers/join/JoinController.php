@@ -30,7 +30,9 @@ class JoinController extends Controller{
 
     //가입 폼
     public function getRegister(){
-        $items = ClassCategory::get(['id', 'class_name']);
+        $items = ClassCategory::orderBy('class_group', 'asc')
+                                ->orderBy('class_order', 'asc')
+                                ->get(['id', 'class_name']);
         //$items = array( 'code1'=>'value1','code2'=>'value2');
         return view('join.register', ['items'=>$items]);
     }

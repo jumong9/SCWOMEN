@@ -276,7 +276,6 @@
 
 @section('scripts')
 
-
     <!-- Custom scripts for all pages-->
     <script>
 
@@ -284,8 +283,17 @@
 
             var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
 
+            searchFormSubmit = function(){
+
+                $("#createButton")
+                    .prop("disabled", true)
+                    .html(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`);
+
+                return true;
+            }
+
             $("#createButton").click(function(){
-                return ture;
+                return true;
             });
 
             $("#calcelButton").click(function(){

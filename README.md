@@ -59,3 +59,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## After Clone
+
+For Windows, 
+1. install XAMPP(version : xampp-windows-x64-7.3.22-0-VC15-installer)
+2. modify DocumentRoot(clone_project/public folder) in httpd.conf
+3. install Composer
+4. composer global require "laravel/installer"
+5. cd clone_project_folder
+6. composer install
+7. php artisan serve
+8. open browser localhost

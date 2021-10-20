@@ -66,6 +66,18 @@ Route::middleware(['force.https'])->group(function(){
         'uses' => 'App\Http\Controllers\join\JoinController@postRegister'
     ]);
 
+    //아이디찾기 폼
+    Route::get('auth/findid', [
+        'as' => 'auth.findid',
+        'uses' => 'App\Http\Controllers\login\LoginController@getFindid'
+    ]);
+
+    //아이디찾기 폼
+    Route::match(['post','get'], 'auth/findidDo', [
+        'as' => 'auth.findidDo',
+        'uses' => 'App\Http\Controllers\login\LoginController@findidDo'
+    ]);
+
 
 });
 

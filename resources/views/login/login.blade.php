@@ -62,6 +62,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
+                                <button type="button" class="btn btn-secondary" id="findidButton">
+                                {{ __('아이디 찾기') }}
+                                </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
@@ -76,4 +79,17 @@
         </div>
     </div>
 </div>
+@endsection
+
+
+@section('scripts')
+<script>
+
+        $(document).ready(function() {
+            $("#findidButton").click(function(){
+                location.href='{{ route('auth.findid')}}' ;
+            });
+        });
+
+</script>
 @endsection

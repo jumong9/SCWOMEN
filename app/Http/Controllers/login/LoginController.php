@@ -5,6 +5,8 @@ namespace App\Http\Controllers\login;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 
 class LoginController extends Controller{
@@ -55,5 +57,40 @@ class LoginController extends Controller{
         Auth::logout();
         return redirect('/');
     }
+
+    //아이디 찾기폼
+    public function getFindid(){
+        return view('/login/findid');
+    }
+
+    //아이디 찾기
+    public function findidDo(Request $request){
+
+        try {
+            DB::enableQueryLog();
+           
+            $name = $request->input('name');
+            $mobile = $request->input('mobile');
+
+
+            $user_email = User::where('name', $name)
+                                ->where('mobile', $mobile)
+                                ->select('email')
+                                ->first();
+            
+            //dd(DB::getQueryLog());
+            if(empty($user_email)){
+                return back()->withInput()->with('message','사용자가 존재하지 않습니다.');
+
+            }else{
+                return back()->withInput()->with('message',"로그인 아이디는 ". $user_email->email ." 입니다.");
+
+            }
+        } catch (Exception $e) {
+            return back()->withInput()->with('message','사용자가 존재하지 않습니다.');
+        }
+
+    }
+
 
 }

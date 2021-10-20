@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('가입신청') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('auth.registerdo') }}">
+                    <form method="POST" action="{{ route('auth.registerdo') }}" onsubmit="return searchFormSubmit();">
                         @csrf
 
                         <div class="form-group row">
@@ -139,5 +139,23 @@
 
 <script src="//d1p7wdleee1q2z.cloudfront.net/post/search.min.js"></script>
 <script> $(function() { $("#postcodify_search_button").postcodifyPopUp(); }); </script>
+
+<script>
+
+        $(document).ready(function() {
+
+            searchFormSubmit = function(){
+
+                var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+                if(!regExp.test($("#mobile").val())){
+                    alert('핸드폰 번호를 포멧에 맞게 입력해 주세요. 예) 010-1111-2222');
+                    return false;
+                }
+                return true;
+            }
+        });
+
+</script>
+
 
 @endsection

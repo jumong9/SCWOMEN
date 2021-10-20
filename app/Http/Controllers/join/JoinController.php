@@ -45,7 +45,7 @@ class JoinController extends Controller{
             'name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'mobile' => ['required', 'string', 'min:10','max:13'],
+            'mobile' => ['required', 'string', 'min:10','max:13', 'unique:users'],
             'birthday' => ['required', 'string'],
             'zipcode' => ['required', 'string', 'min:5','max:5'],
             'address' => ['required', 'string', 'min:5','max:100'],

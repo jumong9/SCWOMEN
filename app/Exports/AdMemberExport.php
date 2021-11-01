@@ -45,6 +45,7 @@ class AdMemberExport implements FromQuery, WithHeadings{
                                                 when class_category_user.user_status = 8 then  \'활동중단\'
                                                 else \'\' END')
                                 , 'class_category_user.joinday'
+                                , 'users.address'
                         )
                         ->where('users.grade', '<', 90)
                         ->where(function($query){
@@ -74,7 +75,7 @@ class AdMemberExport implements FromQuery, WithHeadings{
     public function headings(): array{
         return ["구분", "기수", "강사명", "강사단명", "등급"
                 , "주강사", "보조강사", "핸드폰", "E-mail", "상태"
-                , "입단일"] ;
+                , "입단일", "주소"] ;
     }
 
 }

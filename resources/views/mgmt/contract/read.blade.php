@@ -104,7 +104,7 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                <a class="nav-link active" id="classinfo-tab" data-toggle="tab" href="#classinfo" role="tab" aria-controls="classinfo" aria-selected="true">신청강좌</a>
+                <a class="nav-link active" id="classinfo-tab" data-toggle="tab" href="#classinfo" role="tab" aria-controls="classinfo" aria-selected="true">신청강좌 (총 {{ count($classList) }}건)</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" id="lectorinfo-tab" data-toggle="tab" href="#lectorinfo" role="tab" aria-controls="lectorinfo" aria-selected="false">강사배정목록</a>

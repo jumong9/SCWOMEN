@@ -1,7 +1,7 @@
 @extends('layouts.main_layout')
 
 @section('content')
-
+    <div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">강사관리</h1>
 
@@ -108,6 +108,7 @@
                                     {{ $category->class_name }}( 주 : {{ $category->main_count }}, 보조 : {{ $category->sub_count }} ) @if(!$loop->last), @endif
                                 @endforeach --}}
                                 {{ $classCategory->class_name }}( 주 : {{ $classCategory->main_count }}, 보조 : {{ $classCategory->sub_count }} )
+                                &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="categoryCountButton">파견횟수 변경</button>
                             </td>
                         </tr>
                         @foreach($userHistory as $key => $history)
@@ -247,6 +248,25 @@
                         },
                     })
                 }
+            });
+
+            $("#categoryCountButton").click(function(e){
+                $.ajax({
+                    type : "post",
+                    url : "{{ route('mgmt.member.popupCateUpdate') }}",
+                    data : {
+                        _token: "{{csrf_token()}}",
+                        'checkedItemId' : {{ $member[0]->id }},
+                        'cate_id' : {{$classCategory->class_category_id}},
+                    },
+                    success : function(data){
+                        $("#modalFrame").html(data);
+                        $("#showModal").modal("show");
+                    },
+                    error : function(xhr, exMessage) {
+                        alert('error');
+                    },
+                });
             });
 
             $("#updateButton").click(function(){

@@ -24,7 +24,7 @@
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
             @if (Route::has('auth.login'))
                 <div class="max-w-6xl hidden fixed top-0 left-0 px-6 py-4 sm:block" style="top:60px;left:380px;">
-                    서초여성가족플라자
+                키움강사단 파견시스템
                 </div>
                 <div class="hidden fixed  px-6 py-4 sm:block" style="top:60px;right:380px;">
                     @auth

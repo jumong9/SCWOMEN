@@ -50,8 +50,14 @@ class LectureController extends Controller{
                                         $searcFromDate = $request->input('searcFromDate');
                                         $searcToDate = $request->input('searcToDate');
                                         $searchWord = $request->input('searchWord');
+                                        $searchStatus = $request->input('searchStatus');
+
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
                                             $query->whereBetween('contract_classes.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+
+                                        if(""!=$searchStatus){
+                                            $query->where('contract_classes.lector_apply_yn', "{$searchStatus}");
                                         }
 
                                         if(!empty($searchWord)){
@@ -59,6 +65,8 @@ class LectureController extends Controller{
                                                 $query->where('contracts.id', "{$searchWord}");
                                             }elseif('client_name'==$searchType) {
                                                 $query->where('b.name', 'LIKE', "{$searchWord}%");
+                                            }elseif('category'==$searchType) {
+                                                $query->where('d.class_name', 'LIKE', "{$searchWord}%");
                                             }
                                         }
                                     })

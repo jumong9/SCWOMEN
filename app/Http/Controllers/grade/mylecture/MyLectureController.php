@@ -355,6 +355,9 @@ class MyLectureController extends Controller{
             $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
             $class_order = $contractClass[0]->class_order; //수업차수
 
+            $finance = $contractClass[0]->finance;              //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
+            $sub_finance = $contractClass[0]->sub_finance;      //보조강사 재원 4,5인 경우 금액 0, 카운트만 +1
+
             $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
             foreach($classLectorsList as $user){
 
@@ -474,6 +477,12 @@ class MyLectureController extends Controller{
                     $sub_count++;
                 }
 
+                //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
+                if($finance == 4 || $finance == 5 || $sub_finance == 4 || $sub_finance == 5){
+                    $lector_cost  =0;
+                    $lector_main_cost =0;
+                    $lector_extra_cost =0;
+                }
 
                 ClassLector::where('contract_class_id', $id)
                             ->where('user_id', $user->user_id)

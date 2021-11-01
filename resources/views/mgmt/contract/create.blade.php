@@ -258,17 +258,17 @@
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input  type="text" class="form-control datepicker class_day" name="cclassList[].class_day" />
+                        <input  type="text" class="form-control datepicker class_day" name="cclassList[].class_day" autocomplete='off' placeholder="yyyy-mm-dd"  required/>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-6 input-group-sm" style="padding-right: 2px;">
-                        <input type="text" class="form-control time_from" name="cclassList[].time_from" value="10:00"  >
+                        <input type="text" class="form-control time_from" name="cclassList[].time_from" value="09:00"  autocomplete='off' placeholder="00:00" required>
                     </div>
                     <div class="col-md-6 input-group-sm" style="padding-left: 2px;">
-                         <input type="text" class="form-control time_to" name="cclassList[].time_to" value="11:00" >
+                         <input type="text" class="form-control time_to" name="cclassList[].time_to" value="10:00" autocomplete='off' placeholder="00:00" required>
                     </div>
                 </div>
             </td>
@@ -276,6 +276,7 @@
                 <div class="row">
                     <div class="col-md-12 input-group-sm">
                         <select name="cclassList[].class_category_id"  class="form-control class_category_id">
+                            <option value="000">선택</option>
                             @foreach($classItems as $code)
                                 <option value="{{$code->id}}">{{$code->class_name}}</option>
                             @endforeach
@@ -286,49 +287,49 @@
             <td>
                 <div class="row">
                     <div class="col-md-12 input-group-sm">
-                        <input type="text" name="cclassList[].class_sub_name" class="form-control class_sub_name" value="">
+                        <input type="text" name="cclassList[].class_sub_name" class="form-control class_sub_name" value="" autocomplete='off'>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-12 input-group-sm">
-                        <input type="text" class="form-control class_target" name="cclassList[].class_target" value=""  >
+                        <input type="text" class="form-control class_target" name="cclassList[].class_target" value="" autocomplete='off' required>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="number" class="form-control class_number" name="cclassList[].class_number" value=""  >
+                        <input type="text" class="form-control class_number" name="cclassList[].class_number" value=""  autocomplete='off' required>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="number" class="form-control class_count" name="cclassList[].class_count" value="1" >
+                        <input type="text" class="form-control class_count" name="cclassList[].class_count" value="" autocomplete='off' required>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input  type="number" class="form-control class_order" name="cclassList[].class_order" value="1" >
+                        <input  type="text" class="form-control class_order" name="cclassList[].class_order" value="" autocomplete='off' required>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="number" class="form-control main_count" name="cclassList[].main_count" value="1" >
+                        <input type="text" class="form-control main_count" name="cclassList[].main_count" value="" autocomplete='off' required>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="number" class="form-control sub_count" name="cclassList[].sub_count" value="0" >
+                        <input type="text" class="form-control sub_count" name="cclassList[].sub_count" value="" autocomplete='off' required>
                     </div>
                 </div>
             </td>
@@ -347,6 +348,7 @@
                 <div class="row">
                     <div class="col-md-12 input-group-sm">
                         <select name="cclassList[].sub_finance"  class="form-control sub_finance">
+                            <option value="">해당없음</option>
                             @foreach($financeList as $code)
                                 <option value="{{$code->code_id}}">{{$code->code_value}}</option>
                             @endforeach
@@ -523,10 +525,21 @@
 
             searchFormSubmit = function(){
 
+                var checkDateFlag = true;
+                var checkClassCateFlag = true;
+                var checkClassNumber = true;
+                var checkClassCount = true;
+                var checkClassOrder = true;
+                var checkMainCount = true;
+                var checkSubCount = true;
+
+
                 var classList = [];
 			    $("tr.classTarget").each(function(){
 
                     var _class_day          =$(this).find(".class_day").val();
+                    
+
                     var _time_from          =$(this).find(".time_from","#classList").val();
                     var _time_to            =$(this).find(".time_to","#classList").val();
                     var _class_category_id   =$(this).find(".class_category_id option:selected","#classList").val();
@@ -534,10 +547,20 @@
                     var _class_sub_name     =$(this).find(".class_sub_name","#classList").val();
                     var _class_target       =$(this).find(".class_target","#classList").val();
                     var _class_number       =$(this).find(".class_number","#classList").val();
+                    if(!$.isNumeric(_class_number)) checkClassNumber = false;
+
                     var _class_count        =$(this).find(".class_count","#classList").val();
+                    if(!$.isNumeric(_class_count)) checkClassCount = false;
+
                     var _class_order        =$(this).find(".class_order","#classList").val();
+                    if(!$.isNumeric(_class_order)) checkClassOrder = false;
+
                     var _main_count         =$(this).find(".main_count","#classList").val();
+                    if(!$.isNumeric(_main_count)) checkMainCount = false;
+
                     var _sub_count          =$(this).find(".sub_count","#classList").val();
+                    if(!$.isNumeric(_sub_count)) checkSubCount = false;
+
                     var _finance          =$(this).find(".finance  option:selected","#classList").val();
                     var _sub_finance          =$(this).find(".sub_finance  option:selected","#classList").val();
                     var _class_type         =$(this).find(".class_type option:selected","#classList").val();
@@ -546,6 +569,14 @@
                     var _online_type_text    =$(this).find(".online_type option:selected","#classList").text();
                     if(_class_type!=2){
                         _online_type_text ="";
+                    }
+
+                    if(!checkValidDate(_class_day)){
+                        checkDateFlag = false;
+                    }
+                    
+                    if(_class_category_id=="000"){
+                        checkClassCateFlag = false;
                     }
 
                     var defaultItem = {
@@ -567,13 +598,61 @@
                         ,class_type_text    :_class_type_text
                         ,online_type        :_online_type
                         ,online_type_text   :_online_type_text
-			        }
+                    }
                     classList.push(defaultItem);
+                   
                 });
 
-                $("#classTargetList").val(JSON.stringify(classList));
+                //$("#classTargetList").val(JSON.stringify(classList));
 
-                return true;
+                if(checkDateFlag && checkClassCateFlag && checkClassNumber && checkClassCount && checkClassOrder && checkMainCount && checkSubCount){
+                    $("#classTargetList").val(JSON.stringify(classList));
+                    return true;
+                }else{
+
+                    if(!checkDateFlag){
+                        alert('활동일자가 올바르지 않습니다. 포멧에(yyyy-mm-dd) 맞게 입력해 주세요.');
+                    }else if(!checkClassCateFlag){
+                        alert('프로그램을 선택해 주세요.');
+                    }else if(!checkClassNumber){
+                        alert('인원값이 올바르지 않습니다. 확인해 주세요.');
+                    }else if(!checkClassCount){
+                        alert('횟수 값이 올바르지 않습니다. 확인해 주세요.');
+                    }else if(!checkClassOrder){
+                        alert('차수 값이 올바르지 않습니다. 확인해 주세요.');
+                    }else if(!checkMainCount){
+                        alert('주강사 값이 올바르지 않습니다. 확인해 주세요.');
+                    }else if(!checkSubCount){
+                        alert('보조강사 값이 올바르지 않습니다. 확인해 주세요.');
+                    }
+                    return false;
+                }
+                
+            }
+
+
+            checkValidDate = function(value) {
+                var result = true;
+                try {
+                    var date = value.split("-");
+                    var sy = date[0],
+                        sm = date[1],
+                        sd = date[2];
+                    
+                    if(sy.length != 4 || sm.length !=2 || sd.length !=2) {
+                        return false;
+                    }
+
+                    var y = parseInt(date[0], 10),
+                        m = parseInt(date[1], 10),
+                        d = parseInt(date[2], 10);
+                    
+                    var dateRegex = /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
+                    result = dateRegex.test(d+'-'+m+'-'+y);
+                } catch (err) {
+                    result = false;
+                }    
+                return result;
             }
 
             $("#addClassButton").trigger("click");

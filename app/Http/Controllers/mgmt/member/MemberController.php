@@ -234,6 +234,50 @@ class MemberController extends Controller{
 
 
     /**
+     * 사용자 파견정보 수정화면
+     */
+    public function popupCateUpdate(Request $request){
+        DB::enableQueryLog();
+        
+        $id = $request->input('checkedItemId');
+        $cate_id = $request->input('cate_id');
+       
+        $member = User::with('classCategories')->where('id', $id)->get();
+        $member[0]->cate_id = $cate_id;
+
+        $classCategory = ClassCategoryUser::join('class_categories', 'class_category_user.class_category_id', '=', 'class_categories.id')
+                                          ->select('class_category_user.id','class_category_user.main_count','class_category_user.sub_count', 'class_categories.class_name')
+                                          ->where('user_id', $id)
+                                          ->where('class_category_id', $cate_id)
+                                          ->get();
+
+       // dd(DB::getQueryLog());
+        return view('mgmt.member.popupCateUpdate', ['member'=>$member, 'classCategory' => $classCategory]);
+    }
+
+
+    /**
+     * 사용자 승인처리
+     */
+    public function popupCateUpdateDo(Request $request){
+        // DB::enableQueryLog();
+        $id = $request->input('id');
+        $main_count = $request->input('main_count');
+        $sub_count = $request->input('sub_count');
+       
+        ClassCategoryUser::where('id', $id)
+             ->update([
+                    'main_count' => $main_count
+                    ,'sub_count' => $sub_count
+             ]);
+
+      //   dd(DB::getQueryLog());
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+     }
+
+    
+
+    /**
      * 사용자 정보 업데이트
      */
     public function update(Request $request){

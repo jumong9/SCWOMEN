@@ -27,8 +27,13 @@
                 <div class="form-inline">
                     <div class="form-group">
                         <select class="form-control" name="searchType" id="searchType">
+                            <option value="xxx">선택하세요</option>
                             @foreach($financeList as $key => $code)
+                                @if( $code->code_id != 4 && $code->code_id != 5)
                                 <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                                        @endif
+                                    
+                                
                             @endforeach
                         </select>
                         <input style="width: 110px;" type="text" class="form-control datepickerm " id="searchFromMonth" name="searchFromMonth" value="{{ $searchFromMonth }}" placeholder="종료일">

@@ -14,12 +14,13 @@ class ProgressExport implements FromQuery, WithHeadings{
 
     use Exportable;
 
-    public function forYear($searcFromDate, $searcToDate, $searchType, $searchWord)
+    public function forYear($searcFromDate, $searcToDate, $searchType, $searchWord, $searchStatus)
     {
         $this->searcFromDate = $searcFromDate;
         $this->searcToDate = $searcToDate;
         $this->searchType = $searchType;
         $this->searchWord = $searchWord;
+        $this->searchStatus = $searchStatus;
 
         return $this;
     }
@@ -57,11 +58,16 @@ class ProgressExport implements FromQuery, WithHeadings{
                             ->where('contracts.status','>',1)
                             ->whereBetween('contract_classes.class_day', [$this->searcFromDate, $this->searcToDate])
                             ->where(function($query){
+                                if(""!=$this->searchStatus){
+                                    $query->where('contract_classes.lector_apply_yn', "{$this->searchStatus}");
+                                }
                                 if(!empty($this->searchWord)){
                                     if('contract_id'== $this->searchType) {
                                         $query->where('contracts.id', "{$this->searchWord}");
                                     }elseif('client_name'==$this->searchType) {
                                         $query->where('b.name', 'LIKE', "{$this->searchWord}%");
+                                    }elseif('category'==$this->searchType) {
+                                        $query->where('d.class_name', 'LIKE', "{$this->searchWord}%");
                                     }
                                 }
                             })

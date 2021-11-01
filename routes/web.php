@@ -152,6 +152,18 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\member\MemberController@detail'
     ]);
 
+    //멤버관리 파견횟수 수정화면
+    Route::match(['get','post'],'member/popupCateUpdate',[
+        'as' => 'mgmt.member.popupCateUpdate',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@popupCateUpdate'
+    ]);
+
+    //멤버관리 파견횟수 수정화면
+    Route::match(['get','post'],'member/popupCateUpdateDo',[
+        'as' => 'mgmt.member.popupCateUpdateDo',
+        'uses' => 'App\Http\Controllers\mgmt\member\MemberController@popupCateUpdateDo'
+    ]);
+
     //멤버관리 수정화면
     Route::match(['get','post'],'member/modify',[
         'as' => 'mgmt.member.modify',

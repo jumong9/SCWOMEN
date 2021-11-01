@@ -138,7 +138,7 @@ DB::enableQueryLog();
                                             ->where('c1.code_group', '=','finance_type');
                                         }
                                     )
-                                    ->join('common_codes as c2', function($join){
+                                    ->leftjoin('common_codes as c2', function($join){
                                         $join->on('c2.code_id','=', 'contract_classes.sub_finance')
                                             ->where('c2.code_group', '=','finance_type');
                                         }

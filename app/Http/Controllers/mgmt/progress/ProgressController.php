@@ -67,13 +67,18 @@ class ProgressController extends Controller
                                         $searcFromDate = $request->input('searcFromDate');
                                         $searcToDate = $request->input('searcToDate');
                                         $searchWord = $request->input('searchWord');
-
+                                        $searchStatus = $request->input('searchStatus');
+                                        
                                         if(empty($searcFromDate) || empty($searcToDate)){
                                             $searcFromDate = date("Y-m", time()) .'-01';
                                             $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
                                             $dayCount = new DateTime( $searcFromDate );
                                             $searcToDate = $dayCount->format( 'Y-m-t' );
                                             $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+                                        }
+
+                                        if(""!=$searchStatus){
+                                            $query->where('contract_classes.lector_apply_yn', "{$searchStatus}");
                                         }
 
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
@@ -85,6 +90,8 @@ class ProgressController extends Controller
                                                 $query->where('contracts.id', "{$searchWord}");
                                             }elseif('client_name'==$searchType) {
                                                 $query->where('b.name', 'LIKE', "{$searchWord}%");
+                                            }elseif('category'==$searchType) {
+                                                $query->where('d.class_name', 'LIKE', "{$searchWord}%");
                                             }
                                         }
                                     })
@@ -111,6 +118,7 @@ class ProgressController extends Controller
         $searcToDate = $request->input('searcToDate');
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
 
         if(empty($searcFromDate) || empty($searcToDate)){
             $searcFromDate = date("Y-m", time()) .'-01';
@@ -118,7 +126,7 @@ class ProgressController extends Controller
             $searcToDate = $dayCount->format( 'Y-m-t' );
         }
 
-        return (new ProgressExport)->forYear($searcFromDate, $searcToDate, $searchType, $searchWord)->download('ProgressReport.xlsx');
+        return (new ProgressExport)->forYear($searcFromDate, $searcToDate, $searchType, $searchWord, $searchStatus)->download('ProgressReport.xlsx');
     }
 
 

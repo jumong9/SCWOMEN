@@ -56,7 +56,7 @@ class MyLectureController extends Controller{
                                             , DB::raw(
                                                         'case when c.main_yn = 1 then
                                                             (select count(*) from class_reports x where x.contract_class_id = contract_classes.id and x.user_id =  c.user_id)
-                                                              when c.main_yn = 0 and contract_classes.sub_finance = 2 then
+                                                              when c.main_yn = 0 and (contract_classes.sub_finance = 2 or contract_classes.sub_finance = 3 ) then
                                                             (select count(*) from class_reports x where x.contract_class_id = contract_classes.id and x.user_id =  c.user_id)
                                                               else 99
                                                          end as reportCnt'
@@ -165,7 +165,7 @@ class MyLectureController extends Controller{
             }
 
             if(empty($mainYn)){
-                if( $classList[0]->sub_finance != 2 ){      //서울시성평등(2) 인경우 보조강사도 리포트작성
+                if( $classList[0]->sub_finance != 2 && $classList[0]->sub_finance != 3 ){      //서울시성평등(2), 성평등(3) 인경우 보조강사도 리포트작성
                     $reportNeedYn = 0;
                 }
             }
@@ -312,17 +312,18 @@ class MyLectureController extends Controller{
 
             }
 
-            $report = ClassReport::where('contract_class_id', $id)->first();
-            if(!empty($report) && !empty($report->id)){
+            //교육완료 취소시 활동일지 삭제
+            // $report = ClassReport::where('contract_class_id', $id)->first();
+            // if(!empty($report) && !empty($report->id)){
 
-                $fileInfo = UserFile::where('id', $report->file_id)->first();
-                if(!empty($fileInfo) && !empty($fileInfo->file_name)){
-                    Storage::delete($fileInfo->file_path.'/'.$fileInfo->file_name);
-                    UserFile::where('id',$report->file_id)->delete();
-                }
+            //     $fileInfo = UserFile::where('id', $report->file_id)->first();
+            //     if(!empty($fileInfo) && !empty($fileInfo->file_name)){
+            //         Storage::delete($fileInfo->file_path.'/'.$fileInfo->file_name);
+            //         UserFile::where('id',$report->file_id)->delete();
+            //     }
 
-                ClassReport::where('contract_class_id', $id)->delete();
-            }
+            //     ClassReport::where('contract_class_id', $id)->delete();
+            // }
 
 
             DB::commit();

@@ -350,6 +350,10 @@ DB::enableQueryLog();
                 }else if('U' == $class['action_type']){
                     $inputClass->where('id', $class['class_id'] )
                                 ->update([
+                                    'class_target'  =>  $inputClass->class_target,
+                                    'class_number'  =>  $inputClass->class_number,
+                                    'class_count'  =>  $inputClass->class_count,
+                                    'class_order'  =>  $inputClass->class_order,
                                     'finance'       =>  $inputClass->finance,
                                     'sub_finance'   =>  $inputClass->sub_finance,
                                     'class_type'    =>  $inputClass->class_type,

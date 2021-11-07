@@ -74,10 +74,10 @@
                                     @case(0)
                                         오프라인
                                         @break
-                                    @case(2)
+                                    @case(1)
                                         온라인 실시간
                                         @break
-                                    @case(3)
+                                    @case(2)
                                         온라인 동영상
                                         @break
                                 @endswitch

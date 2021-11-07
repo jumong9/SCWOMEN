@@ -304,32 +304,31 @@
             <td>
                 <div class="row">
                     <div class="col-md-12 input-group-sm">
-                        <input type="hidden" class="form-control class_target" name="cclassList[].class_target" value="${class_target}"  >
-                        ${class_target}
+                        <input type="text" class="form-control class_target" name="cclassList[].class_target" value="${class_target}"  >
+                        
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-10 input-group-sm">
-                        <input type="hidden" class="form-control class_number" name="cclassList[].class_number" value="${class_number}"  >
-                        ${class_number}
+                        <input type="text" class="form-control class_number" name="cclassList[].class_number" value="${class_number}"  >
+                        
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-10 input-group-sm">
-                        <input type="hidden" class="form-control class_count" name="cclassList[].class_count" value="${class_count}" >
-                        ${class_count}
+                        <input type="text" class="form-control class_count" name="cclassList[].class_count" value="${class_count}" >
+                       
                     </div>
                 </div>
             </td>
             <td>
                 <div class="row">
                     <div class="col-md-10 input-group-sm">
-                        <input  type="hidden" class="form-control class_order" name="cclassList[].class_order" value="${class_order}" >
-                        ${class_order}
+                        <input  type="text" class="form-control class_order" name="cclassList[].class_order" value="${class_order}" >
                     </div>
                 </div>
             </td>

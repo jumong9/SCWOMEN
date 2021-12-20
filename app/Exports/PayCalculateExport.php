@@ -61,6 +61,7 @@ class PayCalculateExport implements FromQuery, WithHeadings{
 
                               )
                               ->orderByRaw('ISNULL(user_name), user_name ASC')
+                              ->orderBy('user_id','asc')
                               ->orderBy('main_yn', 'desc')
                               ->orderByRaw('ISNULL(class_day), class_day ASC')
                               ->orderBy('my_main_count', 'asc');

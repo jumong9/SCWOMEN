@@ -84,7 +84,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('mgmt.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
+                            <td><a href="{{ route ('mgmt.lecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate ]) }}">{{ $list->class_name }} </a></td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
                             <td>{{ $list->class_count}}</td>

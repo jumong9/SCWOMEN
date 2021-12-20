@@ -58,6 +58,7 @@ class ClientController extends Controller{
                                     $query->where('clients.name','LIKE',"{$searchWord}%");
                                 }
                            })
+                           ->where('clients.client_status','=','1')
                            ->orderBy('clients.created_at', 'desc')
 
                            ->paginate($perPage);
@@ -197,6 +198,22 @@ class ClientController extends Controller{
         return redirect()->route('mgmt.client.read', ['id'=>$id, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
     }
 
+    /**
+     * 수요처 삭제
+     */
+    public function deleteDo(Request $request, Client $client){
+
+        $id = $request->input('client_id');
+       
+
+        $client->where('id', $id)
+                ->update([
+                    'client_status'=>'0'
+                ]);
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
+
+    }
 
 
     public function exportExcel(Request $request){

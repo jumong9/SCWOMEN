@@ -85,7 +85,7 @@
                             <td>{{ $list->client_name}} </td>
                             <td>{{ $list->class_gubun }} </td>
                             <td>{{ $list->class_name }} </td>
-                            <td>{{ $list->class_status == 2 ? '작성완료':'' }} </td>
+                            <td>{{ $list->class_status == 2 ? '작성완료':'미작성' }} </td>
                             <td>{{ $list->finance_value }} </td>
                         @endforeach
                     </tbody>

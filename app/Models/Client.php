@@ -21,6 +21,7 @@ class Client extends Model
         'office_email',
         'zipcode',
         'address',
+        'client_status',
     ];
 
 }

@@ -243,6 +243,12 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@updateDo'
     ]);
 
+    //수요처관리 삭제
+    Route::match(['get','post'],'mgmt/client/deleteDo',[
+        'as' => 'mgmt.client.deleteDo',
+        'uses' => 'App\Http\Controllers\mgmt\client\ClientController@deleteDo'
+    ]);
+
     Route::match(['get','post'],'mgmt/client/exportExcel',[
         'as' => 'mgmt.client.exportExcel',
         'uses' => 'App\Http\Controllers\mgmt\client\ClientController@exportExcel'
@@ -388,6 +394,68 @@ Route::middleware(['adminmiddle'])->group(function(){
     Route::match(['get','post'],'mgmt/progress/exportExcel',[
         'as' => 'mgmt.progress.exportExcel',
         'uses' => 'App\Http\Controllers\mgmt\progress\ProgressController@exportExcel'
+    ]);
+
+
+    //수요처기준 통계
+    Route::match(['get','post'],'mgmt/statistics/clientlist',[
+        'as' => 'mgmt.statistics.clientlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@clientlist'
+    ]);
+
+    //수요처 통계 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportClientExcel',[
+        'as' => 'mgmt.statistics.exportClientExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportClientExcel'
+    ]);
+
+     //강사단기준 통계
+     Route::match(['get','post'],'mgmt/statistics/classlist',[
+        'as' => 'mgmt.statistics.classlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@classlist'
+    ]);
+
+    //수요처 통계 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportClassExcel',[
+        'as' => 'mgmt.statistics.exportClassExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportClassExcel'
+    ]);
+
+    //강사별기준 통계
+    Route::match(['get','post'],'mgmt/statistics/lectorlist',[
+        'as' => 'mgmt.statistics.lectorlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@lectorlist'
+    ]);
+
+    //강사 통계 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportLectorExcel',[
+        'as' => 'mgmt.statistics.exportLectorExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportLectorExcel'
+    ]);
+
+    //강사별 샘포인트 통계
+    Route::match(['get','post'],'mgmt/statistics/pointlist',[
+        'as' => 'mgmt.statistics.pointlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@pointlist'
+    ]);
+
+    //강사별 샘포인트 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportPointExcel',[
+        'as' => 'mgmt.statistics.exportPointExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportPointExcel'
+    ]);
+
+    //강사별 샘포인트 통계
+    Route::match(['get','post'],'mgmt/statistics/pointDetailList',[
+        'as' => 'mgmt.statistics.pointDetailList',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@pointDetailList'
+    ]);
+
+
+    //강사별 샘포인트상세 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportPointDetailExcel',[
+        'as' => 'mgmt.statistics.exportPointDetailExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportPointDetailExcel'
     ]);
 
 

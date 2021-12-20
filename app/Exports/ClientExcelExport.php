@@ -52,6 +52,7 @@ class ClientExcelExport implements FromQuery, WithHeadings
                                 $query->where('clients.gubun','=',"{$this->searchType}");
                             }
                         })
+                        ->where('clients.client_status','=','1')
                         ->orderBy('clients.created_at','desc');
 
     }

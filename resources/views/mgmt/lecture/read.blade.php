@@ -201,7 +201,7 @@
 
         $(document).ready(function() {
 
-            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
+            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}&searcFromDate={{$searcFromDate}}&searcToDate={{$searcToDate}}";
 
             $("#openPopup").click(function(e){
                 $.ajax({

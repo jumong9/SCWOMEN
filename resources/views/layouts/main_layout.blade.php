@@ -83,6 +83,21 @@
                         </div>
                     </li>
 
+                    <li class="nav-item pr-2">
+                        <div class="dropdown show">
+                            <a class="nav-link dropdown-toggle" href="{{ route('mgmt.statistics.clientlist') }}" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                통계자료
+                            </a>
+                            
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.clientlist') }}">수요처별 통계</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.classlist') }}">강사단별 통계</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.lectorlist') }}">강사별 통계</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.pointlist') }}">샘포인트 통계</a>
+                            </div>
+                        </div>
+                    </li>
+
                 @elseif (Auth::user()->grade >=10 )
 
                     <li class="nav-item">

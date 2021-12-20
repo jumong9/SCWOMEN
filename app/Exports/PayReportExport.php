@@ -60,7 +60,7 @@ class PayReportExport implements FromQuery, WithHeadings{
                                             , 'b.class_gubun'
                                             , 'b.class_name'
                                          //   , 'f.code_value as class_status_value'
-                                            , DB::raw('case when contract_classes.class_status = 2 then \'작성완료\' else \'\' END')
+                                            , DB::raw('case when contract_classes.class_status = 2 then \'작성완료\' else \'미작성\' END')
                                             , 'f2.code_value as finance_value'
                                     )
                                     ->where('contract_classes.class_status', '>', '0')

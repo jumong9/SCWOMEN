@@ -213,9 +213,9 @@
                         @if($contract->status == 6 && $contentsList[0]->class_status == 0)
                             <button class="btn btn-primary" type="button"  id="finishButton" data-status='1'>교육완료</button>
                         @endif
-                        @if($contentsList[0]->class_status == 1 || $contentsList[0]->class_status == 2)
+                        <!-- @if($contentsList[0]->class_status == 1 || $contentsList[0]->class_status == 2)
                             <button class="btn btn-primary" type="button"  id="resetButton" data-status='0'>교육완료취소</button>
-                        @endif
+                        @endif -->
                     @elseif ($timeDiff && $contentsList[0]->class_status >= 1 && $reportNeedYn)
                         <button class="btn btn-primary" type="button"  id="reportButton">활동일지작성</button>
                     @endif

@@ -449,6 +449,13 @@ class MyLectureController extends Controller{
 
                     }
 
+                    //재원에 따른 0처리
+                    if($finance == 4 || $finance == 5 ) {
+                        $lector_cost  = 0;
+                        $lector_main_cost =0;
+                        $lector_extra_cost =0;
+                    }
+
                 } else {                                                //보조강사
 
                     if($class_type < 2){                                //오프라인, 온라인실시간
@@ -463,6 +470,14 @@ class MyLectureController extends Controller{
                         $lector_main_cost = 20000;
                         $lector_cost = $lector_main_cost;
                     }
+
+                    //재원에 따른 0처리
+                    if($sub_finance == 4 || $sub_finance == 5){
+                        $lector_cost  = 0;
+                        $lector_main_cost =0;
+                        $lector_extra_cost =0;
+                    }
+
                 }
 
 
@@ -478,12 +493,6 @@ class MyLectureController extends Controller{
                     $sub_count++;
                 }
 
-                //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
-                if($finance == 4 || $finance == 5 || $sub_finance == 4 || $sub_finance == 5){
-                    $lector_cost  =0;
-                    $lector_main_cost =0;
-                    $lector_extra_cost =0;
-                }
 
                 ClassLector::where('contract_class_id', $id)
                             ->where('user_id', $user->user_id)

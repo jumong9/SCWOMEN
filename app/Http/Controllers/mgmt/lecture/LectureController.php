@@ -93,6 +93,8 @@ class LectureController extends Controller{
         $searchStatus = $request->input('searchStatus');
         $perPage = $request->input('perPage');
         $page = $request->input('page');
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
 
         $id = $request->input('id');
         $user_id = Auth::id();
@@ -137,7 +139,7 @@ class LectureController extends Controller{
                                   ->get();
 
         //dd(DB::getQueryLog());
-        return view('mgmt.lecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('mgmt.lecture.read', ['pageTitle'=>$this->pageTitle,'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate]);
         //return "ok";
     }
 

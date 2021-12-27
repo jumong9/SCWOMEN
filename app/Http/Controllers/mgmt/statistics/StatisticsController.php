@@ -8,6 +8,10 @@ use App\Exports\ClassStatExcelExport;
 use App\Exports\PointStatExcelExport;
 use App\Exports\PointDetailStatExcelExport;
 
+use App\Exports\LectorSumExcelExport;
+use App\Exports\ClassSumExcelExport;
+use App\Exports\FinanceSumExcelExport;
+
 use App\Http\Controllers\Controller;
 use App\Models\ClassLector;
 use App\Models\ClassReport;
@@ -315,7 +319,198 @@ class StatisticsController extends Controller{
     }
 
 
+    //강사별 결산
+    public function lectorsumlist(Request $request){
 
+        $this->pageTitle = "강사별 결산";
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
+        $page = $request->input('page');
+
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        DB::enableQueryLog();
+
+        $clientList = User::join('class_lectors as b', 'b.user_id' ,'=', 'users.id')
+                            ->join('contract_classes as c', 'c.id', '=', 'b.contract_class_id')
+                            ->join('class_categories as d', 'd.id', '=','b.class_category_id')
+                                    
+                                    ->select('users.id', 'users.name', 'users.mobile'
+                                            , 'd.class_gubun', 'd.class_name'
+                                            , DB::raw('sum(if(b.main_yn=1, 1, 0)) as main_count')
+                                            , DB::raw('sum(if(b.main_yn=0, 1, 0)) as sub_count')
+                                            , DB::raw('sum(b.lector_cost) as lector_cost')
+                                            , DB::raw('count(distinct c.client_id) as client_count')
+                                    )
+
+                                    ->where(function ($query) use ($searcFromDate, $searcToDate, $searchType){
+                                        if(!empty($searcFromDate) && !empty($searcToDate) ){
+                                            $query->whereBetween('c.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+                                    })
+                                    ->where('c.class_status', '>', '0')
+                                    ->groupBy('users.id', 'users.name', 'users.mobile', 'd.class_gubun', 'd.class_name')
+                                    ->orderBy('users.name', 'asc')
+                                    ->orderBy('users.id', 'asc')
+                                    ->paginate($perPage);
+
+
+        $clientList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
+
+        //$clientGubunList = CommonCode::getCommonCode('client_gubun');
+
+        //dd(DB::getQueryLog());
+        return view('mgmt.statistics.lectorsumlist', ['pageTitle'=>$this->pageTitle,'clientList'=>$clientList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
+
+    }
+
+
+    //프로그램별 결산
+    public function classsumlist(Request $request){
+        
+        $this->pageTitle = "프로그램별 결산";
+
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
+        $page = $request->input('page');
+
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        DB::enableQueryLog();
+       
+        $clientList = ContractClass::join('class_categories as b', 'contract_classes.class_category_id' ,'=', 'b.id')
+                                    ->join('clients as c', 'contract_classes.client_id' ,'=', 'c.id')
+                                    ->join('common_codes as d', function($join){
+                                        $join->on('d.code_id','=', 'c.gubun')
+                                            ->where('d.code_group', '=','client_gubun');
+                                        }
+                                    )
+                                    ->join('class_lectors as e', 'contract_classes.id', '=','e.contract_class_id')
+                                    ->select('b.class_gubun'
+                                            , 'b.class_name'
+                                            , 'c.name'
+                                            , 'd.code_value'
+                                            , DB::raw('sum(contract_classes.class_count) as class_count')
+                                            , DB::raw('sum(contract_classes.class_order) as class_order')
+                                            , DB::raw('sum(contract_classes.main_count + contract_classes.sub_count) as lector_count')
+                                            , DB::raw('sum(e.lector_cost) as lector_cost')
+                                            , DB::raw('sum(if(contract_classes.class_type=0,1,0)) as off_count')
+                                            , DB::raw('sum(if(contract_classes.class_type=1,1,0)) as on_count')
+                                            , DB::raw('sum(if(contract_classes.class_type=2,1,0)) as video_count')
+                                    )
+                                    ->where(function ($query) use ($searcFromDate, $searcToDate, $searchType){
+                                        if(!empty($searcFromDate) && !empty($searcToDate) ){
+                                            $query->whereBetween('contract_classes.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+                                    })
+                                    ->where('contract_classes.class_status', '>', '0')
+                                    ->groupBy('b.class_gubun'
+                                            , 'b.class_name'
+                                            , 'c.name'
+                                            , 'd.code_value')
+                                    ->orderBy('b.class_group', 'asc')
+                                    ->orderBy('b.class_order', 'asc')
+                                    ->orderBy('d.code_id', 'asc')
+                                    ->orderBy('c.name', 'asc')
+                                    ->paginate($perPage);
+
+
+        $clientList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
+
+        $clientGubunList = CommonCode::getCommonCode('client_gubun');
+
+        //dd(DB::getQueryLog());
+        return view('mgmt.statistics.classsumlist', ['pageTitle'=>$this->pageTitle,'clientList'=>$clientList, 'clientGubunList'=>$clientGubunList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
+
+    }
+
+
+    //재원별 결산
+    public function financesumlist(Request $request){
+        
+        $this->pageTitle = "재원별 결산";
+
+        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
+        $searchStatus = $request->input('searchStatus');
+        $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
+        $page = $request->input('page');
+
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        DB::enableQueryLog();
+       
+        
+
+        $clientList = ContractClass::join('class_categories as c', 'contract_classes.class_category_id' ,'=', 'c.id')
+                                    ->join('common_codes as b', function($join){
+                                        $join->on('b.code_id','=', 'contract_classes.finance')
+                                        ->where('b.code_group', '=','finance_type');
+                                        }
+                                    )
+                                    ->join('class_lectors as d', 'contract_classes.id', '=','d.contract_class_id')
+                                    ->select( 'b.code_value'
+                                            , 'c.class_gubun'
+                                            , 'c.class_name'
+                                            , DB::raw('sum(contract_classes.class_count) as class_count')
+                                            , DB::raw('sum(contract_classes.class_order) as class_order')
+                                            , DB::raw('sum(contract_classes.main_count + contract_classes.sub_count) as lector_count')
+                                            , DB::raw('sum(d.lector_cost) as lector_cost')
+                                    )
+                                    ->where(function ($query) use ($searcFromDate, $searcToDate, $searchType){
+                                        if(!empty($searcFromDate) && !empty($searcToDate) ){
+                                            $query->whereBetween('contract_classes.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+                                    })
+                                    ->where('contract_classes.class_status', '>', '0')
+                                    ->groupBy('b.code_value'
+                                            , 'c.class_gubun'
+                                            , 'c.class_name')
+                                    ->orderBy('contract_classes.finance', 'asc')
+                                    ->orderBy('c.class_group', 'asc')
+                                    ->orderBy('c.class_order', 'asc')
+                                    ->paginate($perPage);
+
+
+        $clientList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate));
+
+        $clientGubunList = CommonCode::getCommonCode('client_gubun');
+
+        //dd(DB::getQueryLog());
+        return view('mgmt.statistics.financesumlist', ['pageTitle'=>$this->pageTitle,'clientList'=>$clientList, 'clientGubunList'=>$clientGubunList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate] );
+
+    }
 
 
     public function exportClientExcel(Request $request){
@@ -417,5 +612,67 @@ class StatisticsController extends Controller{
         return (new PointDetailStatExcelExport)->forSearch($searchType, $searcToDate, $searcFromDate, $id)->download('PointDetailStatReport.xlsx');
 
     }
+
+
+    public function exportLectorSumExcel(Request $request){
+        //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
+
+        $searchType = $request->input('searchType');
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        return (new LectorSumExcelExport)->forSearch($searchType, $searcToDate, $searcFromDate)->download('LectorSumReport.xlsx');
+
+    }
+
+    
+    public function exportClassSumExcel(Request $request){
+        //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
+
+        $searchType = $request->input('searchType');
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        return (new ClassSumExcelExport)->forSearch($searchType, $searcToDate, $searcFromDate)->download('ClassSumReport.xlsx');
+
+    }
+
+
+    public function exportFinanceSumExcel(Request $request){
+        //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
+
+        $searchType = $request->input('searchType');
+        $searcFromDate = $request->input('searcFromDate');
+        $searcToDate = $request->input('searcToDate');
+
+        if(empty($searcFromDate) || empty($searcToDate)){
+            $searcFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searcFromDate));
+            $dayCount = new DateTime( $searcFromDate );
+            $searcToDate = $dayCount->format( 'Y-m-t' );
+            $searcFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        return (new FinanceSumExcelExport)->forSearch($searchType, $searcToDate, $searcFromDate)->download('FinanceSumReport.xlsx');
+
+    }
+
+
 
 }

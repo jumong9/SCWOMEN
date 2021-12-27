@@ -94,6 +94,9 @@
                                 <a class="dropdown-item" href="{{ route('mgmt.statistics.classlist') }}">강사단별 통계</a>
                                 <a class="dropdown-item" href="{{ route('mgmt.statistics.lectorlist') }}">강사별 통계</a>
                                 <a class="dropdown-item" href="{{ route('mgmt.statistics.pointlist') }}">샘포인트 통계</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.lectorsumlist') }}">강사별 결산</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.classsumlist') }}">프로그램별 결산</a>
+                                <a class="dropdown-item" href="{{ route('mgmt.statistics.financesumlist') }}">재원별 결산</a>
                             </div>
                         </div>
                     </li>

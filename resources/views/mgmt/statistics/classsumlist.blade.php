@@ -5,7 +5,7 @@
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
-    <form name="searchForm" id="searchForm"  action="{{route('mgmt.statistics.lectorlist') }}" method="post" >
+    <form name="searchForm" id="searchForm"  action="{{route('mgmt.statistics.classsumlist') }}" method="post" >
         <input name="checkedItemId" type="hidden" value=""/>
     @csrf
     <!-- DataTales Example -->
@@ -27,6 +27,13 @@
                 <div class="form-inline">
                     <div class="form-group">
 
+                        <!-- <select class="form-control" name="searchType" id="searchType">
+                            <option value="">구분</option>
+                            @foreach($clientGubunList as $key => $code)
+                                <option value="{{$code->code_id}}" {{ $searchType == $code->code_id ? "selected" : "" }}>{{$code->code_value}}
+                            @endforeach
+                        </select> -->
+
                         <!-- <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                          -->
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
@@ -36,7 +43,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
@@ -44,32 +50,31 @@
                         <tr>
                             <th>구분</th>
                             <th>강사단명</th>
-                            <th>이름</th>
-                            <th>강사구분</th>
-                            <th>생년월일</th>
-                            <th>연락처</th>
-                            <th>기수</th>
-                            <th>상태</th>
-                            <th>수령강사비</th>
-                            <th>주강사횟수</th>
-                            <th>보조횟수</th>
-
+                            <th>수요처구분</th>
+                            <th>수요처명</th>
+                            <th>진행횟수</th>
+                            <th>진행차시</th>
+                            <th>진행인원</th>
+                            <th>강사비 지출금액</th>
+                            <th>오프라인</th>
+                            <th>온라인</th>
+                            <th>온라인동영상</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($clientList as $key => $list)
                         <tr>
-                            <td>{{ $list->user_gubun}}</td>
-                            <td>{{ $list->class_name}}</td>
-                            <td>{{ $list->name}}</td>
-                            <td>{{ $list->user_grade}}</td>
-                            <td>{{ $list->birthday }}</td>
-                            <td>{{ $list->mobile }}</td>
-                            <td>{{ $list->user_group }}</td>
-                            <td>{{ $list->user_status_value }}</td>
+                            <td>{{ $list->class_gubun}}</td>
+                            <td>{{ $list->class_name }}</td>
+                            <td>{{ $list->code_value }}</td>
+                            <td>{{ $list->name }}</td>
+                            <td>{{ number_format($list->class_count) }}</td>
+                            <td>{{ number_format($list->class_order) }}</td>
+                            <td>{{ number_format($list->lector_count) }}</td>
                             <td>{{ number_format($list->lector_cost) }}</td>
-                            <td>{{ number_format($list->main_count) }}</td>
-                            <td>{{ number_format($list->sub_count) }}</td>
+                            <td>{{ number_format($list->off_count) }}</td>
+                            <td>{{ number_format($list->on_count) }}</td>
+                            <td>{{ number_format($list->video_count) }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -112,9 +117,9 @@
             });
 
             $("#exportExcelButton").click(function(e){
-                $("#searchForm").attr("action", "{{ route('mgmt.statistics.exportLectorExcel') }}");
+                $("#searchForm").attr("action", "{{ route('mgmt.statistics.exportClassSumExcel') }}");
                 $("#searchForm").submit();
-                $("#searchForm").attr("action", "{{route('mgmt.statistics.lectorlist') }}");
+                $("#searchForm").attr("action", "{{route('mgmt.statistics.classsumlist') }}");
             });
 
 

@@ -409,8 +409,8 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportClientExcel'
     ]);
 
-     //강사단기준 통계
-     Route::match(['get','post'],'mgmt/statistics/classlist',[
+    //강사단기준 통계
+    Route::match(['get','post'],'mgmt/statistics/classlist',[
         'as' => 'mgmt.statistics.classlist',
         'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@classlist'
     ]);
@@ -458,6 +458,44 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportPointDetailExcel'
     ]);
 
+
+    //강사별 결산
+    Route::match(['get','post'],'mgmt/statistics/lectorsumlist',[
+        'as' => 'mgmt.statistics.lectorsumlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@lectorsumlist'
+    ]);
+
+    //강사별 결산 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportLectorSumExcel',[
+        'as' => 'mgmt.statistics.exportLectorSumExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportLectorSumExcel'
+    ]);
+
+
+    //강사단기준 결산
+    Route::match(['get','post'],'mgmt/statistics/classsumlist',[
+        'as' => 'mgmt.statistics.classsumlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@classsumlist'
+    ]);
+
+    //강사단기준 결산 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportClassSumExcel',[
+        'as' => 'mgmt.statistics.exportClassSumExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportClassSumExcel'
+    ]);
+
+
+    //재원별 결산
+    Route::match(['get','post'],'mgmt/statistics/financesumlist',[
+        'as' => 'mgmt.statistics.financesumlist',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@financesumlist'
+    ]);
+
+    //재원별 결산 엑셀다운
+    Route::match(['get','post'],'mgmt/statistics/exportFinanceSumExcel',[
+        'as' => 'mgmt.statistics.exportFinanceSumExcel',
+        'uses' => 'App\Http\Controllers\mgmt\statistics\StatisticsController@exportFinanceSumExcel'
+    ]);
 
 });
 

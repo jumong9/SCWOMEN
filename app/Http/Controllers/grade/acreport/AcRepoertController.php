@@ -167,7 +167,7 @@ class AcRepoertController extends Controller{
                 "user_id"               =>  $user_id,
             ];
             $file_id = UserFile::create($file_arr)->id;
-echo($request->input('finance_type'));
+//echo($request->input('finance_type'));
             $class_id = $request->input('contract_class_id');
             $classReport = new ClassReport();
             $classReport->contract_class_id = $class_id;

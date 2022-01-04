@@ -13,6 +13,8 @@ use App\Models\Contracts;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\grade\mylecture\MyLectureController;
+
 
 class ContractController extends Controller{
     //
@@ -429,6 +431,99 @@ DB::enableQueryLog();
 
     }
 
+
+    public function popupUpdateClass(Request $request){
+
+        $id = $request->input('id');
+        $contract_id = $request->input('contract_id');
+        DB::enableQueryLog();
+        $classList = ContractClass::join('class_categories', 'contract_classes.class_category_id', '=', 'class_categories.id')
+                                    ->join('common_codes as c1', function($join){
+                                        $join->on('c1.code_id','=', 'contract_classes.finance')
+                                            ->where('c1.code_group', '=','finance_type');
+                                        }
+                                    )
+                                    ->leftjoin('common_codes as c2', function($join){
+                                        $join->on('c2.code_id','=', 'contract_classes.sub_finance')
+                                            ->where('c2.code_group', '=','finance_type');
+                                        }
+                                    )
+                                    ->select('contract_classes.*'
+                                            , 'class_categories.class_gubun'
+                                            , 'class_categories.class_name'
+                                           // , 'c1.code_value as finance'
+                                           // , 'c2.code_value as sub_finance'
+                                            )
+                                    ->where('contract_classes.contract_id', $contract_id)
+                                    ->where('contract_classes.id', $id)
+                                    ->first();
+        //dd(DB::getQueryLog());
+
+        $financeList = CommonCode::getCommonCode('finance_type');
+        return view('mgmt.contract.popupUpdateClass', ['class_id'=>$id, 'contract_id'=>$contract_id, 'financeList'=>$financeList, 'classList'=>$classList ]);
+
+    }
+
+    public function popupUpdateClassDo(Request $request){
+    
+        $contract_class_id = $request->input('class_id');
+        $contract_id = $request->input('contract_id');
+        $class_sub_name = $request->input('class_sub_name');
+        $class_day = $request->input('class_day');
+        $time_from = $request->input('time_from');
+        $time_to = $request->input('time_to');
+        $class_target = $request->input('class_target');
+        $class_number = $request->input('class_number');
+        $class_count = $request->input('class_count');
+        $class_order = $request->input('class_order');
+        $finance = $request->input('finance');
+        $sub_finance = $request->input('sub_finance');
+        $class_type = $request->input('class_type');
+        $online_type = $request->input('online_type');
+
+        
+        try{
+
+            DB::beginTransaction();
+
+            ContractClass::where('id', $contract_class_id )
+                            ->update([
+                                'class_sub_name'=>  $class_sub_name,
+                                'class_day'     =>  $class_day,
+                                'time_from'     =>  $time_from,
+                                'time_to'       =>  $time_to,
+
+                                'class_target'  =>  $class_target,
+                                'class_number'  =>  $class_number,
+                                'class_count'   =>  $class_count,
+                                'class_order'   =>  $class_order,
+                                'finance'       =>  $finance,
+                                'sub_finance'   =>  $sub_finance,
+                                'class_type'    =>  $class_type,
+                                'online_type'   =>  $online_type,
+                            ]);
+
+            //완료강좌 금액 수정
+            $myCol = new MyLectureController();
+            $res = $myCol->calcuClassLector($contract_class_id);
+
+            if(!$res){
+                DB::rollBack();
+                return response()->json(['msg'=>'수정중 오류가 발생하였습니다.']);;
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['msg'=>'수정중 오류가 발생하였습니다.']);;
+        }
+
+
+        
+
+        return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);;
+    }
 
     public function exportExcel(Request $request){
         $searchWord = $request->input('searchWord');

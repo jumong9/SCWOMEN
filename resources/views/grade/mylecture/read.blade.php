@@ -245,7 +245,7 @@
             });
 
             $("#finishButton").click(function(){
-                if(confirm( $(this).text() + ' 처리 하시겠습니까?')){
+                if(confirm( '강의차수 및 수업방식 등의 정보가 정확한지 꼭 확인해 주세요.\r\n잘못된 정보가 있다면 수업완료 처리전에 관리자에게 문의해 주세요.\r\n\r\n' +$(this).text() + ' 처리 하시겠습니까?')){
                     var status_code = $(this).data('status');
                     $.ajax({
                         type : "post",

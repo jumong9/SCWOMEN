@@ -1,7 +1,7 @@
 @extends('layouts.main_layout')
 
 @section('content')
-
+    <div id="modalFrame"></div>
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">{{$pageTitle}}</h1>
 
@@ -123,9 +123,9 @@
                                 <th style="width:100px;">배정상태</th>
                                 <th style="width:100px;">활동일자</th>
                                 <th style="width:100px;">시간</th>
-                                <th style="width:160px;">프로그램</th>
+                                <th style="width:140px;">프로그램</th>
                                 <th style="width:140px;">세부프로그램</th>
-                                <th style="width:140px;">교육대상</th>
+                                <th style="width:130px;">교육대상</th>
                                 <th style="width:50px;">인원</th>
                                 <th style="width:50px;">횟수</th>
                                 <th style="width:50px;">차수</th>
@@ -134,7 +134,8 @@
                                 <th style="width:70px;">재원</th>
                                 <th style="width:70px;">보조재원</th>
                                 <th style="width:100px;">수업방식</th>
-                                <th style="width:80px;">수업구분</th>
+                                <th style="width:60px;">수업구분</th>
+                                <th style="width:50px;">완료수정</th>
                             </tr>
                         </thead>
                         <tbody id="classList" class="thead-light " style="border-bottom: 1px solid #dee2e6;">
@@ -190,6 +191,11 @@
                                 <td>
                                     @if($list->class_type == 2 )
                                         {{$list->online_type == 0 ? '최초' : '재방'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($list->class_status > 0)
+                                    <button class="btn btn-primary btn-sm openPopupClass" type="button"  data-class-id='{{$list->id}}' >수정</button>
                                     @endif
                                 </td>
                             </tr>
@@ -335,6 +341,27 @@
                         },
                     });
                 }
+            });
+
+            $(".openPopupClass").click(function(e){
+                var id = $(this).data('class-id');
+
+                $.ajax({
+                    type : "post",
+                    url : "{{ route('mgmt.contract.popupUpdateClass') }}",
+                    data : {
+                        _token: "{{csrf_token()}}",
+                        'contract_id' : '{{ $contract->id }}',
+                        'id' : id
+                    },
+                    success : function(data){
+                        $("#modalFrame").html(data);
+                        $("#showModal").modal("show");
+                    },
+                    error : function(xhr, exMessage, thrownError) {
+                        alert('정보가 존재하지 않습니다.');
+                    },
+                });
             });
 
             // $('#myTab a').on('click', function (e) {

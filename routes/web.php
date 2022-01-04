@@ -308,6 +308,18 @@ Route::middleware(['adminmiddle'])->group(function(){
         'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@exportExcel'
     ]);
 
+    //계약관리 완료강좌 수정팝업
+    Route::match(['get','post'],'mgmt/contract/popupUpdateClass',[
+        'as' => 'mgmt.contract.popupUpdateClass',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@popupUpdateClass'
+    ]);
+
+    //계약관리 완료강좌 수정처리
+    Route::match(['get','post'],'mgmt/contract/popupUpdateClassDo',[
+        'as' => 'mgmt.contract.popupUpdateClassDo',
+        'uses' => 'App\Http\Controllers\mgmt\contract\ContractController@popupUpdateClassDo'
+    ]);
+
 
     //강좌 배정 목록
     Route::match(['get','post'],'mgmt/lecture/list',[

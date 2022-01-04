@@ -534,4 +534,180 @@ class MyLectureController extends Controller{
         return response()->json(['msg'=>'정상적으로 처리 하였습니다.']);
     }
 
+
+    /**
+     * 강의완료건 금액 수정처리
+     */
+    public function calcuClassLector($contract_class_id){
+
+        $id = $contract_class_id;
+        try {
+
+            $contractClass = ContractClass::where('id',$id)->get();
+            //$class_category_id = $contractClass[0]->class_category_id;
+            $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
+            $online_type = $contractClass[0]->online_type; //0: 최초, 1:재방
+            $class_order = $contractClass[0]->class_order; //수업차수
+
+            $finance = $contractClass[0]->finance;              //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
+            $sub_finance = $contractClass[0]->sub_finance;      //보조강사 재원 4,5인 경우 금액 0, 카운트만 +1
+
+            $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
+            foreach($classLectorsList as $user){
+
+                $class_category_id = $user->class_category_id;
+
+                //$classCateUser = ClassCategoryUser::where('class_category_id', $class_category_id)
+                //                                  ->where('user_id', $user->user_id)->get();
+
+
+                $main_count = $user->main_count;
+                $sub_count = $user->sub_count;
+
+                $main_yn = $user->main_yn;   // 0:sub, 1:main
+
+                $lector_cost =0;
+                $lector_main_count=1;
+                $lector_main_cost =0;
+                $lector_extra_count=0;
+                $lector_extra_cost=0;
+
+                if($main_yn){                                       //주강사
+
+                    if($class_type < 2){                            //오프라인, 온라인실시간
+
+                        if($main_count >= 10){                      //주강사 10회 초과시
+                            $lector_main_cost = 50000;
+                            $lector_cost = $lector_main_cost;
+                            if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                $lector_extra_count = $class_order-1;
+                                $lector_extra_cost=(25000*$lector_extra_count);
+                                $lector_cost += $lector_extra_cost;
+                            }
+
+                        }else{
+                            $lector_main_cost = 30000;
+                            $lector_cost = $lector_main_cost;
+                            if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                $lector_extra_count = $class_order-1;
+                                $lector_extra_cost=(10000*$lector_extra_count);
+                                $lector_cost += $lector_extra_cost;
+                            }
+                        }
+
+                    } else {                                        //온라인 동영상
+
+                        if(!$online_type){                          //최초방송:0, 재방:1
+
+                            if($main_count >= 10){                      //주강사 10회 초과시
+                                $lector_main_cost = 50000;
+                                $lector_cost = $lector_main_cost;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(25000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
+                                }
+
+                            }else{                                      //10회 이하
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(10000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
+                                }
+                            }
+
+                        } else {                                        //재방
+
+                            if($main_count >= 10){                      //주강사 10회 초과시
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(30000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
+                                }
+                            }else{                                      //10회 이하
+                                $lector_main_cost = 30000;
+                                $lector_cost = $lector_main_cost;
+                                if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
+                                    $lector_extra_count = $class_order-1;
+                                    $lector_extra_cost=(10000*$lector_extra_count);
+                                    $lector_cost += $lector_extra_cost;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                    //재원에 따른 0처리
+                    if($finance == 4 || $finance == 5 ) {
+                        $lector_cost  = 0;
+                        $lector_main_cost =0;
+                        $lector_extra_cost =0;
+                    }
+
+                } else {                                                //보조강사
+
+                    if($class_type < 2){                                //오프라인, 온라인실시간
+                        $lector_main_cost = 20000;
+                        $lector_cost = $lector_main_cost;
+                        if($class_order > 1){                           //추가시간 기본1보다 클경우에만 적용
+                            $lector_extra_count = $class_order-1;
+                            $lector_extra_cost=(10000*$lector_extra_count);
+                            $lector_cost += $lector_extra_cost;
+                        }
+                    } else {                                            //온라인동영상
+                        $lector_main_cost = 20000;
+                        $lector_cost = $lector_main_cost;
+                    }
+
+                    //재원에 따른 0처리
+                    if($sub_finance == 4 || $sub_finance == 5){
+                        $lector_cost  = 0;
+                        $lector_main_cost =0;
+                        $lector_extra_cost =0;
+                    }
+
+                }
+
+
+                // if($main_yn){
+                //     ClassCategoryUser::where('class_category_id', $class_category_id)
+                //                     ->where('user_id', $user->user_id)
+                //                     ->increment('main_count', 1);
+                //     $main_count++;
+                // }else{
+                //     ClassCategoryUser::where('class_category_id', $class_category_id)
+                //                     ->where('user_id', $user->user_id)
+                //                     ->increment('sub_count', 1);
+                //     $sub_count++;
+                // }
+
+
+                ClassLector::where('contract_class_id', $id)
+                            ->where('user_id', $user->user_id)
+                            ->update([
+                                'lector_cost' => $lector_cost,
+                                // 'main_count'  => $main_count,
+                                // 'sub_count'   => $sub_count,
+                                'lector_main_count' => $lector_main_count,
+                                'lector_main_cost' => $lector_main_cost,
+                                'lector_extra_count' => $lector_extra_count,
+                                'lector_extra_cost' => $lector_extra_cost,
+                                ]);
+
+            }
+
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            echo "33333333333333";
+            return false;
+        }
+
+        return true;
+    }
 }

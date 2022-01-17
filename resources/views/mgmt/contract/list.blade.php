@@ -60,26 +60,7 @@
                         @foreach($contractList as $key => $list)
                         <tr>
                             <td>{{ $list->id}}</td>
-                            <td>
-                                @switch($list->gubun)
-                                    @case(1)
-                                        초등학교
-                                        @break
-                                    @case(2)
-                                        중학교
-                                        @break
-                                    @case(3)
-                                        고등학교
-                                        @break
-                                    @case(5)
-                                        어린이집
-                                        @break
-                                    @case(6)
-                                        아파트
-                                        @break
-                                    @default
-                                        기타
-                                @endswitch
+                            <td>{{ $list->client_gubun}}
                             </td>
                             <td><a href="{{ route ('mgmt.contract.read', ['id'=>$list->id, 'perPage'=>$contractList->perPage(), 'page'=>$contractList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->client_name }}</a></td>
                             <td>{{ $list->name}}</td>

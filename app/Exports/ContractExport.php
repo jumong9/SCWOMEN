@@ -32,15 +32,14 @@ class ContractExport implements FromQuery, WithHeadings
                                 $join->on('cl.id','=', 'contracts.client_id');
                                 }
                         )
+                        ->join('common_codes as d', function($join){
+                                $join->on('d.code_id','=', 'cl.gubun')
+                                    ->where('d.code_group', '=','client_gubun');
+                                }
+                        )
                         ->select(
                                   'contracts.id'
-                                , DB::raw('case when cl.gubun = 1 then  \'초등학교\'
-                                                 when cl.gubun = 2 then  \'중학교\'
-                                                 when cl.gubun = 3 then  \'고등학교\'
-
-                                                 when cl.gubun = 5 then  \'어린이집\'
-                                                 when cl.gubun = 6 then  \'아파트\'
-                                                 else \'기타\' END')
+                                , 'd.code_value as client_gubun'
                                 , 'cl.name as client_name'
                                 , 'contracts.name'
                                 , 'contracts.phone'

@@ -212,7 +212,12 @@ DB::enableQueryLog();
                                             $join->on('cl.id','=', 'contracts.client_id');
                                             }
                                     )
-                                    ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'cl.gubun')
+                                    ->join('common_codes as d', function($join){
+                                        $join->on('d.code_id','=', 'cl.gubun')
+                                            ->where('d.code_group', '=','client_gubun');
+                                        }
+                                    )
+                                    ->select('contracts.*', 'c.code_value', 'cl.name as client_name', 'd.code_value as client_gubun','cl.gubun')
                                     ->where(function($query) use ($request){
                                         $searchType = $request->input('searchType');
                                         $searchWord = $request->input('searchWord');

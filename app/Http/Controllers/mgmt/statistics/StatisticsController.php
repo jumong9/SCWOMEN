@@ -233,6 +233,7 @@ class StatisticsController extends Controller{
         $clientList = User::join('class_lectors as d', 'd.user_id', '=','users.id')
                             ->join('contract_classes as e', 'e.id', '=', 'd.contract_class_id')
                             ->select('users.id'
+                                    , DB::raw('if(users.gubun=0,\'내부\',\'외부\') as user_gubun')
                                     , DB::raw('max(users.name) as name') 
                                     , DB::raw('max(users.mobile) as mobile')
                                     , DB::raw('max(users.address) as address')
@@ -245,7 +246,7 @@ class StatisticsController extends Controller{
                                 }
                             })
                             ->where('e.class_status', '>', '0')
-                            ->groupBy('users.id')
+                            ->groupBy('users.id', 'user_gubun')
                             ->orderBy('name', 'asc')
                             ->paginate($perPage);
 

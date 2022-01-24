@@ -27,7 +27,9 @@ class PointStatExcelExport implements FromQuery, WithHeadings
         
         return User::join('class_lectors as d', 'd.user_id', '=','users.id')
                     ->join('contract_classes as e', 'e.id', '=', 'd.contract_class_id')
-                    ->select( DB::raw('max(users.name) as name') 
+                    ->select( 
+                              DB::raw('if(users.gubun=0,\'내부\',\'외부\') as user_gubun')
+                            , DB::raw('max(users.name) as name') 
                             , DB::raw('max(users.mobile) as mobile')
                             , DB::raw('max(users.address) as address')
                             , DB::raw('sum(if(d.main_yn=1, 1, 0)) as main_count')
@@ -39,14 +41,15 @@ class PointStatExcelExport implements FromQuery, WithHeadings
                         }
                     })
                     ->where('e.class_status', '>', '0')
-                    ->groupBy('users.id')
+                    ->groupBy('users.id','users.gubun')
                     ->orderBy('name', 'asc');
 
     }
 
     public function headings(): array{
-        return [
-                  "강사명"
+        return [    
+                 "구분"
+                , "강사명"
                 , "연락처"
                 , "거주지"
                 , "주강사횟수"

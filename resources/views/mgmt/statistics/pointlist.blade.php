@@ -42,6 +42,7 @@
                 <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
+                            <th>구분</th>
                             <th>강사명</th>
                             <th>연락처</th>
                             <th>거주지</th>
@@ -52,6 +53,7 @@
                     <tbody>
                         @foreach($clientList as $key => $list)
                         <tr>
+                            <td>{{ $list->user_gubun}}</td>
                             <td><a href="{{ route ('mgmt.statistics.pointDetailList', ['id'=>$list->id, 'perPage'=>$clientList->perPage(), 'page'=>$clientList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord , 'searcFromDate'=>$searcFromDate , 'searcToDate'=>$searcToDate]) }}">{{ $list->name }} </a></td>
 
                             <td>{{ $list->mobile }}</td>

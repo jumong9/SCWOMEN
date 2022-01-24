@@ -324,7 +324,7 @@ class MemberController extends Controller{
                             'birthday' => $birthday,
                             'stopday' => $stopday
                             ]);
-
+                            
             //기존 클래스 조회
             $oldClassCategory = ClassCategoryUser::where('user_id', $id)->get();
 
@@ -339,7 +339,7 @@ class MemberController extends Controller{
                 //외부강사는 주강사 횟수 10회 등록
                 $c_main_count = 0;
                 if($gubun == 2 && $c_main_count < 10){
-                    $c_main_count = $cate->main_count +10;
+                    $c_main_count = 10;
                 }
 
                 $classUser = new ClassCategoryUser();
@@ -402,7 +402,7 @@ class MemberController extends Controller{
                 }
             }
 
-           // dd(DB::getQueryLog());
+        //    dd(DB::getQueryLog());
             DB::commit();
 
         } catch (Exception $e) {

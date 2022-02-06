@@ -532,6 +532,7 @@
                 var checkClassOrder = true;
                 var checkMainCount = true;
                 var checkSubCount = true;
+                var checkSubFinance = true;
 
 
                 var classList = [];
@@ -562,11 +563,18 @@
                     if(!$.isNumeric(_sub_count)) checkSubCount = false;
 
                     var _finance          =$(this).find(".finance  option:selected","#classList").val();
-                    var _sub_finance          =$(this).find(".sub_finance  option:selected","#classList").val();
+                    var _sub_finance      =$(this).find(".sub_finance  option:selected","#classList").val();
                     var _class_type         =$(this).find(".class_type option:selected","#classList").val();
                     var _class_type_text    =$(".class_type option:selected","#classList").text();
                     var _online_type         =$(this).find(".online_type option:selected","#classList").val();
                     var _online_type_text    =$(this).find(".online_type option:selected","#classList").text();
+                    
+                    if(_sub_count > 0 && _sub_finance ==""){
+                        checkSubFinance =false;
+                    }else if(_sub_count==0 ){
+                        _sub_finance = "";
+                    }
+
                     if(_class_type!=2){
                         _online_type_text ="";
                     }
@@ -605,11 +613,11 @@
 
                 //$("#classTargetList").val(JSON.stringify(classList));
 
-                if(checkDateFlag && checkClassCateFlag && checkClassNumber && checkClassCount && checkClassOrder && checkMainCount && checkSubCount){
+                if(checkDateFlag && checkClassCateFlag && checkClassNumber && checkClassCount && checkClassOrder && checkMainCount && checkSubCount && checkSubFinance){
                     $("#classTargetList").val(JSON.stringify(classList));
                     return true;
                 }else{
-
+                    alert(checkSubFinance);
                     if(!checkDateFlag){
                         alert('활동일자가 올바르지 않습니다. 포멧에(yyyy-mm-dd) 맞게 입력해 주세요.');
                     }else if(!checkClassCateFlag){
@@ -624,10 +632,13 @@
                         alert('주강사 값이 올바르지 않습니다. 확인해 주세요.');
                     }else if(!checkSubCount){
                         alert('보조강사 값이 올바르지 않습니다. 확인해 주세요.');
+                    }else if(!checkSubFinance){
+                        alert('보조재원을 선택해 주세요.');
                     }
                     return false;
                 }
                 
+                return false;
             }
 
 

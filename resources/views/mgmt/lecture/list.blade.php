@@ -77,7 +77,7 @@
                         <tr>
                             <td>
                                 @if($list->lector_apply_yn == 0)
-                                    <input type="checkbox" name="id" id="id" value="{{ $list->id }}" data-class_id={{ $list->class_category_id }}>
+                                    <input type="checkbox" name="id" id="id" value="{{ $list->id }}" data-class_id="{{ $list->class_category_id }}" data-sub_count="{{$list->sub_count}}" >
                                 @endif
                             </td>
                             <td><a href="{{ route ('mgmt.contract.read', ['id'=>$list->contract_id, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->contract_id}}</a></td>
@@ -138,14 +138,16 @@
 
                 var checkIds = [];
                 var checkCateIds;
+                var checkSubCount=0;
                 var loop =0;
                 var pass =true;
                 $.each($("input:checkbox[name=id]:checked"), function(){
                     if(loop==0) {
                         checkCateIds = $(this).data('class_id');
+                        checkSubCount = $(this).data('sub_count');
                         loop++;
-                    }else if(checkCateIds != $(this).data('class_id')){
-                        alert("동일한 프로그램만 다중 선택이 가능합니다.");
+                    }else if(checkCateIds != $(this).data('class_id') || checkSubCount != $(this).data('sub_count')){
+                        alert("동일 프로그램, 동일 보조강사수인 경우에만 다중 선택이 가능합니다.");
                         pass=false;
                         return false;
                     }

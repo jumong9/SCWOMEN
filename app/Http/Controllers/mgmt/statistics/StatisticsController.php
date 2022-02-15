@@ -185,9 +185,12 @@ class StatisticsController extends Controller{
                                             , DB::raw('count(if(d.main_yn=0, 1, null)) as sub_count')
                                             , DB::raw('sum(d.lector_cost) as lector_cost')
                                     )
-                                    ->where(function ($query) use ($searcFromDate, $searcToDate, $searchType){
+                                    ->where(function ($query) use ($searcFromDate, $searcToDate, $searchWord){
                                         if(!empty($searcFromDate) && !empty($searcToDate) ){
                                             $query->whereBetween('e.class_day', [$searcFromDate, $searcToDate]);
+                                        }
+                                        if(!empty($searchWord)){
+                                            $query->where('users.name','LIKE',"{$searchWord}%");
                                         }
                                     })
                                     ->where('e.class_status', '>', '0')
@@ -557,7 +560,7 @@ class StatisticsController extends Controller{
     public function exportLectorExcel(Request $request){
         //return Excel::download(new ClientExcelExport, 'ClientReport.xlsx');
 
-        $searchType = $request->input('searchType');
+        $searchWord = $request->input('searchWord');
         $searcFromDate = $request->input('searcFromDate');
         $searcToDate = $request->input('searcToDate');
 
@@ -569,7 +572,7 @@ class StatisticsController extends Controller{
             $searcFromDate = date("Y-m", $prevMonthDate).'-01';
         }
 
-        return (new LectorStatExcelExport)->forSearch($searchType, $searcToDate, $searcFromDate)->download('LectorStatReport.xlsx');
+        return (new LectorStatExcelExport)->forSearch($searchWord, $searcToDate, $searcFromDate)->download('LectorStatReport.xlsx');
 
     }
 

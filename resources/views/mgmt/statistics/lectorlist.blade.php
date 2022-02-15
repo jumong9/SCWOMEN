@@ -27,8 +27,8 @@
                 <div class="form-inline">
                     <div class="form-group">
 
-                        <!-- <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
-                         -->
+                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명">
+                         
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
                         <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>

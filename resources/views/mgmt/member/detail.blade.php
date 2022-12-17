@@ -84,9 +84,9 @@
                         </tr>
                         <tr >
                             <th>등급</th>
-                            <td>{{ $classCategory->user_grade == 0 ? '일반강사' : '반장강사' }}
+                            <td>{{ $classCategory->user_grade == 0 ? '일반강사' : '단장' }}
                                 @if ($classCategory->user_grade == 0 )
-                                    &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="leaderButton">반장강사로 변경</button>
+                                    &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="leaderButton">단장으로 변경</button>
                                 @endif
                                 @if ($classCategory->user_grade == 10 )
                                     &nbsp;<button class="btn btn-primary btn-sm" type="button"  id="normalButton">일반강사로 변경</button>
@@ -162,7 +162,7 @@
             });
 
             $("#leaderButton").click(function(){
-                if(confirm("반장 강사로 변경 하시겠습니까?")){
+                if(confirm("단장으로 변경 하시겠습니까?")){
                     $.ajax({
                         type : "post",
                         url : "{{ route('mgmt.member.updateClassCategory') }}",

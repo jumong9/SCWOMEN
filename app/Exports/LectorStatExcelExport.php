@@ -38,7 +38,7 @@ class LectorStatExcelExport implements FromQuery, WithHeadings
                               DB::raw('if(users.gubun=0,\'내부\',\'외부\') as user_gubun')
                             , 'c.class_name'
                             , 'users.name'
-                            , DB::raw('if(b.user_grade=10,\'반장강사\',\'일반강사\') as user_grade')
+                            , DB::raw('if(b.user_grade=10,\'단장\',\'일반강사\') as user_grade')
                             , 'users.birthday'
                             , 'users.mobile'
                             , 'b.user_group'

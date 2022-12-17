@@ -37,7 +37,7 @@
                         <select class="form-control" name="searchGrade" id="searchGrade">
                             <option value="">등급</option>
                             <option value="0" {{ $searchGrade == '0' ? "selected" : "" }} >일반강사</option>
-                            <option value="10" {{ $searchGrade == '10' ? "selected" : "" }} >반장강사</option>
+                            <option value="10" {{ $searchGrade == '10' ? "selected" : "" }} >단장</option>
                         </select>
                         <select class="form-control" name="searchType" id="searchType">
                             <option value="">선택하세요</option>
@@ -97,7 +97,7 @@
                             <td>{{ $member->user_group }}</td>
                             <td><a href="{{ route ('mgmt.member.detail', ['id'=>$member->id, 'cate_id'=>$member->class_category_id, 'perPage'=>$userlist->perPage(), 'page'=>$userlist->currentPage(), 'searchStatus'=>$searchStatus, 'searchGrade'=>$searchGrade, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $member->name }}</a></td>
                             <td>{{ $member->class_name}}</td>
-                            <td>{{ $member->user_grade == 0 ? '일반강사' : '반장강사' }}</td>
+                            <td>{{ $member->user_grade == 0 ? '일반강사' : '단장' }}</td>
                             <td>{{ number_format($member->main_count) }}</td>
                             <td>{{ number_format($member->sub_count) }}</td>
                             <td>{{ $member->mobile }}</td>

@@ -178,7 +178,7 @@ class StatisticsController extends Controller{
                                     ->select('users.name', 'users.mobile', 'users.birthday'
                                             , DB::raw('if(users.gubun=0,\'내부\',\'외부\') as user_gubun')
                                             , 'f.code_value as user_status_value'
-                                            , DB::raw('if(b.user_grade=10,\'반장강사\',\'일반강사\') as user_grade')
+                                            , DB::raw('if(b.user_grade=10,\'단장\',\'일반강사\') as user_grade')
                                             , 'b.user_group'
                                             , 'c.class_name'
                                             , DB::raw('count(if(d.main_yn=1, 1, null)) as main_count')

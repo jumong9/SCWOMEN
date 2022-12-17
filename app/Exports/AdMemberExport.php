@@ -33,7 +33,7 @@ class AdMemberExport implements FromQuery, WithHeadings{
                                 , 'class_category_user.user_group'
                                 , 'users.name'
                                 , 'class_categories.class_name'
-                                , DB::raw('case when class_category_user.user_grade = 0 then  \'일반강사\' else \'반장강사\' END')
+                                , DB::raw('case when class_category_user.user_grade = 0 then  \'일반강사\' else \'단장\' END')
                                 , 'class_category_user.main_count'
                                 , 'class_category_user.sub_count'
                                 , 'users.mobile'

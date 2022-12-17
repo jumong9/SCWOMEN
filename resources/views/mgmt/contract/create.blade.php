@@ -308,7 +308,7 @@
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="text" class="form-control class_count" name="cclassList[].class_count" value="" autocomplete='off' required>
+                        <input type="text" class="form-control class_count" name="cclassList[].class_count" value="1" autocomplete='off' required>
                     </div>
                 </div>
             </td>
@@ -322,7 +322,7 @@
             <td>
                 <div class="row">
                     <div class="col-md-11 input-group-sm">
-                        <input type="text" class="form-control main_count" name="cclassList[].main_count" value="" autocomplete='off' required>
+                        <input type="text" class="form-control main_count" name="cclassList[].main_count" value="1" autocomplete='off' required>
                     </div>
                 </div>
             </td>

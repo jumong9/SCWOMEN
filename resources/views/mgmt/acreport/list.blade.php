@@ -19,6 +19,9 @@
                         <option value="10" {{$classList->perPage() == 10 ? "selected" : "" }}>10</option>
                         <option value="30" {{$classList->perPage() == 30 ? "selected" : "" }}>30</option>
                         <option value="50" {{$classList->perPage() == 50 ? "selected" : "" }}>50</option>
+                        <option value="100" {{$classList->perPage() == 100 ? "selected" : "" }}>100</option>
+                        <option value="200" {{$classList->perPage() == 200 ? "selected" : "" }}>200</option>
+                        <option value="300" {{$classList->perPage() == 300 ? "selected" : "" }}>300</option>
                     </select>
                     <span >전체 {{ $classList->total() }} 건</span>
                 </div>

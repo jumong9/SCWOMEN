@@ -26,8 +26,12 @@
             <div class="float-right">
                 <div class="form-inline">
                     <div class="form-group">
-
-                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="강사명">
+                        <select class="form-control" name="searchType" id="searchType">
+                            <option value="">선택하세요</option>
+                            <option value="name" {{ $searchType == 'name' ? "selected" : "" }} >강사명</option>
+                            <option value="category" {{ $searchType == 'category' ? "selected" : "" }} >강사단명</option>
+                        </select>
+                        <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="">
                          
                         <input style="width: 110px;" type="text" class="form-control datepicker " id="searcFromDate" name="searcFromDate" value="{{ $searcFromDate }}" placeholder="시작일">
                         <input style="width: 110px;" type="text" class="form-control datepicker" id="searcToDate" name="searcToDate" value="{{ $searcToDate }}" placeholder="종료일">

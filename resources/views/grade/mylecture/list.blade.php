@@ -33,6 +33,8 @@
                             <option value="group" {{ $searchType == 'group' ? "selected" : "" }} >기수</option>
                         </select>
                         --}}
+                        <input style="width: 110px;" type="text" class="form-control datepicker " id="searchFromDate" name="searchFromDate" value="{{ $searchFromDate }}" placeholder="시작일">
+                        <input style="width: 110px;" type="text" class="form-control datepicker" id="searchToDate" name="searchToDate" value="{{ $searchToDate }}" placeholder="종료일">
                         <input type="text" class="form-control" id="searchWord" name="searchWord" value="{{ $searchWord }}" placeholder="수요처명">
                         <button type="button" name="searchButton" id="searchButton" class="btn btn-primary ml-2">검색</button>
                     </div>
@@ -75,7 +77,7 @@
                             <td>{{ $list->class_day,'Y-m-d'}}</td>
                             <td>{{ $list->time_from}} - {{ $list->time_to}}</td>
                             <td>{{ $list->client_name}}</td>
-                            <td><a href="{{ route ('grade.mylecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord ]) }}">{{ $list->class_name }} </a></td>
+                            <td><a href="{{ route ('grade.mylecture.read', ['id'=>$list->id, 'perPage'=>$classList->perPage(), 'page'=>$classList->currentPage(), 'searchStatus'=>$searchStatus, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchFromDate' => $searchFromDate, 'searchToDate' => $searchToDate ]) }}">{{ $list->class_name }} </a></td>
                             <td>{{ $list->class_sub_name}}</td>
                             <td>{{ $list->class_target}}</td>
                             <td>{{ $list->class_number}}</td>
@@ -106,6 +108,9 @@
             {{-- <div class="row-fluid" style="text-align: right;">
                 <button class="btn btn-primary" type="button" name="requestButton" id="requestButton">지급요청</button>
             </div> --}}
+            <div class="row-fluid" style="text-align: right;">
+                <button class="btn btn-primary" type="button" name="exportExcelButton" id="exportExcelButton">엑셀다운로드</button>
+            </div>
         </div>
     </div>
     </form>
@@ -116,13 +121,18 @@
     <script>
         $(document).ready(function() {
 
-
             $("#perPage").change(function(){
                 $("#searchButton").trigger("click");
             });
 
             $("#searchButton").click(function(){
                 $("#searchForm").submit();
+            });
+
+            $("#exportExcelButton").click(function(e){
+                $("#searchForm").attr("action", "{{ route('grade.mylecture.exportExcel') }}");
+                $("#searchForm").submit();
+                $("#searchForm").attr("action", "{{route('grade.mylecture.list') }}");
             });
 
             $("#selectAllCheck").click(function(){
@@ -167,4 +177,5 @@
 
         });
     </script>
+
 @endsection

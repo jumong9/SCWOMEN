@@ -13,10 +13,15 @@ use App\Models\Contracts;
 use App\Models\UserFile;
 use Carbon\Carbon;
 use Exception;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Concerns\FromView;
+
+
+use App\Exports\MyLectureExcelExport;
 
 class MyLectureController extends Controller{
 
@@ -34,9 +39,22 @@ class MyLectureController extends Controller{
         $searchStatus = $request->input('searchStatus');
         $perPage = empty($request->input('perPage') ) ? 10 : $request->input('perPage');
         $page = $request->input('page');
+       
         DB::enableQueryLog();
         $user_id = Auth::id();
         //echo Auth::user()->grade;
+
+        $searchFromDate = $request->input('searchFromDate');
+        $searchToDate = $request->input('searchToDate');
+
+        if(empty($searchFromDate) || empty($searchToDate)){
+            $searchFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searchFromDate));
+            $dayCount = new DateTime( $searchFromDate );
+            $searchToDate = $dayCount->format( 'Y-m-t' );
+            $searchFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
 
         $classList = ContractClass::join('class_categories as b', 'b.id' ,'=', 'contract_classes.class_category_id')
                                     ->join('class_lectors as c', 'c.contract_class_id', '=','contract_classes.id')
@@ -62,6 +80,11 @@ class MyLectureController extends Controller{
                                                          end as reportCnt'
                                                     )
                                     )
+                                    ->where(function ($query) use ($searchFromDate, $searchToDate){
+                                        if(!empty($searchFromDate) && !empty($searchToDate) ){
+                                            $query->whereBetween('contract_classes.class_day', [$searchFromDate, $searchToDate]);
+                                        }
+                                    })
                                     ->where('d.status', '>', '3')
                                     ->where('c.user_id', $user_id)
                                     ->where('d.client_name','LIKE',"{$searchWord}%")
@@ -70,11 +93,11 @@ class MyLectureController extends Controller{
                                     ->paginate($perPage);
 
 
-        $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus));
+        $classList->appends (array ('perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'searchStatus'=>$searchStatus, 'searchFromDate'=>$searchFromDate, 'searchToDate'=>$searchToDate));
 
 
- //       dd(DB::getQueryLog());
-        return view('grade.mylecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus] );
+        //dd(DB::getQueryLog());
+        return view('grade.mylecture.list', ['pageTitle'=>$this->pageTitle,'classList'=>$classList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromDate'=>$searchFromDate, 'searchToDate'=>$searchToDate] );
 
     }
 
@@ -83,6 +106,8 @@ class MyLectureController extends Controller{
         DB::enableQueryLog();
         $searchType = $request->input('searchType');
         $searchWord = $request->input('searchWord');
+        $searchFromDate = $request->input('searchFromDate');
+        $searchToDate = $request->input('searchToDate');
         $searchStatus = $request->input('searchStatus');
         $perPage = $request->input('perPage');
         $page = $request->input('page');
@@ -175,7 +200,7 @@ class MyLectureController extends Controller{
    //     echo($reportNeedYn);
 
 
-        return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'reportNeedYn'=>$reportNeedYn, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus]);
+        return view('grade.mylecture.read', ['timeDiff' =>$timeDiff, 'reportNeedYn'=>$reportNeedYn, 'pageTitle'=>$this->pageTitle, 'mainYn'=>$mainYn, 'client'=>$client[0], 'contract'=>$contract[0], 'contentsList'=>$classList, 'lectorsList'=>$lectorsList, 'perPage' => $perPage, 'searchType' => $searchType, 'searchWord' => $searchWord, 'page' => $page, 'searchStatus'=>$searchStatus, 'searchFromDate'=>$searchFromDate, 'searchToDate'=>$searchToDate]);
         //return "ok";
     }
 
@@ -710,4 +735,25 @@ class MyLectureController extends Controller{
 
         return true;
     }
+
+    public function exportExcel(Request $request){
+
+        $user_id = Auth::id();
+        $searchFromDate = $request->input('searchFromDate');
+        $searchToDate = $request->input('searchToDate');
+       // $searchType = $request->input('searchType');
+       // $searchWord = $request->input('searchWord');
+       // $searchStatus = $request->input('searchStatus');
+
+        if(empty($searchFromDate) || empty($searchToDate)){
+            $searchFromDate = date("Y-m", time()) .'-01';
+            $prevMonthDate = strtotime("1 months ago", strtotime($searchFromDate));
+            $dayCount = new DateTime( $searchFromDate );
+            $searchToDate = $dayCount->format( 'Y-m-t' );
+            $searchFromDate = date("Y-m", $prevMonthDate).'-01';
+        }
+
+        return (new MyLectureExcelExport)->forYear($searchFromDate, $searchToDate, $user_id)->download('MyLectureExcelExport.xlsx');
+    }
+
 }

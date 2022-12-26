@@ -16,7 +16,8 @@ class LectorStatExcelExport implements FromQuery, WithHeadings
 
     use Exportable;
 
-    public function forSearch($searchWord, $searcToDate, $searcFromDate){
+    public function forSearch($searchType, $searchWord, $searcToDate, $searcFromDate){
+        $this->searchType = $searchType;
         $this->searchWord = $searchWord;
         $this->searcToDate = $searcToDate;
         $this->searcFromDate = $searcFromDate;
@@ -52,7 +53,12 @@ class LectorStatExcelExport implements FromQuery, WithHeadings
                             $query->whereBetween('e.class_day', [$this->searcFromDate, $this->searcToDate]);
                         }
                         if(!empty($this->searchWord)){
-                            $query->where('users.name','LIKE',"{$this->searchWord}%");
+                            
+                            if('name' == $this->searchType){
+                                $query->where('users.name','LIKE',"{$this->searchWord}%");
+                            }elseif('category' == $this->searchType){
+                                $query ->where('c.class_name','LIKE', "{$this->searchWord}%");
+                            }
                         }
                     })
                     ->where('e.class_status', '>', '0')

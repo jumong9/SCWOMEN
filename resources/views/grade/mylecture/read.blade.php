@@ -234,7 +234,7 @@
 
         $(document).ready(function() {
 
-            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}";
+            var params = "?perPage={{$perPage}}&page={{$page}}&searchStatus={{$searchStatus}}&searchType={{$searchType}}&searchWord={{$searchWord}}&searchToDate={{$searchToDate}}&searchFromDate={{$searchFromDate}}";
 
             $("#updateButton").click(function(){
                 location.href='{{ route('grade.mylecture.update')}}' + params +"&id={{$contract->id}}";

@@ -629,6 +629,11 @@ Route::middleware(['auth'])->group(function(){
         'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@list'
     ]);
 
+    Route::match(['get','post'],'grade/mylecture/exportExcel',[
+        'as' => 'grade.mylecture.exportExcel',
+        'uses' => 'App\Http\Controllers\grade\mylecture\MyLectureController@exportExcel'
+    ]);
+
     //내 강좌 상세
     Route::match(['get','post'],'grade/mylecture/read',[
         'as' => 'grade.mylecture.read',

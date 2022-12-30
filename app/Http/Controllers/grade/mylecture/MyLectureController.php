@@ -367,6 +367,9 @@ class MyLectureController extends Controller{
         try {
             DB::beginTransaction();
 
+            $targetDay20230101 = strtotime("2023-01-01");
+            $targetActionTimes = 10; 
+
             $id = $request->input('id');
             $class_status = $request->input('class_status');
 
@@ -383,6 +386,11 @@ class MyLectureController extends Controller{
 
             $finance = $contractClass[0]->finance;              //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
             $sub_finance = $contractClass[0]->sub_finance;      //보조강사 재원 4,5인 경우 금액 0, 카운트만 +1
+
+            $class_day = strtotime($contractClass[0]->class_day); //수업일
+            if($targetDay20230101 <= $class_day){
+				$targetActionTimes = 5; 
+			}
 
             $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
             foreach($classLectorsList as $user){
@@ -408,7 +416,7 @@ class MyLectureController extends Controller{
 
                     if($class_type < 2){                            //오프라인, 온라인실시간
 
-                        if($main_count >= 10){                      //주강사 10회 초과시
+                        if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                             $lector_main_cost = 50000;
                             $lector_cost = $lector_main_cost;
                             if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
@@ -431,7 +439,7 @@ class MyLectureController extends Controller{
 
                         if(!$online_type){                          //최초방송:0, 재방:1
 
-                            if($main_count >= 10){                      //주강사 10회 초과시
+                            if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                                 $lector_main_cost = 50000;
                                 $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
@@ -452,12 +460,17 @@ class MyLectureController extends Controller{
 
                         } else {                                        //재방
 
-                            if($main_count >= 10){                      //주강사 10회 초과시
+                            if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                                 $lector_main_cost = 30000;
                                 $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                     $lector_extra_count = $class_order-1;
-                                    $lector_extra_cost=(30000*$lector_extra_count);
+                                    
+                                    $extraCst = 30000;
+                                    if($targetActionTimes==5){
+                                        $extraCst = 20000;
+                                    }
+                                    $lector_extra_cost=($extraCst * $lector_extra_count);
                                     $lector_cost += $lector_extra_cost;
                                 }
                             }else{                                      //10회 이하
@@ -568,6 +581,11 @@ class MyLectureController extends Controller{
         $id = $contract_class_id;
         try {
 
+            //기준강좌수 23년1월1일부터 5회로 변경, 이전은 10회
+            $targetDay20230101 = strtotime("2023-01-01");
+            $targetActionTimes = 10; 
+
+
             $contractClass = ContractClass::where('id',$id)->get();
             //$class_category_id = $contractClass[0]->class_category_id;
             $class_type = $contractClass[0]->class_type; //0 :오프, 1:온라인, 2:동영
@@ -576,6 +594,11 @@ class MyLectureController extends Controller{
 
             $finance = $contractClass[0]->finance;              //주강사 재원 4,5인 경우 금액 0, 카운트만 +1
             $sub_finance = $contractClass[0]->sub_finance;      //보조강사 재원 4,5인 경우 금액 0, 카운트만 +1
+
+            $class_day = strtotime($contractClass[0]->class_day); //수업일
+            if($targetDay20230101 <= $class_day){
+				$targetActionTimes = 5; 
+			}
 
             $classLectorsList = ClassLector::where('contract_class_id',$id)->get();
             foreach($classLectorsList as $user){
@@ -601,7 +624,7 @@ class MyLectureController extends Controller{
 
                     if($class_type < 2){                            //오프라인, 온라인실시간
 
-                        if($main_count >= 10){                      //주강사 10회 초과시
+                        if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                             $lector_main_cost = 50000;
                             $lector_cost = $lector_main_cost;
                             if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
@@ -624,7 +647,7 @@ class MyLectureController extends Controller{
 
                         if(!$online_type){                          //최초방송:0, 재방:1
 
-                            if($main_count >= 10){                      //주강사 10회 초과시
+                            if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                                 $lector_main_cost = 50000;
                                 $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
@@ -645,12 +668,18 @@ class MyLectureController extends Controller{
 
                         } else {                                        //재방
 
-                            if($main_count >= 10){                      //주강사 10회 초과시
+                            if($main_count >= $targetActionTimes){                      //주강사 10회 초과시
                                 $lector_main_cost = 30000;
                                 $lector_cost = $lector_main_cost;
                                 if($class_order > 1){                   //추가시간 기본1보다 클경우에만 적용
                                     $lector_extra_count = $class_order-1;
-                                    $lector_extra_cost=(30000*$lector_extra_count);
+                                    
+                                    $extraCst = 30000;
+                                    if($targetActionTimes==5){
+                                        $extraCst = 20000;
+                                    }
+                                    $lector_extra_cost=($extraCst * $lector_extra_count);
+                                    //$lector_extra_cost=(30000*$lector_extra_count);
                                     $lector_cost += $lector_extra_cost;
                                 }
                             }else{                                      //10회 이하

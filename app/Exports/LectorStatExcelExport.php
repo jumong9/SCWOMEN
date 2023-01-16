@@ -24,12 +24,17 @@ class LectorStatExcelExport implements FromQuery, WithHeadings
         return $this;
     }
 
+
     public function query() {
 
-        return User::join('class_category_user as b', 'b.user_id' ,'=', 'users.id')
-                    ->join('class_categories as c', 'c.id', '=','b.class_category_id')
-                    ->join('class_lectors as d', 'd.user_id', '=','users.id')
+        return User::join('class_lectors as d', 'd.user_id', '=','users.id')
                     ->join('contract_classes as e', 'e.id', '=', 'd.contract_class_id')
+                    ->join('class_categories as c', 'c.id', '=','d.class_category_id')
+                    ->join('class_category_user as b', function($join){
+                        $join->on('b.class_category_id','=', 'd.class_category_id')
+                            ->on('b.user_id', '=','d.user_id');
+                        }
+                    )
                     ->join('common_codes as f', function($join){
                         $join->on('f.code_id','=', 'b.user_status')
                             ->where('f.code_group', '=','user_status');
@@ -45,8 +50,8 @@ class LectorStatExcelExport implements FromQuery, WithHeadings
                             , 'b.user_group'
                             , 'f.code_value as user_status_value'
                             , DB::raw('sum(d.lector_cost) as lector_cost')
-                            , DB::raw('count(if(d.main_yn=1, 1, null)) as main_count')
-                            , DB::raw('count(if(d.main_yn=0, 1, null)) as sub_count')
+                            , DB::raw('sum(if(d.main_yn=1, 1, 0)) as main_count')
+                            , DB::raw('sum(if(d.main_yn=0, 1, 0)) as sub_count')
                     )
                     ->where(function ($query) {
                         if(!empty($this->searcFromDate) && !empty($this->searcToDate) ){

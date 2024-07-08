@@ -207,6 +207,16 @@ class PayCalculateController extends Controller
             $sum_r_tax = 0;
             $sum_calcu_cost = 0;
 
+            
+            //24년 6월부터 30,000 미만도 세금제함
+            $targetDate = strtotime("2024-06-01");
+            $calcuTargetDate = strtotime($searchFromMonth);
+            $change202406 = 1;
+            if($calcuTargetDate>=$targetDate){
+                $change202406 =0;
+            }
+            
+
             foreach($calcuList as $key){
                 $sumCalcu = new ClassCalculate();
                 $sumCalcu->calcu_month = $searchFromMonth;
@@ -225,7 +235,7 @@ class PayCalculateController extends Controller
                         $sumCalcu->calcu_cost = $key->tot_cost;
                     }
                 }else{
-                    if($key->tot_cost <= 30000){
+                    if($key->tot_cost <= 30000  && $change202406 > 0){
                         $sumCalcu->i_tax = 0;
                         $sumCalcu->r_tax = 0;;
                         $sumCalcu->calcu_cost = $key->tot_cost;
